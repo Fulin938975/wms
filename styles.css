@@ -13,34 +13,65 @@ header {
     text-align: center;
 }
 
-nav {
-    margin: 0;
-    padding: 0;
-    background: #444;
+.topnav {
+    background-color: red;
     overflow: hidden;
+    color: white;
+    padding: 10px;
+    display: flex;
+    align-items: center;
 }
 
-nav ul {
-    list-style: none;
+.topnav h1 {
+    flex-grow: 1;
     margin: 0;
+    padding-left: 10px;
+}
+
+.hamburger {
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.sidebar {
+    width: 200px;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: -200px; /* 初始狀態為隱藏 */
+    background: #444;
+    padding-top: 20px;
+    transition: left 0.3s;
+}
+
+.sidebar ul {
+    list-style: none;
     padding: 0;
 }
 
-nav ul li {
-    float: left;
+.sidebar ul li {
+    padding: 10px;
 }
 
-nav ul li a {
-    display: block;
-    padding: 10px 20px;
+.sidebar ul li a {
     color: #fff;
     text-decoration: none;
+    display: block;
 }
 
-nav ul li a:hover {
+.sidebar ul li a:hover {
     background: #555;
 }
 
 .container {
+    margin-left: 20px; /* 留出側邊欄的空間 */
     padding: 20px;
+}
+
+.sidebar-open .sidebar {
+    left: 0; /* 打開側邊欄 */
+}
+
+.sidebar-open .container {
+    margin-left: 220px; /* 留出側邊欄的空間 */
 }
