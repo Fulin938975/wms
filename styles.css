@@ -1,77 +1,262 @@
 /* styles.css */
-body {
+
+/* 全局樣式 */
+*, *::before, *::after {
+    max-width: 100% !important;
+    box-sizing: border-box;
+  }
+  
+  body {
     font-family: Arial, sans-serif;
+    font-size: 50%;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
-}
-
-header {
-    background: #333;
-    color: #fff;
-    padding: 10px 0;
-    text-align: center;
-}
-
-.topnav {
-    background-color: red;
-    overflow: hidden;
-    color: white;
-    padding: 10px;
+    background-color: #ffffff;
+    color: #333333;
+    min-width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+  }
+  
+  html, body {
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* 頁首樣式 */
+  header {
+      background: #333; /* 背景顏色 */
+      color: #fff; /* 文字顏色 */
+      padding: 10px 0; /* 上下內邊距 */
+      text-align: center; /* 文字置中 */
+  }
+  
+  /* 頂部導航欄樣式 */
+  nav {
+    padding: 10px 15px;
+    background-color: #f0f0f0;
+    border-bottom: 1px solid #ccc;
     display: flex;
     align-items: center;
-}
-
-.topnav h1 {
-    flex-grow: 1;
-    margin: 0;
-    padding-left: 10px;
-}
-
-.hamburger {
-    font-size: 30px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  
+  nav .hamburger {
     cursor: pointer;
-}
-
-.sidebar {
-    width: 200px;
+    font-size: 24px;
+    margin-right: 10px;
+  }
+  
+  nav h3 {
+    font-size: 18px;
+    margin: 0;
+    flex-grow: 1;
+    text-align: left;
+  }
+  
+  #username {
+    margin-right: 10px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  
+  #createFormBtn {
+    width: 24px;
+    height: 24px;
+    font-size: 30px;
+    padding: 0;
+    line-height: 24px;
+    text-align: center;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    margin-left: 10px;
+  }
+  
+  /* 側邊欄樣式 */
+  .sidebar {
+    width: 70%;
     height: 100%;
     position: fixed;
     top: 0;
-    left: -200px; /* 初始狀態為隱藏 */
-    background: #444;
+    left: -70%; /* 初始狀態為隱藏 */
+    background-color: #f0f0f0;
     padding-top: 20px;
     transition: left 0.3s;
-}
-
-.sidebar ul {
-    list-style: none;
-    padding: 0;
-}
-
-.sidebar ul li {
-    padding: 10px;
-}
-
-.sidebar ul li a {
-    color: #fff;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.5);
+    z-index: 1000;
+  }
+  
+  .sidebar ul {
+    list-style: none; /* 無列表樣式 */
+    padding: 0; /* 無內邊距 */
+  }
+  
+  .sidebar ul li {
+    padding: 10px; /* 內邊距 */
+  }
+  
+  .sidebar ul li a {
+    padding: 15px;
     text-decoration: none;
-    display: block;
-}
-
-.sidebar ul li a:hover {
-    background: #555;
-}
-
-.container {
-    margin-left: 20px; /* 留出側邊欄的空間 */
-    padding: 20px;
-}
-
-.sidebar-open .sidebar {
+    color: black;
+    border-bottom: 1px solid #ccc;
+    font-size: 16px;
+    display: block; /* 塊級元素 */
+  }
+  
+  .sidebar ul li a:hover {
+    background: #555; /* 懸停背景顏色 */
+  }
+  
+  /* 容器樣式 */
+  .container {
+    max-width: 100%;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+  
+  .item {
+    background-color: #f1f1f1;
+    margin: 5px;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    flex-basis: 100%;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  @media (min-width: 768px) {
+    .item {
+      flex-basis: 80%;
+    }
+    .sidebar {
+      width: 70%;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .item {
+      flex-basis: 80%;
+    }
+  }
+  
+  /* 側邊欄打開狀態樣式 */
+  .sidebar-open .sidebar {
     left: 0; /* 打開側邊欄 */
-}
-
-.sidebar-open .container {
+  }
+  
+  .sidebar-open .container {
     margin-left: 220px; /* 留出側邊欄的空間 */
-}
+  }
+  
+  h3 {
+    margin-top: 6px;
+    text-align: center;
+    font-size: 18px;
+  }
+  
+  .form-group {
+    display: flex;
+    align-items: center;
+    margin: 6px 0;
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .form-group label {
+    width: 100%;
+    text-align: left;
+    margin-bottom: 5px;
+    font-size: 18px;
+  }
+  
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 8px;
+    font-size: 18px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    resize: vertical;
+  }
+  
+  .horizontal-form-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .horizontal-form-group label {
+    width: 40%;
+    text-align: left;
+  }
+  
+  .horizontal-form-group select,
+  .horizontal-form-group input,
+  .horizontal-form-group .custom-select-wrapper,
+  .horizontal-form-group span,
+  .horizontal-form-group textarea {
+    width: 60%;
+    padding: 8px;
+    font-size: 18px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  button {
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+  }
+  
+  button:disabled {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+    pointer-events: none;
+    transition: none;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  #timerDisplay {
+    display: block;
+    font-size: 22px;
+    font-weight: bold;
+    color: red;
+    line-height: 1.2;
+    margin-top: 3px;
+    text-align: center;
+  }
+  
+  select {
+    padding: 8px;
+    font-size: 18px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    width: 100%;
+  }
