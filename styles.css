@@ -1,15 +1,28 @@
 /* 全局樣式 */
-* {
+*, *::before, *::after {
     margin: 0; /* 移除所有元素的預設外邊距 */
     padding: 0; /* 移除所有元素的預設內邊距 */
     box-sizing: border-box; /* 設置 box-sizing 為 border-box */
+    max-width: 100% !important; /* 確保外層容器最大寬度不超出100% */
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    font-size: 50%;
+    position: relative; /* 設置相對定位 */
+    z-index: 1;
+    background-color: #ffffff;
+    color: #333333;
+    overflow-x: hidden; //* 隱藏水平滾動條 */
 }
 
 /* 頁首樣式 */
 header {
     height: 60px; /* 設置固定高度 */
     background: transparent; /* 背景顏色設置為透明 */
-    color: #fff; /* 文字顏色 */
+    color: #ffffff; /* 文字顏色 */
     padding: 10px 0; /* 上下內邊距 */
     text-align: center; /* 文字置中 */
 }
@@ -17,7 +30,7 @@ header {
 /* 頂部導航欄樣式 */
 .topnav {
     height: 60px; /* 設置固定高度 */
-    background-color: red; /* 背景顏色 */
+    background-color: rgb(106, 100, 100); /* 背景顏色 */
     overflow: hidden; /* 隱藏溢出內容 */
     color: white; /* 文字顏色 */
     padding: 10px; /* 內邊距 */
@@ -27,20 +40,22 @@ header {
     top: 0; /* 固定在頁面頂部 */
     width: 100%; /* 寬度設置為 100% */
     z-index: 1000; /* 確保導航欄在其他元素之上 */
+    justify-content: space-between; /* 兩端對齊 */
 }
 
-/* 頂部導航欄標題樣式 */
 .topnav h1 {
     margin: 0; /* 移除默認外邊距 */
-    padding-left: 20px; /* 左內邊距 */
+    padding-left: 10px; /* 左內邊距 */
     flex-grow: 1; /* 佔據剩餘空間 */
+    font-size: 18px; /* 字體大小 */
+    color: rgb(233, 18, 50); /* 文字顏色 */
+    z-index: 1001; /* 確保標題文字在其他元素之上 */
 }
 
-/* 漢堡菜單樣式 */
 .hamburger {
-    font-size: 30px; /* 字體大小 */
+    font-size: 18px; /* 字體大小 */
     cursor: pointer; /* 指針樣式 */
-    margin-left: 20px; /* 左外邊距 */
+    margin: 5px; /* 左外邊距 */
 }
 
 /* 側邊欄樣式 */
@@ -53,31 +68,32 @@ header {
     background: #444; /* 背景顏色 */
     padding-top: 20px; /* 上內邊距 */
     transition: left 0.3s; /* 左邊距過渡效果 */
-    z-index: 500; /* 確保側邊欄在導航欄之下 */
+    z-index: 1002; /* 確保側邊欄在導航欄之下 */
 }
 
-/* 側邊欄列表樣式 */
-.sidebar ul {
-    list-style: none; /* 無列表樣式 */
-    padding: 0; /* 無內邊距 */
+.sidebar a {
+    display: block;
+    padding: 15px;
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    border-bottom: 1px solid #ccc;
+    font-size: 16px;
 }
 
-/* 側邊欄列表項樣式 */
-.sidebar ul li {
-    padding: 10px; /* 內邊距 */
+.sidebar-hidden .sidebar {
+    left: -200px; /* 隱藏側邊欄 */
 }
 
-/* 側邊欄鏈接樣式 */
-.sidebar ul li a {
-    color: #fff; /* 文字顏色 */
-    text-decoration: none; /* 無下劃線 */
-    display: block; /* 塊級元素 */
+.sidebar-hidden .container {
+    margin-left: 0; /* 無左邊距 */
+    width: calc(100); /* 設置寬度，減去內邊距 */
 }
 
-/* 側邊欄鏈接懸停樣式 */
-.sidebar ul li a:hover {
-    background: #555; /* 懸停背景顏色 */
+.sidebar-open .sidebar {
+    left: 0; /* 打開側邊欄 */
 }
+
+
 
 /* 容器樣式 */
 .container {
@@ -86,17 +102,158 @@ header {
     padding: 20px; /* 內邊距 */
     width: calc(100% - 40px); /* 設置寬度，減去內邊距 */
     transition: margin-left 0.3s; /* 添加過渡效果 */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    box-sizing: border-box;
 }
 
-/* 側邊欄打開狀態樣式 */
-.sidebar-open .sidebar {
-    left: 0; /* 打開側邊欄 */
+#currentDateTime {
+    display: block;
+    text-align: center;
+    font-size: 14px;
+    margin: 5px;
 }
 
-/* 側邊欄打開狀態下的容器樣式 */
-.sidebar-open .container {
-    margin-left: 220px; /* 留出側邊欄的空間 */
-    width: calc(100% - 240px); /* 設置寬度，減去側邊欄和內邊距 */
+.item {
+    background-color: #f1f1f1;
+    margin: 5px;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    flex-basis: 100%;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 100%;
+}
+
+@media (min-width: 768px) {
+    .item {
+        flex-basis: 80%;
+    }
+   
+        .sidebar {
+            height: calc(100% - 40px); /* 在更小螢幕上調整側邊欄高度 */
+            top: 40px; /* 在更小螢幕上調整側邊欄頂部對齊 */
+    }
+}
+
+@media (min-width: 1024px) {
+    .item {
+        flex-basis: 80%;
+    }
+        .sidebar {
+            height: calc(100% - 50px); /* 在較小螢幕上調整側邊欄高度 */
+            top: 50px; /* 在較小螢幕上調整側邊欄頂部對齊 */%
+
+        }
+}
+h3 {
+    margin-top: 6px;
+    text-align: center;
+    font-size: 18px;
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    margin: 6px 0;
+    flex-direction: column;
+    width: 100%;
+}
+
+.form-group label {
+    width: 100%;
+    text-align: left;
+    margin-bottom: 5px;
+    font-size: 18px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 8px;
+    font-size: 18px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+/* 水平排列的表單組，適用於指定的表單項 */
+.horizontal-form-group {
+    display: flex;
+    flex-direction: row;  /* 左右排列 */
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* 控制水平排列時，標籤和輸入框的寬度分配 */
+.horizontal-form-group label {
+    width: 40%;  /* 標籤佔40% */
+    text-align: left;
+}
+
+.horizontal-form-group select,
+.horizontal-form-group input,
+.horizontal-form-group .custom-select-wrapper,
+.horizontal-form-group span,
+.horizontal-form-group textarea {  /* 讓 span（計時器）保持一致 */
+    width: 60%;  /* 保證寬度一致 */
+    padding: 8px;  /* 與其他表單元素保持一致的內邊距 */
+    font-size: 18px;  /* 保持字體大小一致 */
+    border: 1px solid #ccc;  /* 相同的邊框樣式 */
+    border-radius: 4px;  /* 圓角樣式 */
+    box-sizing: border-box;  /* 保證內外邊距計算方式一致 */
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+/* 禁用狀態的按鈕樣式 */
+button:disabled {
+    background-color: #ccc;  /* 禁用狀態的暗色 */
+    color: #666;  /* 禁用狀態下的文字顏色 */
+    cursor: not-allowed;  /* 禁用狀態顯示不可點擊 */
+    pointer-events: none;  /* 禁止任何點擊事件 */
+    transition: none;  /* 禁用狀態下禁用過渡動畫 */
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+#timerDisplay {
+    display: block;    /* 使其成為塊級元素，以便樣式生效 */
+    font-size: 22px;   /* 增加字體大小 */
+    font-weight: bold;
+    color: red;
+    line-height: 1.2;  /* 調整行高，確保垂直對齊 */
+    margin-top: 3px;   /* 微調位置 */
+    text-align: center; /* 使文字在其框中居中對齊 */
+}
+
+/* 設置下拉選單樣式 */
+select {
+    padding: 8px;
+    font-size: 18px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    width: 100%; /* 確保下拉選單寬度為父元素的 100% */
 }
 
 /* 響應式設計 */
