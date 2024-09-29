@@ -4,9 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My GitHub Pages Site</title>
+    <script>
+        async function submitForm(event) {
+            event.preventDefault();
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                message: document.getElementById('message').value
+            };
+            const response = await fetch('https://script.google.com/macros/s/AKfycbwT8bR4l3QxUgmy24EkuDhL6IV6llZzFqckYcizh8zQOfjPv2wZMe3lYM3Ebj1FqlBq9w/exec', {
+                method: 'POST',
+                body: JSON.stringify(formData)
+            });
+            const result = await response.text();
+            alert(result);
+        }       
+    </script>
 </head>
 <body>
     <h1>Hello, GitHub Pages!</h1>
-    <p>這是一段新增的文字，用於測試在 GitHub Pages 上顯示好1。</p>
+    <p>這是一段新增的文字，用於測試在 GitHub Pages 上顯示好12。</p>
+    <form onsubmit="submitForm(event)">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br>
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" required></textarea><br>
+        <button type="submit">Submit</button>
+    </form>
 </body>
 </html>
