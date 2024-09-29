@@ -1,77 +1,127 @@
-/* styles.css */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
+/* 全局樣式 */
+* {
+    margin: 0; /* 移除所有元素的預設外邊距 */
+    padding: 0; /* 移除所有元素的預設內邊距 */
+    box-sizing: border-box; /* 設置 box-sizing 為 border-box */
 }
 
+/* 頁首樣式 */
 header {
-    background: #333;
-    color: #fff;
-    padding: 10px 0;
-    text-align: center;
+    height: 60px; /* 設置固定高度 */
+    background: transparent; /* 背景顏色設置為透明 */
+    color: #fff; /* 文字顏色 */
+    padding: 10px 0; /* 上下內邊距 */
+    text-align: center; /* 文字置中 */
 }
 
+/* 頂部導航欄樣式 */
 .topnav {
-    background-color: red;
-    overflow: hidden;
-    color: white;
-    padding: 10px;
-    display: flex;
-    align-items: center;
+    height: 60px; /* 設置固定高度 */
+    background-color: red; /* 背景顏色 */
+    overflow: hidden; /* 隱藏溢出內容 */
+    color: white; /* 文字顏色 */
+    padding: 10px; /* 內邊距 */
+    display: flex; /* 使用 Flexbox 布局 */
+    align-items: center; /* 垂直置中 */
+    position: fixed; /* 固定定位 */
+    top: 0; /* 固定在頁面頂部 */
+    width: 100%; /* 寬度設置為 100% */
+    z-index: 1000; /* 確保導航欄在其他元素之上 */
 }
 
+/* 頂部導航欄標題樣式 */
 .topnav h1 {
-    flex-grow: 1;
-    margin: 0;
-    padding-left: 10px;
+    margin: 0; /* 移除默認外邊距 */
+    padding-left: 20px; /* 左內邊距 */
+    flex-grow: 1; /* 佔據剩餘空間 */
 }
 
+/* 漢堡菜單樣式 */
 .hamburger {
-    font-size: 30px;
-    cursor: pointer;
+    font-size: 30px; /* 字體大小 */
+    cursor: pointer; /* 指針樣式 */
+    margin-left: 20px; /* 左外邊距 */
 }
 
+/* 側邊欄樣式 */
 .sidebar {
-    width: 200px;
-    height: 100%;
-    position: fixed;
-    top: 0;
+    width: 200px; /* 寬度 */
+    height: calc(100% - 60px); /* 高度，減去導航欄的高度 */
+    position: fixed; /* 固定定位 */
+    top: 60px; /* 頂部對齊，低於導航欄 */
     left: -200px; /* 初始狀態為隱藏 */
-    background: #444;
-    padding-top: 20px;
-    transition: left 0.3s;
+    background: #444; /* 背景顏色 */
+    padding-top: 20px; /* 上內邊距 */
+    transition: left 0.3s; /* 左邊距過渡效果 */
+    z-index: 500; /* 確保側邊欄在導航欄之下 */
 }
 
+/* 側邊欄列表樣式 */
 .sidebar ul {
-    list-style: none;
-    padding: 0;
+    list-style: none; /* 無列表樣式 */
+    padding: 0; /* 無內邊距 */
 }
 
+/* 側邊欄列表項樣式 */
 .sidebar ul li {
-    padding: 10px;
+    padding: 10px; /* 內邊距 */
 }
 
+/* 側邊欄鏈接樣式 */
 .sidebar ul li a {
-    color: #fff;
-    text-decoration: none;
-    display: block;
+    color: #fff; /* 文字顏色 */
+    text-decoration: none; /* 無下劃線 */
+    display: block; /* 塊級元素 */
 }
 
+/* 側邊欄鏈接懸停樣式 */
 .sidebar ul li a:hover {
-    background: #555;
+    background: #555; /* 懸停背景顏色 */
 }
 
+/* 容器樣式 */
 .container {
-    margin-left: 20px; /* 留出側邊欄的空間 */
-    padding: 20px;
+    margin-top: 60px; /* 留出頂部導航欄的空間 */
+    margin-left: 0; /* 無左邊距 */
+    padding: 20px; /* 內邊距 */
+    width: calc(100% - 40px); /* 設置寬度，減去內邊距 */
+    transition: margin-left 0.3s; /* 添加過渡效果 */
 }
 
+/* 側邊欄打開狀態樣式 */
 .sidebar-open .sidebar {
     left: 0; /* 打開側邊欄 */
 }
 
+/* 側邊欄打開狀態下的容器樣式 */
 .sidebar-open .container {
     margin-left: 220px; /* 留出側邊欄的空間 */
+    width: calc(100% - 240px); /* 設置寬度，減去側邊欄和內邊距 */
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    header, .topnav {
+        height: 50px; /* 在較小螢幕上減少高度 */
+    }
+    .container {
+        margin-top: 50px; /* 留出頂部導航欄的空間 */
+    }
+    .sidebar {
+        height: calc(100% - 50px); /* 在較小螢幕上調整側邊欄高度 */
+        top: 50px; /* 在較小螢幕上調整側邊欄頂部對齊 */
+    }
+}
+
+@media (max-width: 480px) {
+    header, .topnav {
+        height: 40px; /* 在更小螢幕上進一步減少高度 */
+    }
+    .container {
+        margin-top: 40px; /* 留出頂部導航欄的空間 */
+    }
+    .sidebar {
+        height: calc(100% - 40px); /* 在更小螢幕上調整側邊欄高度 */
+        top: 40px; /* 在更小螢幕上調整側邊欄頂部對齊 */
+    }
 }

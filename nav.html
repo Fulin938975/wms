@@ -1,19 +1,34 @@
-<!-- nav.html -->
-<header>
-    <div class="topnav">
-        <span class="hamburger" onclick="toggleSidebar()">&#9776;</span>
-        <h1 id="page-title">我的網站</h1>
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>固定導航欄示例</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="topnav">
+            <span class="hamburger" onclick="toggleSidebar()">&#9776;</span>
+            <h1 id="page-title"></h1>
+        </div>
+    </header>
+    <nav class="sidebar" id="sidebar">
+        <ul>
+            <li><a href="index.html">首頁</a></li>
+            <li><a href="meat_production.html">肉鬆生產</a></li>
+            <li><a href="mix_production.html">調合生產</a></li>
+            <li><a href="packaging.html">包裝生產</a></li>
+            <li><a href="quantitative_processing.html">定量加工</a></li>
+            <li><a href="material_request.html">領料管理</a></li>
+            <li><a href="production.html">生產管理</a></li>
+            <li><a href="search.html">數據搜尋</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <!-- 主內容 -->
+        <p>這是主內容區域。</p>
     </div>
-</header>
-<nav class="sidebar" id="sidebar">
-    <ul>
-        <li><a href="index.html">首頁</a></li>
-        <li><a href="meat_production.html">肉鬆生產</a></li>
-        <li><a href="mix_production.html">調合生產</a></li>
-        <li><a href="packaging.html">包裝生產</a></li>
-        <li><a href="quantitative_processing.html">定量加工</a></li>
-        <li><a href="material_request.html">領料管理</a></li>
-        <li><a href="production.html">生產管理</a></li>
-        <li><a href="search.html">數據搜尋</a></li>
-    </ul>
-</nav>
+    <script src="scripts.js"></script>
+</body>
+</html>
