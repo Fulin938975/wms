@@ -28,7 +28,7 @@ header {
 }
 
 /* 頂部導航欄樣式 */
-.topnav {
+.nav {
     height: 60px; /* 設置固定高度 */
     background-color: rgb(106, 100, 100); /* 背景顏色 */
     overflow: hidden; /* 隱藏溢出內容 */
@@ -43,19 +43,19 @@ header {
     justify-content: space-between; /* 兩端對齊 */
 }
 
-.topnav h1 {
+.nav h1 {
     margin: 0; /* 移除默認外邊距 */
     padding-left: 10px; /* 左內邊距 */
     flex-grow: 1; /* 佔據剩餘空間 */
     font-size: 18px; /* 字體大小 */
-    color: rgb(233, 18, 50); /* 文字顏色 */
-    z-index: 1001; /* 確保標題文字在其他元素之上 */
+    color: rgb(18, 245, 6); /* 文字顏色 */
+    text-align: left; /* 文字左對齊 */
 }
 
 .hamburger {
-    font-size: 18px; /* 字體大小 */
+    font-size: 24px; /* 字體大小 */
     cursor: pointer; /* 指針樣式 */
-    margin: 5px; /* 左外邊距 */
+    margin: px; /* 左外邊距 */
 }
 
 /* 側邊欄樣式 */
@@ -64,10 +64,11 @@ header {
     height: calc(100% - 60px); /* 高度，減去導航欄的高度 */
     position: fixed; /* 固定定位 */
     top: 60px; /* 頂部對齊，低於導航欄 */
-    left: -200px; /* 初始狀態為隱藏 */
+    left: -100%; /* 初始狀態為隱藏 */
     background: #444; /* 背景顏色 */
     padding-top: 20px; /* 上內邊距 */
     transition: left 0.3s; /* 左邊距過渡效果 */
+    box-shadow: 2px 0 5px rgba(0,0,0,0.5); /* 添加陰影 */
     z-index: 1002; /* 確保側邊欄在導航欄之下 */
 }
 
@@ -145,7 +146,7 @@ header {
     }
         .sidebar {
             height: calc(100% - 50px); /* 在較小螢幕上調整側邊欄高度 */
-            top: 50px; /* 在較小螢幕上調整側邊欄頂部對齊 */%
+            top: 50px; /* 在較小螢幕上調整側邊欄頂部對齊 
 
         }
 }
@@ -258,7 +259,7 @@ select {
 
 /* 響應式設計 */
 @media (max-width: 768px) {
-    header, .topnav {
+    header, .nav {
         height: 50px; /* 在較小螢幕上減少高度 */
     }
     .container {
@@ -271,7 +272,7 @@ select {
 }
 
 @media (max-width: 480px) {
-    header, .topnav {
+    header, .nav {
         height: 40px; /* 在更小螢幕上進一步減少高度 */
     }
     .container {
