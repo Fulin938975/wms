@@ -524,15 +524,4 @@ const itemMapping = {
   
   
   
-  //---------用戶----------------//
-// 自動填充用戶信息
-function loadUserEmail() {
-    google.script.run.withSuccessHandler(function(userInfo) {
-      if (userInfo.name) {
-        document.getElementById('username').innerText = userInfo.name;  // 只顯示用戶名稱
-      } else {
-        document.getElementById('username').innerText = 'Unknown User'; // 如果名稱缺失，顯示預設值
-      }
-    }).getUserInfo();
-  }
   
