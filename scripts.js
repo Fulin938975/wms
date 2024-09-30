@@ -1,22 +1,16 @@
 /**
  * 提交表單數據到 Google Apps Script 網絡應用
  * @param {Event} event - 表單提交事件
- */
+ *
 async function submitForm(event) {
     // 防止表單的默認提交行為
     event.preventDefault();
 
     // 獲取表單數據
     const formData = {
-      item: document.getElementById('itemSelect').value,  // 領料品項
-      weight: document.getElementById('weightInput').value,  // 重量
-      quantity: document.getElementById('quantityInput').value,  // 數量
-      startTime: document.getElementById('startTimeDisplay').value,  // 開始時間
-      endTime: document.getElementById('endTimeDisplay').value,  // 結束時間
-      timerValue: document.getElementById('timerDisplay').innerText,  // 計時器顯示的生產時間
-      productionItem: document.getElementById('productionItemSelect').value,  // 生產品項
-      productionWeight: document.getElementById('productionWeightInput').value,  // 生產重量
-      remarks: document.getElementById('remarksInput').value  // 備註
+      name: document.getElementById('name').value,  // 姓名
+      email: document.getElementById('email').value,  // 電子郵件
+      message: document.getElementById('message').value,  // 訊息
     };
 
     // 發送 POST 請求到 Google Apps Script 網絡應用
@@ -341,7 +335,7 @@ function createForm() {
 
 
 // 提交表單數據
-function submitForm() {
+async function submitForm() {
   const formData = {
     item: document.getElementById('itemSelect').value,  // 領料品項
     weight: document.getElementById('weightInput').value,  // 重量
@@ -354,30 +348,26 @@ function submitForm() {
     remarks: document.getElementById('remarksInput').value  // 備註
   };
 
-
   // 必填欄位檢查
   if (!formData.item) {
     alert('請選擇領料品項');
     return;
   }
- 
+
   if (isNaN(formData.weight) || formData.weight === '') {
     alert('請輸入有效的領料重量 (KG)');
     return;
   }
-
 
   if (isNaN(formData.quantity) || formData.quantity === '') {
     alert('請輸入有效的領料數量 (包)');
     return;
   }
 
-
   if (isNaN(formData.productionWeight) || formData.productionWeight === '' || formData.productionWeight <= 0) {
     alert('請輸入有效的生產重量 (KG)');
     return;
   }
-
 
   // 確認時間格式正確性
   const timePattern = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/;
@@ -389,7 +379,6 @@ function submitForm() {
     document.getElementById('startTimeDisplay').style.borderColor = '';
   }
 
-
   if (!timePattern.test(formData.endTime)) {
     alert('結束時間格式不正確，請輸入 HH:MM:SS 格式的時間。');
     document.getElementById('endTimeDisplay').style.borderColor = 'red';
@@ -398,22 +387,26 @@ function submitForm() {
     document.getElementById('endTimeDisplay').style.borderColor = '';
   }
 
+  try {
+    // 發送 POST 請求到 Google Apps Script 網絡應用
+    const response = await fetch('https://script.google.com/macros/s/AKfycbx6jjTZ-VIu_cO5y92-35OMhMgdL78vn3fkPvKKbgkM9eYvHcC6T__hmp-Fg75mYLngTw/exec', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    });
 
-  // 調用 Google Apps Script 處理表單數據
-  google.script.run.withSuccessHandler(function (response) {
-    alert(response);
-
+    // 獲取並顯示響應結果
+    const result = await response.text();
+    alert(result);
 
     // 提交表單成功後，重置表單
     createForm(); // 調用創建新表單的功能來清空表單並重置計時器狀態
-
-
-  })
-  .withFailureHandler(function (error) {
+  } catch (error) {
     console.error('表單提交失敗:', error);
     alert('表單提交失敗，請稍後再試');
-  })
-  .processForm(formData);
+  }
 }
 // 設置「領料品項」和「生產品項」的對應關係
 const itemMapping = {
