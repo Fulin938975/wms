@@ -11,17 +11,40 @@
     <div class="container">
         <h1>首頁2</h1>
         <p>這是首頁的內容。</p>
-        <form onsubmit="submitForm(event)">
-            <label for="name">姓名：</label> // 姓名
-            <input type="text" id="name" name="name" required><br> // 姓名
-            <label for="email">電子郵件：</label> // 電子郵件
-            <input type="email" id="email" name="email" required><br> // 電子郵件格式
-            <label for="message">訊息：</label> // 訊息
-            <textarea id="message" name="message" required></textarea><br>
+        <form id="myForm">
+            <label for="item">領料品項:</label>
+            <input type="text" id="item" name="item" required><br><br>
+        
+            <label for="weight">重量:</label>
+            <input type="number" id="weight" name="weight" required><br><br>
+        
+            <label for="quantity">數量:</label>
+            <input type="number" id="quantity" name="quantity" required><br><br>
+        
+            <label for="startTime">開始時間:</label>
+            <input type="text" id="startTime" name="startTime" required><br><br>
+        
+            <label for="endTime">結束時間:</label>
+            <input type="text" id="endTime" name="endTime" required><br><br>
+        
+            <label for="timerValue">計時器顯示的生產時間:</label>
+            <input type="text" id="timerValue" name="timerValue" required><br><br>
+        
+            <label for="productionItem">生產品項:</label>
+            <input type="text" id="productionItem" name="productionItem" required><br><br>
+        
+            <label for="productionWeight">生產重量:</label>
+            <input type="number" id="productionWeight" name="productionWeight" required><br><br>
+        
+            <label for="remarks">備註:</label>
+            <input type="text" id="remarks" name="remarks"><br><br>
+        
             <button type="submit">提交</button>
-        </form>
+          </form>
+        
+          <script src="script.js"></script>
     </div>
-    <script src="scripts.js"></script>
+   
     <script>
         // 加載導航
         fetch('nav.html')

@@ -1,10 +1,51 @@
+document.getElementById('myForm').addEventListener('submit', async function(event) {
+  event.preventDefault();
+
+  const formData = {
+    item: document.getElementById('item').value,
+    weight: document.getElementById('weight').value,
+    quantity: document.getElementById('quantity').value,
+    startTime: document.getElementById('startTime').value,
+    endTime: document.getElementById('endTime').value,
+    timerValue: document.getElementById('timerValue').value,
+    productionItem: document.getElementById('productionItem').value,
+    productionWeight: document.getElementById('productionWeight').value,
+    remarks: document.getElementById('remarks').value
+  };
+
+  try {
+    const response = await fetch('https://script.google.com/macros/s/AKfycbx6jjTZ-VIu_cO5y92-35OMhMgdL78vn3fkPvKKbgkM9eYvHcC6T__hmp-Fg75mYLngTw/exec', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    });
+
+    if (response.ok) {
+      const result = await response.text();
+      alert('提交成功: ' + result);
+    } else {
+      throw new Error('表單提交失敗，伺服器返回錯誤');
+    }
+  } catch (error) {
+    console.error('提交失敗:', )
+
+    alert('提交失敗，請稍後再試');
+  }
+});
+
+
+
+/*
 /**
  * 提交表單數據到 Google Apps Script 網絡應用
  * @param {Event} event - 表單提交事件
  *
+ *
 async function submitForm(event) {
-    // 防止表單的默認提交行為
-    event.preventDefault();
+  // 防止表單的默認提交行為
+  event.preventDefault();
 
     // 獲取表單數據
     const formData = {
@@ -13,23 +54,31 @@ async function submitForm(event) {
       message: document.getElementById('message').value,  // 訊息
     };
 
-    // 發送 POST 請求到 Google Apps Script 網絡應用
-    const response = await fetch('https://script.google.com/macros/s/AKfycbxxhMqI4_JHxgjoXI35y1GHsgMdFq4v7C9wXEof5G0A8ofvUOh-12Y-_fi-1IHhi2Yk6Q/exec', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-    });
+  try {
+      // 發送 POST 請求到 Google Apps Script 網絡應用
+      const response = await fetch('https://script.google.com/macros/s/AKfycbyVy3CHk_aSEzcvidHRv92vgVZRh0N3Xv1JcBmDywyaJ8Zq0BinhMN9XSHEVpNX5y1opQ/exec', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+      });
 
-    // 獲取並顯示響應結果
-    const result = await response.text();
-    alert(result);
+      // 檢查回應是否成功
+      if (response.ok) {
+          const result = await response.text();
+          alert('提交成功: ' + result);
+      } else {
+          throw new Error('表單提交失敗，伺服器返回錯誤');
+      }
+    } catch (error) {
+      console.error('提交失敗:', error);
+      alert('提交失敗，請稍後再試');
+  }
 }
-
 /**
  * 切換側邊欄的顯示狀態
- */
+ *
 function toggleSidebar() {
     document.body.classList.toggle('sidebar-open');
 }
@@ -37,7 +86,7 @@ function toggleSidebar() {
 /**
  * 設置頁面標題
  * @param {string} title - 頁面標題
- */
+ *
 function setPageTitle(title) {
     document.getElementById('page-title').innerText = title;
     document.title = title;
@@ -46,7 +95,7 @@ function setPageTitle(title) {
 /**
  * 點擊空白處關閉側邊欄
  * @param {Event} event - 點擊事件
- */
+ *
 function closeSidebarOnClickOutside(event) {
     // 如果點擊的目標不是側邊欄或漢堡菜單，且側邊欄是打開狀態，則關閉側邊欄
     if (!event.target.closest('.sidebar') && !event.target.closest('.hamburger') && document.body.classList.contains('sidebar-open')) {
@@ -354,6 +403,7 @@ async function submitForm() {
     return;
   }
 
+
   if (isNaN(formData.weight) || formData.weight === '') {
     alert('請輸入有效的領料重量 (KG)');
     return;
@@ -522,21 +572,12 @@ const itemMapping = {
         }
       });
     });
-  }
+  }*/
 
   
+    
   
   
+    
   
-  //---------用戶----------------//
-// 自動填充用戶信息
-function loadUserEmail() {
-    google.script.run.withSuccessHandler(function(userInfo) {
-      if (userInfo.name) {
-        document.getElementById('username').innerText = userInfo.name;  // 只顯示用戶名稱
-      } else {
-        document.getElementById('username').innerText = 'Unknown User'; // 如果名稱缺失，顯示預設值
-      }
-    }).getUserInfo();
-  }
   
