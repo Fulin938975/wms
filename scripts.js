@@ -20,7 +20,7 @@ async function submitForm(event) {
     };
 
     // 發送 POST 請求到 Google Apps Script 網絡應用
-    const response = await fetch('https://script.google.com/macros/s/AKfycbxxhMqI4_JHxgjoXI35y1GHsgMdFq4v7C9wXEof5G0A8ofvUOh-12Y-_fi-1IHhi2Yk6Q/exec', {
+    const response = await fetch('https://script.google.com/macros/s/AKfycbyVy3CHk_aSEzcvidHRv92vgVZRh0N3Xv1JcBmDywyaJ8Zq0BinhMN9XSHEVpNX5y1opQ/exec', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
