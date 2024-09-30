@@ -1,4 +1,4 @@
-/* 全局樣式 */
+/* 全局樣式 */ 
 *, *::before, *::after {
     margin: 0; /* 移除所有元素的預設外邊距 */
     padding: 0; /* 移除所有元素的預設內邊距 */
@@ -7,14 +7,16 @@
 }
 
 html, body {
-    width: 100%;
-    height: 100%;
-    font-family: Arial, sans-serif;
-    font-size: 50%;
+    min-width: 100%; /* 設置頁面最小寬度為 100% */
+    height: 100%; /* 設置頁面高度為 100% */
+    margin: 0; /* 移除頁面的預設外邊距和內邊距 */
+    padding: 0; /* 移除頁面的預設外邊距和內邊距 */
+    font-family: Arial, sans-serif; /* 使用系統字體 */   
+    font-size: 50%; /* 設置根元素字體大小為 50% */
     position: relative; /* 設置相對定位 */
-    z-index: 1;
-    background-color: #ffffff;
-    color: #333333;
+    z-index: 1; /* 設置 z-index 為 1 */
+    background-color: #ffffff; /* 背景顏色 */
+    color: #333333; /* 文字顏色 */
     overflow-x: hidden; //* 隱藏水平滾動條 */
 }
 
@@ -30,10 +32,10 @@ header {
 /* 頂部導航欄樣式 */
 .nav {
     height: 60px; /* 設置固定高度 */
-    background-color: rgb(106, 100, 100); /* 背景顏色 */
+    background-color: #ffffff; /* 背景顏色 */
     overflow: hidden; /* 隱藏溢出內容 */
-    color: white; /* 文字顏色 */
-    padding: 10px; /* 內邊距 */
+    color: #333333; /* 文字顏色 */
+    padding: 10px 15px; /* 內邊距 */
     display: flex; /* 使用 Flexbox 布局 */
     align-items: center; /* 垂直置中 */
     position: fixed; /* 固定定位 */
@@ -41,22 +43,43 @@ header {
     width: 100%; /* 寬度設置為 100% */
     z-index: 1000; /* 確保導航欄在其他元素之上 */
     justify-content: space-between; /* 兩端對齊 */
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.1); /* 添加陰影 */
 }
 
 .nav h1 {
     margin: 0; /* 移除默認外邊距 */
-    padding-left: 10px; /* 左內邊距 */
+    padding-left: 15px; /* 左內邊距 */
     flex-grow: 1; /* 佔據剩餘空間 */
     font-size: 18px; /* 字體大小 */
-    color: rgb(18, 245, 6); /* 文字顏色 */
     text-align: left; /* 文字左對齊 */
 }
 
 .hamburger {
     font-size: 24px; /* 字體大小 */
     cursor: pointer; /* 指針樣式 */
-    margin: px; /* 左外邊距 */
+    margin: 5px; /* 外邊距 */
 }
+
+#username {
+    margin-right: 10px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+
+  #createFormBtn {
+    width: 24px;
+    height: 24px;
+    font-size: 30px;
+    padding: 0;
+    line-height: 24px;
+    text-align: center;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    margin-left: 10px;
+  }
+
 
 /* 側邊欄樣式 */
 .sidebar {
@@ -65,18 +88,18 @@ header {
     position: fixed; /* 固定定位 */
     top: 60px; /* 頂部對齊，低於導航欄 */
     left: -100%; /* 初始狀態為隱藏 */
-    background: #444; /* 背景顏色 */
-    padding-top: 20px; /* 上內邊距 */
+    background: #ffffff; /* 背景顏色 */
+    padding-top: 10px; /* 上內邊距 */
     transition: left 0.3s; /* 左邊距過渡效果 */
-    box-shadow: 2px 0 5px rgba(0,0,0,0.5); /* 添加陰影 */
+    box-shadow: 2px 0px 5px rgba(0,0,0,0.5); /* 只在右側添加陰影 */
     z-index: 1002; /* 確保側邊欄在導航欄之下 */
 }
 
 .sidebar a {
     display: block;
-    padding: 15px;
+    padding: 10px;
     text-decoration: none;
-    color: rgb(255, 255, 255);
+    color: #333333; /* 文字顏色 */
     border-bottom: 1px solid #ccc;
     font-size: 16px;
 }
@@ -98,16 +121,15 @@ header {
 
 /* 容器樣式 */
 .container {
-    margin-top: 60px; /* 留出頂部導航欄的空間 */
-    margin-left: 0; /* 無左邊距 */
-    padding: 20px; /* 內邊距 */
-    width: calc(100% - 40px); /* 設置寬度，減去內邊距 */
-    transition: margin-left 0.3s; /* 添加過渡效果 */
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    box-sizing: border-box;
+    margin-top: 0; /* 留出頂部導航欄的空間 */
+    max-width: 100%;   /* 確保外層容器最大寬度不超出100% */
+      padding: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      box-sizing: border-box;     
 }
+
 
 #currentDateTime {
     display: block;
@@ -129,28 +151,7 @@ header {
     max-width: 100%;
 }
 
-@media (min-width: 768px) {
-    .item {
-        flex-basis: 80%;
-    }
-   
-        .sidebar {
-            height: calc(100% - 40px); /* 在更小螢幕上調整側邊欄高度 */
-            top: 40px; /* 在更小螢幕上調整側邊欄頂部對齊 */
-    }
-}
-
-@media (min-width: 1024px) {
-    .item {
-        flex-basis: 80%;
-    }
-        .sidebar {
-            height: calc(100% - 50px); /* 在較小螢幕上調整側邊欄高度 */
-            top: 50px; /* 在較小螢幕上調整側邊欄頂部對齊 
-
-        }
-}
-h3 {
+.h3 {
     margin-top: 6px;
     text-align: center;
     font-size: 18px;
@@ -221,7 +222,7 @@ button {
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s;
-    margin-top: 10px;
+    margin: 5px;
 }
 
 /* 禁用狀態的按鈕樣式 */
@@ -254,32 +255,37 @@ select {
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
+    background-color: #ededed;
     width: 100%; /* 確保下拉選單寬度為父元素的 100% */
 }
+  
+    
+    
+    
+    /* 響應式設計 */
+    @media (max-width: 768px) {
+        header, .nav {
+            height: 50px; /* 在較小螢幕上減少高度 */
+        }
+        .container {
+            margin-top: 0; /* 留出頂部導航欄的空間 */
+        }
+        .sidebar {
+            height: calc(100% - 50px); /* 在較小螢幕上調整側邊欄高度 */
+            top: 50px; /* 在較小螢幕上調整側邊欄頂部對齊 */
+        }
+    }
+    
+    @media (max-width: 480px) {
+        header, .nav {
+            height: 40px; /* 在更小螢幕上進一步減少高度 */
+        }
+        .container {
+            margin-top: 0; /* 留出頂部導航欄的空間 */
+        }
+        .sidebar {
+            height: calc(100% - 40px); /* 在更小螢幕上調整側邊欄高度 */
+            top: 40px; /* 在更小螢幕上調整側邊欄頂部對齊 */
+        }
+    }
 
-/* 響應式設計 */
-@media (max-width: 768px) {
-    header, .nav {
-        height: 50px; /* 在較小螢幕上減少高度 */
-    }
-    .container {
-        margin-top: 50px; /* 留出頂部導航欄的空間 */
-    }
-    .sidebar {
-        height: calc(100% - 50px); /* 在較小螢幕上調整側邊欄高度 */
-        top: 50px; /* 在較小螢幕上調整側邊欄頂部對齊 */
-    }
-}
-
-@media (max-width: 480px) {
-    header, .nav {
-        height: 40px; /* 在更小螢幕上進一步減少高度 */
-    }
-    .container {
-        margin-top: 40px; /* 留出頂部導航欄的空間 */
-    }
-    .sidebar {
-        height: calc(100% - 40px); /* 在更小螢幕上調整側邊欄高度 */
-        top: 40px; /* 在更小螢幕上調整側邊欄頂部對齊 */
-    }
-}
