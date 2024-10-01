@@ -438,6 +438,7 @@ const itemMapping = {
     updateProductionTime(); // 初始化生產時間
     updateProductionItem(); // 初始化時更新「生產品項」
   };
+  
   //------------------------------------------------------
   // 更新當前日期時間
   function updateDateTime() {
@@ -452,15 +453,6 @@ const itemMapping = {
     });
     document.getElementById('currentDateTime').innerText = dateString;
   }
-  
-  
-  // 頁面加載時執行的函數
-  window.onload = function () {
-    loadUserEmail(); // 加載用戶信息
-    setInterval(updateDateTime, 1000); // 每秒更新日期時間
-    addTimeInputListeners(); // 添加時間輸入框的監聽器
-    updateProductionTime(); // 初始化生產時間
-  };
   
   
   // 添加事件監聽器：自動全選文本框內的時間，並自動格式化輸入的時間
