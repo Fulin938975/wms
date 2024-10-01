@@ -307,8 +307,6 @@ function createForm() {
 // 提交表單數據
 async function submitForm() {
   const formData = {
-    submissionTime: new Date().toISOString(),  // 提交的時間
-    pageTitle: document.title,  // 頁面名稱
     item: document.getElementById('itemSelect').value,  // 領料品項
     weight: document.getElementById('weightInput').value,  // 重量
     quantity: document.getElementById('quantityInput').value,  // 數量
@@ -362,7 +360,7 @@ async function submitForm() {
   try {
     // 發送 POST 請求到 Google Apps Script 網絡應用
     const response = await fetch('https://script.google.com/macros/s/AKfycbx6jjTZ-VIu_cO5y92-35OMhMgdL78vn3fkPvKKbgkM9eYvHcC6T__hmp-Fg75mYLngTw/exec', {
-      method: 'POST',
+      method: 'GET',
      
       body: JSON.stringify(formData)
     });
