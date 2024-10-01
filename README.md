@@ -7,6 +7,7 @@ git上傳
 git status
 git add .
 git commit -m "提交更改"
+git push origin main
 
 不要表頭!!!'Content-Type': 'text/plain'  // 設置內容類型為 text/plain
 

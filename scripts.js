@@ -10,8 +10,30 @@ function toggleSidebar() {
  * @param {string} title - 頁面標題
  */
 function setPageTitle(title) {
-    document.title = title;
+  document.title = title;
+  const pageTitleElement = document.getElementById('page-title');
+  if (pageTitleElement) {
+      pageTitleElement.innerText = title;
+  }
 }
+
+// 動態設置頁面標題
+document.addEventListener("DOMContentLoaded", function() {
+  const Title = document.getElementById("page-title");
+  const titles = {
+      "index.html": "首頁",
+      "meat_production.html": "肉鬆生產",
+      "mix_production.html": "調合生產",
+      "packaging.html": "包裝生產",
+      "quantitative_processing.html": "定量加工",
+      "material_request.html": "領料管理",
+      "production.html": "生產管理",
+      "search.html": "數據搜尋"
+  };
+  const currentPage = window.location.pathname.split("/").pop();
+  const pageTitle = titles[currentPage] || "未命名頁面";
+    setPageTitle(pageTitle);
+});
 
 /**
  * 點擊空白處關閉側邊欄
@@ -27,22 +49,7 @@ function closeSidebarOnClickOutside(event) {
 // 添加點擊事件監聽器到文檔
 document.addEventListener('click', closeSidebarOnClickOutside);
 
-// 動態設置頁面標題
-document.addEventListener("DOMContentLoaded", function() {
-    const pageTitle = document.getElementById("page-title");
-    const titles = {
-        "index.html": "首頁",
-        "meat_production.html": "肉鬆生產",
-        "mix_production.html": "調合生產",
-        "packaging.html": "包裝生產",
-        "quantitative_processing.html": "定量加工",
-        "material_request.html": "領料管理",
-        "production.html": "生產管理",
-        "search.html": "數據搜尋"
-    };
-    const currentPage = window.location.pathname.split("/").pop();
-    
-});
+
 
 
 //------肉鬆生產品項時間------//
