@@ -360,7 +360,7 @@ async function submitForm() {
   try {
     // 發送 POST 請求到 Google Apps Script 網絡應用
     const response = await fetch('https://script.google.com/macros/s/AKfycbx6jjTZ-VIu_cO5y92-35OMhMgdL78vn3fkPvKKbgkM9eYvHcC6T__hmp-Fg75mYLngTw/exec', {
-      method: 'GET',
+      method: 'POST',
      
       body: JSON.stringify(formData)
     });
