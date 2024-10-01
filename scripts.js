@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function() {
         "search.html": "數據搜尋"
     };
     const currentPage = window.location.pathname.split("/").pop();
-    pageTitle.textContent = titles[currentPage] || "我的網站";
+    
 });
 
 
