@@ -1,5 +1,3 @@
-document.getElementById('myForm').addEventListener('submit', async function(event) {
-  event.preventDefault();
 
   const formData = {
     item: document.getElementById('item').value,
@@ -175,7 +173,7 @@ function startTimer() {
   }
 }
 
-
+/*肉鬆生產*/
 // 生產完成後，啟用"生產重量"輸入框監聽，當有正確輸入時，才啟用提交按鈕
 function endTimer() {
   if (timerRunning) {
