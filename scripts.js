@@ -311,9 +311,12 @@ function createForm() {
 }
 
 
+
 // 提交表單數據
-async function submitForm() {
+async function submitForm(event) {
+  event.preventDefault(); // 防止表單默認提交行為
   const formData = {
+    submitTime: new Date().toISOString(),  // 提交時間
     item: document.getElementById('itemSelect').value,  // 領料品項
     weight: document.getElementById('weightInput').value,  // 重量
     quantity: document.getElementById('quantityInput').value,  // 數量
@@ -386,6 +389,9 @@ async function submitForm() {
     alert('表單提交失敗，請稍後再試');
   }
 }
+
+
+
 // 設置「領料品項」和「生產品項」的對應關係
 const itemMapping = {
     '招牌細P': ['招牌細K'],
