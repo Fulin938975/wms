@@ -314,7 +314,6 @@ function createForm() {
 
 // 提交表單數據
 async function submitForm(event) {
-  event.preventDefault(); // 防止表單默認提交行為
   const formData = {
     submitTime: new Date().toISOString(),  // 提交時間
     item: document.getElementById('itemSelect').value,  // 領料品項
