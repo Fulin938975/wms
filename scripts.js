@@ -19,20 +19,31 @@ function setPageTitle(title) {
 
 // 動態設置頁面標題
 document.addEventListener("DOMContentLoaded", function() {
-  const Title = document.getElementById("page-title");
-  const titles = {
-      "index.html": "首頁",
-      "meat_production.html": "肉鬆生產",
-      "mix_production.html": "調合生產",
-      "packaging.html": "包裝生產",
-      "quantitative_processing.html": "定量加工",
-      "material_request.html": "領料管理",
-      "production.html": "生產管理",
-      "search.html": "數據搜尋"
-  };
-  const currentPage = window.location.pathname.split("/").pop();
-  const pageTitle = titles[currentPage] || "未命名頁面";
-    setPageTitle(pageTitle);
+  // 加載導航
+  fetch('nav.html')
+      .then(response => response.text())
+      .then(data => {
+          document.getElementById('nav-placeholder').innerHTML = data;
+
+          // 在導航加載完成後設置頁面標題
+          const titles = {
+              "index.html": "首頁",
+              "meat_production.html": "肉鬆生產",
+              "mix_production.html": "調合生產",
+              "packaging.html": "包裝生產",
+              "quantitative_processing.html": "定量加工",
+              "material_request.html": "領料管理",
+              "production.html": "生產管理",
+              "search.html": "數據搜尋"
+          };
+
+          const currentPage = window.location.pathname.split("/").pop();
+          const pageTitle = titles[currentPage] || "未命名頁面";
+          const pageTitleElement = document.getElementById('page-title');
+          if (pageTitleElement) {
+              pageTitleElement.innerText = pageTitle;
+          }
+      });
 });
 
 /**

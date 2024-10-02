@@ -6,42 +6,76 @@
     <title>首頁</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body onload="setPageTitle('首頁1')"> 
+<body> 
     <div id="nav-placeholder"></div>
     <div class="container">
         <h1>首頁2</h1>
         <p>這是首頁的內容。</p>
+        
         <form id="myForm">
-            <label for="item">領料品項:</label>
-            <input type="text" id="item" name="item" required><br><br>
-        
-            <label for="weight">重量:</label>
-            <input type="number" id="weight" name="weight" required><br><br>
-        
-            <label for="quantity">數量:</label>
-            <input type="number" id="quantity" name="quantity" required><br><br>
-        
-            <label for="startTime">開始時間:</label>
-            <input type="text" id="startTime" name="startTime" required><br><br>
-        
-            <label for="endTime">結束時間:</label>
-            <input type="text" id="endTime" name="endTime" required><br><br>
-        
-            <label for="timerValue">計時器顯示的生產時間:</label>
-            <input type="text" id="timerValue" name="timerValue" required><br><br>
-        
-            <label for="productionItem">生產品項:</label>
-            <input type="text" id="productionItem" name="productionItem" required><br><br>
-        
-            <label for="productionWeight">生產重量:</label>
-            <input type="number" id="productionWeight" name="productionWeight" required><br><br>
-        
-            <label for="remarks">備註:</label>
-            <input type="text" id="remarks" name="remarks"><br><br>
-        
-            <button type="submit">提交</button>
+            <label for="text">文本：</label>
+        <input type="text" id="text" name="text"><br>
+
+        <label for="password">密碼：</label>
+        <input type="password" id="password" name="password"><br>
+
+        <label for="email">電子郵件：</label>
+        <input type="email" id="email" name="email"><br>
+
+        <label for="number">數字：</label>
+        <input type="number" id="number" name="number" min="0" max="100"><br>
+
+        <label for="tel">電話：</label>
+        <input type="tel" id="tel" name="tel"><br>
+
+        <label for="url">URL：</label>
+        <input type="url" id="url" name="url"><br>
+
+        <label for="search">搜索：</label>
+        <input type="search" id="search" name="search"><br>
+
+        <label for="color">顏色：</label>
+        <input type="color" id="color" name="color"><br>
+
+        <label for="date">日期：</label>
+        <input type="date" id="date" name="date"><br>
+
+        <label for="datetime-local">日期和時間：</label>
+        <input type="datetime-local" id="datetime-local" name="datetime-local"><br>
+
+        <label for="month">月份：</label>
+        <input type="month" id="month" name="month"><br>
+
+        <label for="week">週：</label>
+        <input type="week" id="week" name="week"><br>
+
+        <label for="time">時間：</label>
+        <input type="time" id="time" name="time"><br>
+
+        <label for="checkbox">複選框：</label>
+        <input type="checkbox" id="checkbox" name="checkbox"><br>
+
+        <label for="radio">單選按鈕：</label>
+        <input type="radio" id="radio" name="radio"><br>
+
+        <label for="file">文件：</label>
+        <input type="file" id="file" name="file"><br>
+
+        <label for="hidden">隱藏：</label>
+        <input type="hidden" id="hidden" name="hidden" value="hiddenValue"><br>
+
+        <label for="image">圖像提交：</label>
+        <input type="image" id="image" name="image" src="submit.png" alt="Submit"><br>
+
+        <label for="button">按鈕：</label>
+        <input type="button" id="button" name="button" value="Click me"><br>
+
+        <label for="submit">提交：</label>
+        <input type="submit" id="submit" name="submit" value="Submit"><br>
+
+        <label for="reset">重置：</label>
+        <input type="reset" id="reset" name="reset" value="Reset"><br>
           </form>
-        
           <script src="scripts.js"></script>
     </div>
    
