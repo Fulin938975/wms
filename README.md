@@ -9,6 +9,16 @@ git add .
 git commit -m "提交更改"
 git push origin main
 
+# 拉取遠端儲存庫的最新變更
+git pull origin main
+
+# 檢查拉取狀態
+git status
+
+# 如果有衝突，解決衝突後添加並提交
+git add <conflicted-file>
+git commit -m "Resolve merge conflict"
+
 不要表頭!!!'Content-Type': 'text/plain'  // 設置內容類型為 text/plain
 
 // 提交表單數據
