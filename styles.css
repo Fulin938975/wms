@@ -129,7 +129,34 @@ header {
       justify-content: center;
       box-sizing: border-box;     
 }
+/* 父級容器樣式 */
+#pickingP1-container-wrapper .pickingP1-component {
+    margin-top: 0; /* 留出頂部導航欄的空間 */
+    max-width: 100%;   /* 確保外層容器最大寬度不超出100% */
+      padding: 0px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      box-sizing: border-box;     
+}
 
+
+/* 按鈕樣式 */
+#pickingP1-container-wrapper .pickingP1-component button.remove-pickingP1-button {
+    display: block;
+    width: 100%; /* 按鈕占據100%寬度 */
+    padding: 8px 12px;
+    color: #fff;
+    background-color: #d9534f;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px; /* 與上方元素保持間距 */
+}
+
+#pickingP1-container-wrapper .pickingP1-component button.remove-pickingP1-button:hover {
+    background-color: #c9302c;
+}
 
 #currentDateTime {
     display: block;
@@ -157,7 +184,8 @@ header {
     font-size: 18px;
 }
 
-.form-group {
+.form-group
+    {
     display: flex;
     align-items: center;
     margin: 6px 0;
@@ -165,7 +193,8 @@ header {
     width: 100%;
 }
 
-.form-group label {
+.form-group label
+ {
     width: 100%;
     text-align: left;
     margin-bottom: 5px;
@@ -174,7 +203,8 @@ header {
 
 .form-group input,
 .form-group select,
-.form-group textarea {
+.form-group textarea
+ {
     width: 100%;
     padding: 8px;
     font-size: 18px;
@@ -185,7 +215,8 @@ header {
 }
 
 /* 水平排列的表單組，適用於指定的表單項 */
-.horizontal-form-group {
+.horizontal-form-group
+ {
     display: flex;
     flex-direction: row;  /* 左右排列 */
     align-items: center;
@@ -194,7 +225,8 @@ header {
 }
 
 /* 控制水平排列時，標籤和輸入框的寬度分配 */
-.horizontal-form-group label {
+.horizontal-form-group label
+{
     width: 40%;  /* 標籤佔40% */
     text-align: left;
 }
@@ -234,7 +266,9 @@ button:disabled {
     transition: none;  /* 禁用狀態下禁用過渡動畫 */
 }
 
-button:hover {
+button:hover,
+.pickingP1-component button,
+.remove-pickingP1-button {
     background-color: #45a049;
 }
 

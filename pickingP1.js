@@ -85,14 +85,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const template = `
         <template id="pickingP1-template">
             <div class="pickingP1-component">
-                <label for="pickingP1-item">領料品項：</label>
-                <select class="pickingP1-item" name="pickingP1-item"></select><br>
-
-                <label for="pickingP1-quantity">領料數量：</label>
-                <input type="number" class="pickingP1-quantity" name="pickingP1-quantity" value="0" min="0.001" step="0.001"><br>
-
-                <label for="pickingP1-weight">領料重量(公斤)：</label>
-                <input type="number" class="pickingP1-weight" name="pickingP1-weight" value="0" min="0.001" step="0.001"><br>
+                <div class="form-group horizontal-form-group">
+                    <label for="pickingP1-item">領料品項：</label>
+                    <select class="pickingP1-item" name="pickingP1-item"></select>
+                </div>
+                <div class="form-group horizontal-form-group">
+                    <label for="pickingP1-quantity">領料數量：</label>
+                    <input type="number" class="pickingP1-quantity" name="pickingP1-quantity" value="0" min="0.001" step="0.001">
+                </div>
+                <div class="form-group horizontal-form-group">
+                    <label for="pickingP1-weight">領料重量(公斤)：</label>
+                    <input type="number" class="pickingP1-weight" name="pickingP1-weight" value="0" min="0.001" step="0.001">
+                </div>
                 <button class="remove-pickingP1-button">刪除</button>
             </div>
         </template>
