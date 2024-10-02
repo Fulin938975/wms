@@ -3,24 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>包裝生產</title>
+    <title>生產管理</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div id="nav-placeholder"></div>
     <div class="container">
-        <h1>包裝生產</h1>
-        <p>這是包裝生產的內容。</p>
-        <form onsubmit="submitForm(event)">
-            <label for="name">姓名：</label>
-            <input type="text" id="name" name="name" required><br>
-            <label for="email">電子郵件：</label>
-            <input type="email" id="email" name="email" required><br>
-            <label for="message">訊息：</label>
-            <textarea id="message" name="message" required></textarea><br>
-            <button type="submit">提交</button>
-        </form>
+        <h1>主頁面</h1>
+        <p>這個頁面加載了多個獨立的領料元件。</p>
+
+        <!-- 加載 PickingP1 的內容 -->
+        <div id="pickingP1-container-wrapper">
+            <div id="pickingP1-container-1"></div>
+        </div>
+        <button id="add-pickingP1-button">添加 P1 元件</button>
     </div>
+
+    <script src="pickingP1.js"></script>
     <script src="scripts.js"></script>
     <script>
         // 加載導航
