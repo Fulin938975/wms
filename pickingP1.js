@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
         P1: `
             <template id="pickingP1-template">
                 <div class="pickingP1-component">
-                    <button type="button" class="remove-button"></button>
+                    <button type="button" class="remove-button">移除</button>
                     <div class="form-group horizontal-form-group">
                         <label for="pickingP1-item">領料品項:</label>
                         <select class="pickingP1-item" name="pickingP1-item"></select>
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
         P2: `
             <template id="pickingP2-template">
                 <div class="pickingP2-component">
-                    <button type="button" class="remove-button"></button>
+                    <button type="button" class="remove-button">移除</button>
                     <div class="form-group horizontal-form-group">
                         <label for="pickingP2-item">領料品項:</label>
                         <select class="pickingP2-item" name="pickingP2-item"></select>
@@ -38,11 +38,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </template>
         `,
-        // 依次添加 P3 到 P10 的模板
         P3: `
             <template id="pickingP3-template">
                 <div class="pickingP3-component">
-                    <button type="button" class="remove-button"></button>
+                    <button type="button" class="remove-button">移除</button>
                     <div class="form-group horizontal-form-group">
                         <label for="pickingP3-item">領料品項:</label>
                         <select class="pickingP3-item" name="pickingP3-item"></select>
@@ -57,140 +56,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </div>
             </template>
-        `,
-        // 依次添加 P4 到 P10 的模板
-        P4: `
-            <template id="pickingP4-template">
-                <div class="pickingP4-component">
-                    <button type="button" class="remove-button"></button>
-                    <div class="form-group horizontal-form-group">
-                        <label for="pickingP4-item">領料品項:</label>
-                        <select class="pickingP4-item" name="pickingP4-item"></select>
-                    </div>
-                    <div class="form-group horizontal-form-group">
-                        <label for="pickingP4-quantity">領料數量:</label>
-                        <input type="number" class="pickingP4-quantity" name="pickingP4-quantity" value="0" min="0.001" step="0.001">
-                    </div>
-                    <div class="form-group horizontal-form-group">
-                        <label for="pickingP4-weight">領料重量(kg):</label>
-                        <input type="number" class="pickingP4-weight" name="pickingP4-weight" value="0" min="0.001" step="0.001">
-                    </div>
-                </div>
-            </template>
-        `,
-        P5: `
-            <template id="pickingP5-template">
-                <div class="pickingP5-component">
-                    <button type="button" class="remove-button"></button>
-                    <div class="form-group horizontal-form-group">
-                        <label for="pickingP5-item">領料品項:</label>
-                        <select class="pickingP5-item" name="pickingP5-item"></select>
-                    </div>
-                    <div class="form-group horizontal-form-group">
-                        <label for="pickingP5-quantity">領料數量:</label>
-                        <input type="number" class="pickingP5-quantity" name="pickingP5-quantity" value="0" min="0.001" step="0.001">
-                    </div>
-                    <div class="form-group horizontal-form-group">
-                        <label for="pickingP5-weight">領料重量(kg):</label>
-                        <input type="number" class="pickingP5-weight" name="pickingP5-weight" value="0" min="0.001" step="0.001">
-                    </div>
-                </div>
-            </template>
-        `,
-        P6: `
-            <template id="pickingP6-template">
-                <div class="pickingP6-component">
-                    <button type="button" class="remove-button"></button>
-                    <div class="form-group horizontal-form-group">
-                        <label for="pickingP6-item">領料品項:</label>
-                        <select class="pickingP6-item" name="pickingP6-item"></select>
-                    </div>
-                    <div class="form-group horizontal-form-group">
-                        <label for="pickingP6-quantity">領料數量:</label>
-                        <input type="number" class="pickingP6-quantity" name="pickingP6-quantity" value="0" min="0.001" step="0.001">
-                    </div>
-                    <div class="form-group horizontal-form-group">
-                        <label for="pickingP6-weight">領料重量(kg):</label>
-                        <input type="number" class="pickingP6-weight" name="pickingP6-weight" value="0" min="0.001" step="0.001">
-                    </div>
-                </div>
-            </template>
-        `,
-        P7: `
-            <template id="pickingP7-template">
-                <div class="pickingP7-component">
-                    <button type="button" class="remove-button"></button>
-                    <div class="form-group horizontal-form-group">
-                        <label for="pickingP7-item">領料品項:</label>
-                        <select class="pickingP7-item" name="pickingP7-item"></select>
-                    </div>
-                    <div class="form-group horizontal-form-group">
-                        <label for="pickingP7-quantity">領料數量:</label>
-                        <input type="number" class="pickingP7-quantity" name="pickingP7-quantity" value="0" min="0.001" step="0.001">
-                    </div>
-                    <div class="form-group horizontal-form-group">
-                        <label for="pickingP7-weight">領料重量(kg):</label>
-                        <input type="number" class="pickingP7-weight" name="pickingP7-weight" value="0" min="0.001" step="0.001">
-                    </div>
-                </div>
-            </template>
-        `,
-        P8: `
-            <template id="pickingP8-template">
-                <div class="pickingP8-component">
-                    <button type="button" class="remove-button"></button>
-                    <div class="form-group horizontal-form-group">
-                        <label for="pickingP8-item">領料品項:</label>
-                        <select class="pickingP8-item" name="pickingP8-item"></select>
-                    </div>
-                    <div class="form-group horizontal-form-group">
-                        <label for="pickingP8-quantity">領料數量:</label>
-                        <input type="number" class="pickingP8-quantity" name="pickingP8-quantity" value="0" min="0.001" step="0.001">
-                    </div>
-                    <div class="form-group horizontal-form-group">
-                        <label for="pickingP8-weight">領料重量(kg):</label>
-                        <input type="number" class="pickingP8-weight" name="pickingP8-weight" value="0" min="0.001" step="0.001">
-                    </div>
-                </div>
-            </template>
-        `,
-        P9: `
-            <template id="pickingP9-template">
-                <div class="pickingP9-component">
-                    <button type="button" class="remove-button"></button>
-                    <div class="form-group horizontal-form-group">
-                        <label for="pickingP9-item">領料品項:</label>
-                        <select class="pickingP9-item" name="pickingP9-item"></select>
-                    </div>
-                    <div class="form-group horizontal-form-group">
-                        <label for="pickingP9-quantity">領料數量:</label>
-                        <input type="number" class="pickingP9-quantity" name="pickingP9-quantity" value="0" min="0.001" step="0.001">
-                    </div>
-                    <div class="form-group horizontal-form-group">
-                        <label for="pickingP9-weight">領料重量(kg):</label>
-                        <input type="number" class="pickingP9-weight" name="pickingP9-weight" value="0" min="0.001" step="0.001">
-                    </div>
-                </div>
-            </template>
-        `,
-        P10: `
-            <template id="pickingP10-template">
-                <div class="pickingP10-component">
-                    <button type="button" class="remove-button"></button>
-                    <div class="form-group horizontal-form-group">
-                        <label for="pickingP10-item">領料品項:</label>
-                        <select class="pickingP10-item" name="pickingP10-item"></select>
-                    </div>
-                    <div class="form-group horizontal-form-group">
-                        <label for="pickingP10-quantity">領料數量:</label>
-                        <input type="number" class="pickingP10-quantity" name="pickingP10-quantity" value="0" min="0.001" step="0.001">
-                    </div>
-                    <div class="form-group horizontal-form-group">
-                        <label for="pickingP10-weight">領料重量(kg):</label>
-                        <input type="number" class="pickingP10-weight" name="pickingP10-weight" value="0" min="0.001" step="0.001">
-                    </div>
-                </div>
-            </template>
         `
     };
 
@@ -198,205 +63,182 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.insertAdjacentHTML('beforeend', template);
     });
 
+    const itemWeights = {
+        P1: { 招牌細P: 4.2, 原鬆P: 4.2, 特鬆P: 4.2, 營業P: 4.2, 粗鬆P: 4.2, 全純P: 4.2 },
+        P2: { 招牌細k: 1, 原鬆k: 1, 特鬆k: 1, 營業k: 1, 粗鬆k: 1, 全純k: 1 },
+        P3: { 原QP: 6, 黑QP: 6, 泰式P: 6, 脆片P: 3, 厚脆: 6 }
+    };
+
+    const subItems = {
+        招牌細P: ['招牌細P: 6', '原鬆P: 7', '特鬆P: 2.8', '營業P: 1.2', '粗鬆P: 1.3', '全純P: 2.5'],
+        原鬆P: ['招牌細P: 6', '原鬆P: 7', '特鬆P: 2.8', '營業P: 1.2', '粗鬆P: 1.3', '全純P: 2.5'],
+    };
+
+    function populateSelect(selectElement, items, defaultText) {
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = defaultText;
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+        selectElement.appendChild(defaultOption);
+
+        items.forEach(item => {
+            const option = document.createElement('option');
+            option.value = item;
+            option.textContent = item.split(':')[0]; // 只顯示品項名稱
+            selectElement.appendChild(option);
+        });
+    }
+
+    function addComponent(containerId, templateId, weights) {
+        const template = document.getElementById(templateId);
+        if (!template) {
+            console.error(`${templateId} 模板未找到`);
+            return;
+        }
+        const container = document.getElementById(containerId);
+        if (!container) {
+            console.error(`${containerId} 容器未找到`);
+            return;
+        }
+        const clone = document.importNode(template.content, true);
+        const component = clone.querySelector(`.${templateId.split('-')[0]}-component`);
+
+        const itemSelect = component.querySelector(`.${templateId.split('-')[0]}-item`);
+        const quantityInput = component.querySelector(`.${templateId.split('-')[0]}-quantity`);
+        const weightInput = component.querySelector(`.${templateId.split('-')[0]}-weight`);
+
+        const items = Object.keys(weights);
+
+        populateSelect(itemSelect, items, '請選擇分類');
+
+        let isPrimarySelection = true; // 判斷是否是一級選單狀態
+        let hasSelectedSecondary = false; // 用於追踪是否選定了二級選單的項目
+
+        // 監聽下拉選單的變更事件
+        itemSelect.addEventListener('change', function() {
+            const selectedItem = itemSelect.value;
+
+            // 如果是選擇了一級選單且有二級選項
+            if (isPrimarySelection && subItems[selectedItem]) {
+                const subItemsForSelectedItem = subItems[selectedItem];
+
+                // 清空選單並填充二級選單
+                itemSelect.innerHTML = '';
+                populateSelect(itemSelect, subItemsForSelectedItem, '請選擇品項');
+
+                // 顯示多行，展示二級選單
+                itemSelect.size = subItemsForSelectedItem.length + 1;
+                isPrimarySelection = false; // 切換到二級選單狀態
+                hasSelectedSecondary = false; // 尚未選擇二級選單的項目
+            } else if (!isPrimarySelection) {
+                // 如果是二級選單的選項，顯示結果
+                const resultDiv = document.getElementById('result');
+        if (resultDiv) {
+            resultDiv.textContent = `Selected item: ${selectedItem}`;
+        }
+        hasSelectedSecondary = true; // 已選擇二級選單的項目
+
+                // 將選定的二級選項帶入選單框內
+                itemSelect.innerHTML = `<option selected value="${selectedItem}">${selectedItem.split(':')[0]}</option>`;
+                itemSelect.size = 1; // 重置選單大小
+                isPrimarySelection = true; // 重置為一級選單狀態
+
+                // 自動帶入數量與重量比
+                quantityInput.value = 1;
+                weightInput.value = parseFloat(selectedItem.split(':')[1]);
+            }
+        });
+
+        // 使用 click 事件重置回一級選單狀態
+        itemSelect.addEventListener('click', function() {
+            // 如果當前已選定了二級選項，點擊時重置回一級選單
+            if (hasSelectedSecondary) {
+                itemSelect.innerHTML = '';
+                populateSelect(itemSelect, items, '請選擇分類'); // 填充一級選單
+                itemSelect.size = 1; // 重置選單大小
+                isPrimarySelection = true; // 切換回一級選單狀態
+                hasSelectedSecondary = false; // 重置二級選單選擇狀態
+            }
+        });
+
+        // 監聽 quantity 和 weight 輸入的變更事件
+        quantityInput.addEventListener('input', function() {
+            updateWeight(component, weights);
+        });
+
+        weightInput.addEventListener('input', function() {
+            updateQuantity(component, weights);
+        });
+
+        container.appendChild(clone);
+        updateWeight(component, weights);
+    }
+
+    function updateWeight(component, weights) {
+        const itemSelect = component.querySelector(`.${component.className.split('-')[0]}-item`);
+        const quantityInput = component.querySelector(`.${component.className.split('-')[0]}-quantity`);
+        const weightInput = component.querySelector(`.${component.className.split('-')[0]}-weight`);
+
+        const selectedItem = itemSelect.value;
+        const quantity = parseFloat(quantityInput.value);
+
+        if (weights[selectedItem] !== undefined) {
+            weightInput.value = (weights[selectedItem] * quantity).toFixed(3);
+        }
+    }
+
+    function updateQuantity(component, weights) {
+        const itemSelect = component.querySelector(`.${component.className.split('-')[0]}-item`);
+        const quantityInput = component.querySelector(`.${component.className.split('-')[0]}-quantity`);
+        const weightInput = component.querySelector(`.${component.className.split('-')[0]}-weight`);
+    
+        const selectedItem = itemSelect.value;
+        const weight = parseFloat(weightInput.value);
+    
+        if (weights[selectedItem] !== undefined) {
+            quantityInput.value = (weight / weights[selectedItem]).toFixed(3);
+        }
+    }
+    
     const defaultCounts = {
         P1: defaultP1Count,
         P2: defaultP2Count,
-        P3: defaultP3Count,
-        P4: defaultP4Count,
-        P5: defaultP5Count,
-        P6: defaultP6Count,
-        P7: defaultP7Count,
-        P8: defaultP8Count,
-        P9: defaultP9Count,
-        P10: defaultP10Count
+        P3: defaultP3Count
     };
-
-        // 定義領料品項及其對應的重量
-        const itemWeights = {
-            P1: { 招牌細P: 4.2, 原鬆P: 4.2, 特鬆P: 4.2, 營業P: 4.2, 粗鬆P: 4.2, 全純P: 4.2 },
-            P2: { 招牌細k: 1, 原鬆k: 1, 特鬆k: 1, 營業k: 1, 粗鬆k: 1, 全純k: 1 },
-            P3: { 原QP: 6, 黑QP: 6, 泰式P: 6 , 脆片P: 3, 厚脆: 6, },
-            P4: { 原QK: 1, 黑QK: 1, 泰式K: 1, 脆片K: 1, 厚脆K: 1 },
-            P5: { 圓燒P: 1.2, 原條P: 6, 黑條P: 6, 原厚P: 6, 黑厚P: 6, 辣厚P: 6,泰厚P: 6, },
-            P6: { 圓燒K: 1, 原條K: 1, 黑條K: 1, 原厚K: 1, 黑厚K: 1, 辣厚K: 1, 泰厚K: 1 },
-            P7: { 品項M: 4.0, 品項N: 4.5, 品項O: 5.0 },
-            P8: { 品項P: 6.0, 品項Q: 6.5, 品項R: 7.0 },
-            P9: { 品項S: 8.0, 品項T: 8.5, 品項U: 9.0 },
-            P10: { 品項V: 10.0, 品項W: 10.5, 品項X: 11.0 }
-        };
-
-        const subItems = {
-            招牌細P: ['子品項1', '子品項2'],
-            原鬆P: ['子品項3', '子品項4'],
-            // 其他二級品項...
-        };
     
-        // 定義 populateSelect 函數
-        function populateSelect(selectElement, items) {
-            const defaultOption = document.createElement('option');
-            defaultOption.value = '';
-            defaultOption.textContent = '請選擇品項';
-            defaultOption.disabled = true;
-            defaultOption.selected = true;
-            selectElement.appendChild(defaultOption);
-    
-            items.forEach(item => {
-                const option = document.createElement('option');
-                option.value = item;
-                option.textContent = item;
-                selectElement.appendChild(option);
-            });
+    Object.keys(defaultCounts).forEach(key => {
+        for (let i = 0; i < defaultCounts[key]; i++) {
+            const containerId = `picking${key}-container-${i + 1}`;
+            const container = document.createElement('div');
+            container.id = containerId;
+            document.getElementById(`picking${key}-container-wrapper`).appendChild(container);
+            addComponent(containerId, `picking${key}-template`, itemWeights[key]);
         }
-    
-        function addComponent(containerId, templateId, weights) {
-            const template = document.getElementById(templateId);
-            if (!template) {
-                console.error(`${templateId} 模板未找到`);
-                return;
-            }
-            const container = document.getElementById(containerId);
-            if (!container) {
-                console.error(`${containerId} 容器未找到`);
-                return;
-            }
-            const clone = document.importNode(template.content, true);
-            const component = clone.querySelector(`.${templateId.split('-')[0]}-component`);
-    
-            const itemSelect = component.querySelector(`.${templateId.split('-')[0]}-item`);
-            const quantityInput = component.querySelector(`.${templateId.split('-')[0]}-quantity`);
-            const weightInput = component.querySelector(`.${templateId.split('-')[0]}-weight`);
-    
-            const items = Object.keys(weights);
-    
-            populateSelect(itemSelect, items);
-    
-            let isPrimarySelection = true; // 判斷當前是否是一級選單狀態
-let hasSelectedSecondary = false; // 判斷是否已選定二級選項
-
-// 監聽下拉選單的變更事件
-itemSelect.addEventListener('change', function() {
-    quantityInput.value = 1;
-    updateWeight(component, weights);
-
-    const selectedItem = itemSelect.value;
-
-    // 如果處於一級選單狀態且有對應的二級選項
-    if (isPrimarySelection && subItems[selectedItem]) {
-        const subItemsForSelectedItem = subItems[selectedItem];
-
-        // 清空並填充二級選單
-        itemSelect.innerHTML = '';
-        populateSelect(itemSelect, subItemsForSelectedItem);
-
-        // 設置多行顯示，顯示所有二級選項
-        itemSelect.size = subItemsForSelectedItem.length + 1;
-        isPrimarySelection = false; // 切換為二級選單狀態
-        hasSelectedSecondary = false; // 尚未選擇二級選單
-    } else {
-        // 如果選擇的是二級選項，保持選中狀態
-        itemSelect.size = 1; // 恢復為單行顯示
-        hasSelectedSecondary = true; // 標記已選定二級選單
-    }
-});
-
-// 監聽下拉選單的點擊事件
-itemSelect.addEventListener('click', function() {
-    // 如果用戶已選定了二級選單，點擊時重置回一級選單
-    if (hasSelectedSecondary) {
-        itemSelect.innerHTML = ''; // 清空選單
-        populateSelect(itemSelect, items); // 恢復一級選單
-        itemSelect.size = 1; // 設置單行顯示
-        itemSelect.value = ''; // 清空選定
-        isPrimarySelection = true; // 切換回一級選單狀態
-        hasSelectedSecondary = false; // 重置二級選單狀態
-    }
-});
-
-// 動態填充下拉選單的函數
-function populateSelect(selectElement, options) {
-    options.forEach(function(optionText) {
-        const option = document.createElement('option');
-        option.value = optionText;
-        option.textContent = optionText;
-        selectElement.appendChild(option);
     });
-}
-
-// 監聽 quantity 和 weight 輸入的變更事件
-quantityInput.addEventListener('input', function() {
-    updateWeight(component, weights);
-});
-
-weightInput.addEventListener('input', function() {
-    updateQuantity(component, weights);
-});
-
-// 初始化操作
-container.appendChild(clone);
-updateWeight(component, weights);
-
-
-            
-        }
     
-        function updateWeight(component, weights) {
-            const itemSelect = component.querySelector(`.${component.className.split('-')[0]}-item`);
-            const quantityInput = component.querySelector(`.${component.className.split('-')[0]}-quantity`);
-            const weightInput = component.querySelector(`.${component.className.split('-')[0]}-weight`);
-    
-            const selectedItem = itemSelect.value;
-            const quantity = parseFloat(quantityInput.value);
-    
-            if (weights[selectedItem] !== undefined) {
-                weightInput.value = (weights[selectedItem] * quantity).toFixed(3);
-            }
-        }
-    
-        function updateQuantity(component, weights) {
-            const itemSelect = component.querySelector(`.${component.className.split('-')[0]}-item`);
-            const quantityInput = component.querySelector(`.${component.className.split('-')[0]}-quantity`);
-            const weightInput = component.querySelector(`.${component.className.split('-')[0]}-weight`);
-    
-            const selectedItem = itemSelect.value;
-            const weight = parseFloat(weightInput.value);
-    
-            if (weights[selectedItem] !== undefined) {
-                quantityInput.value = (weight / weights[selectedItem]).toFixed(3);
-            }
-        }
-    
-        Object.keys(defaultCounts).forEach(key => {
-            for (let i = 0; i < defaultCounts[key]; i++) {
-                const containerId = `picking${key}-container-${i + 1}`;
-                const container = document.createElement('div');
-                container.id = containerId;
-                document.getElementById(`picking${key}-container-wrapper`).appendChild(container);
-                addComponent(containerId, `picking${key}-template`, itemWeights[key]);
-            }
+    Object.keys(defaultCounts).forEach(key => {
+        document.getElementById(`add-picking${key}-button`).addEventListener('click', function() {
+            const newContainerId = `picking${key}-container-${document.querySelectorAll(`[id^="picking${key}-container"]`).length + 1}`;
+            const newContainer = document.createElement('div');
+            newContainer.id = newContainerId;
+            document.getElementById(`picking${key}-container-wrapper`).appendChild(newContainer);
+            addComponent(newContainerId, `picking${key}-template`, itemWeights[key]);
         });
-    
-        Object.keys(defaultCounts).forEach(key => {
-            document.getElementById(`add-picking${key}-button`).addEventListener('click', function() {
-                const newContainerId = `picking${key}-container-${document.querySelectorAll(`[id^="picking${key}-container"]`).length + 1}`;
-                const newContainer = document.createElement('div');
-                newContainer.id = newContainerId;
-                document.getElementById(`picking${key}-container-wrapper`).appendChild(newContainer);
-                addComponent(newContainerId, `picking${key}-template`, itemWeights[key]);
-            });
-        });
-    
-        document.addEventListener('click', function(event) {
-            if (event.target.classList.contains('remove-button')) {
-                const component = event.target.closest('[class*="-component"]');
-                if (component) {
-                    component.parentElement.removeChild(component);
-                }
-            }
-        });
-    
-        document.addEventListener('focus', function(event) {
-            if (/pickingP\d+-(quantity|weight)/.test(event.target.className)) {
-                event.target.select();
-            }
-        }, true);
     });
+    
+    document.addEventListener('click', function(event) {
+        if (event.target.classList.contains('remove-button')) {
+            const component = event.target.closest('[class*="-component"]');
+            if (component) {
+                component.parentElement.removeChild(component);
+            }
+        }
+    });
+    
+    document.addEventListener('focus', function(event) {
+        if (/pickingP\d+-(quantity|weight)/.test(event.target.className)) {
+            event.target.select();
+        }
+    });
+    }, true);
