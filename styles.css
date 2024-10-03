@@ -133,7 +133,14 @@ header {
 /* 父級容器樣式 */
 #pickingP1-container-wrapper .pickingP1-component,
 #pickingP2-container-wrapper .pickingP2-component,
-#pickingP3-container-wrapper .pickingP3-component {
+#pickingP3-container-wrapper .pickingP3-component,
+#pickingP4-container-wrapper .pickingP4-component,
+#pickingP5-container-wrapper .pickingP5-component,
+#pickingP6-container-wrapper .pickingP6-component,
+#pickingP7-container-wrapper .pickingP7-component,
+#pickingP8-container-wrapper .pickingP8-component,
+#pickingP9-container-wrapper .pickingP9-component,
+#pickingP10-container-wrapper .pickingP10-component {
     margin-top: 0PX; /* 留出頂部導航欄的空間 */
     max-width: 100%;   /* 確保外層容器最大寬度不超出100% */
       padding-top: 30px;
@@ -149,7 +156,14 @@ header {
 
 .pickingP1-component,
 .pickingP2-component,
-.pickingP3-component {
+.pickingP3-component,
+.pickingP4-component,
+.pickingP5-component,
+.pickingP6-component,
+.pickingP7-component,
+.pickingP8-component,
+.pickingP9-component,
+.pickingP10-component {
     position: relative;
     padding: 5px;
     border-bottom: 1px solid #ffffff;

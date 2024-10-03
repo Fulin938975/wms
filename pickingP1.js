@@ -224,9 +224,22 @@ document.addEventListener('DOMContentLoaded', function() {
             P9: { 品項S: 8.0, 品項T: 8.5, 品項U: 9.0 },
             P10: { 品項V: 10.0, 品項W: 10.5, 品項X: 11.0 }
         };
+
+        const subItems = {
+            招牌細P: ['子品項1', '子品項2'],
+            原鬆P: ['子品項3', '子品項4'],
+            // 其他二級品項...
+        };
     
         // 定義 populateSelect 函數
         function populateSelect(selectElement, items) {
+            const defaultOption = document.createElement('option');
+            defaultOption.value = '';
+            defaultOption.textContent = '請選擇品項';
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            selectElement.appendChild(defaultOption);
+    
             items.forEach(item => {
                 const option = document.createElement('option');
                 option.value = item;
@@ -234,25 +247,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 selectElement.appendChild(option);
             });
         }
-
-        // 定義 populateSelect 函數
-function populateSelect(selectElement, items) {
-    const defaultOption = document.createElement('option');
-    defaultOption.value = '';
-    defaultOption.textContent = '請選擇品項';
-    defaultOption.disabled = true;
-    defaultOption.selected = true;
-    selectElement.appendChild(defaultOption);
-
-    items.forEach(item => {
-        const option = document.createElement('option');
-        option.value = item;
-        option.textContent = item;
-        selectElement.appendChild(option);
-    });
-}
     
-        // 定義 addComponent 函數
         function addComponent(containerId, templateId, weights) {
             const template = document.getElementById(templateId);
             if (!template) {
@@ -275,26 +270,75 @@ function populateSelect(selectElement, items) {
     
             populateSelect(itemSelect, items);
     
-            itemSelect.addEventListener('change', function() {
-                quantityInput.value = 1;
-                updateWeight(component, weights);
-            });
-    
-            quantityInput.addEventListener('input', function() {
-                updateWeight(component, weights);
-            });
-    
-            weightInput.addEventListener('input', function() {
-                updateQuantity(component, weights);
-            });
-    
-            container.appendChild(clone);
-    
-            // 初始化
-            updateWeight(component, weights);
+            let isPrimarySelection = true; // 判斷當前是否是一級選單狀態
+let hasSelectedSecondary = false; // 判斷是否已選定二級選項
+
+// 監聽下拉選單的變更事件
+itemSelect.addEventListener('change', function() {
+    quantityInput.value = 1;
+    updateWeight(component, weights);
+
+    const selectedItem = itemSelect.value;
+
+    // 如果處於一級選單狀態且有對應的二級選項
+    if (isPrimarySelection && subItems[selectedItem]) {
+        const subItemsForSelectedItem = subItems[selectedItem];
+
+        // 清空並填充二級選單
+        itemSelect.innerHTML = '';
+        populateSelect(itemSelect, subItemsForSelectedItem);
+
+        // 設置多行顯示，顯示所有二級選項
+        itemSelect.size = subItemsForSelectedItem.length + 1;
+        isPrimarySelection = false; // 切換為二級選單狀態
+        hasSelectedSecondary = false; // 尚未選擇二級選單
+    } else {
+        // 如果選擇的是二級選項，保持選中狀態
+        itemSelect.size = 1; // 恢復為單行顯示
+        hasSelectedSecondary = true; // 標記已選定二級選單
+    }
+});
+
+// 監聽下拉選單的點擊事件
+itemSelect.addEventListener('click', function() {
+    // 如果用戶已選定了二級選單，點擊時重置回一級選單
+    if (hasSelectedSecondary) {
+        itemSelect.innerHTML = ''; // 清空選單
+        populateSelect(itemSelect, items); // 恢復一級選單
+        itemSelect.size = 1; // 設置單行顯示
+        itemSelect.value = ''; // 清空選定
+        isPrimarySelection = true; // 切換回一級選單狀態
+        hasSelectedSecondary = false; // 重置二級選單狀態
+    }
+});
+
+// 動態填充下拉選單的函數
+function populateSelect(selectElement, options) {
+    options.forEach(function(optionText) {
+        const option = document.createElement('option');
+        option.value = optionText;
+        option.textContent = optionText;
+        selectElement.appendChild(option);
+    });
+}
+
+// 監聽 quantity 和 weight 輸入的變更事件
+quantityInput.addEventListener('input', function() {
+    updateWeight(component, weights);
+});
+
+weightInput.addEventListener('input', function() {
+    updateQuantity(component, weights);
+});
+
+// 初始化操作
+container.appendChild(clone);
+updateWeight(component, weights);
+
+
+            
         }
     
-        // 定義 updateWeight 和 updateQuantity 函數
         function updateWeight(component, weights) {
             const itemSelect = component.querySelector(`.${component.className.split('-')[0]}-item`);
             const quantityInput = component.querySelector(`.${component.className.split('-')[0]}-quantity`);
@@ -321,7 +365,6 @@ function populateSelect(selectElement, items) {
             }
         }
     
-        // 預設添加指定數量的領料元件
         Object.keys(defaultCounts).forEach(key => {
             for (let i = 0; i < defaultCounts[key]; i++) {
                 const containerId = `picking${key}-container-${i + 1}`;
@@ -332,7 +375,6 @@ function populateSelect(selectElement, items) {
             }
         });
     
-        // 添加按鈕事件處理程序
         Object.keys(defaultCounts).forEach(key => {
             document.getElementById(`add-picking${key}-button`).addEventListener('click', function() {
                 const newContainerId = `picking${key}-container-${document.querySelectorAll(`[id^="picking${key}-container"]`).length + 1}`;
@@ -343,7 +385,6 @@ function populateSelect(selectElement, items) {
             });
         });
     
-        // 添加刪除按鈕事件處理程序
         document.addEventListener('click', function(event) {
             if (event.target.classList.contains('remove-button')) {
                 const component = event.target.closest('[class*="-component"]');
@@ -352,11 +393,10 @@ function populateSelect(selectElement, items) {
                 }
             }
         });
+    
+        document.addEventListener('focus', function(event) {
+            if (/pickingP\d+-(quantity|weight)/.test(event.target.className)) {
+                event.target.select();
+            }
+        }, true);
     });
-
-// 添加點擊全選功能
-document.addEventListener('focus', function(event) {
-    if (/pickingP\d+-(quantity|weight)/.test(event.target.className)) {
-        event.target.select();
-    }
-}, true);
