@@ -135,6 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     setTimeout(() => {
                         itemSelect.focus();
                         itemSelect.size = subItemsForSelectedItem.length + 1; // 確保展開二級選單
+                        itemSelect.dispatchEvent(new Event('click')); // 模擬點擊事件
                     }, 100);
                 }
             } else if (!isPrimarySelection) {
