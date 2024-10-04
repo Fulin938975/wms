@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
         P2: `
             <template id="pickingP2-template">
                 <div class="pickingP2-component">
-                    <button type="button" class="remove-button">4</button>
+                    <button type="button" class="remove-button">5</button>
                     <div class="form-group horizontal-form-group">
                         <label for="pickingP2-item">領料品項:</label>
                         <select class="pickingP2-item" name="pickingP2-item"></select>
