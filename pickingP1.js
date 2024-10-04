@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     setTimeout(() => {
                         itemSelect.focus();
                         itemSelect.size = subItemsForSelectedItem.length + 1; // 確保展開二級選單
-                    }, 0);
+                    }, 100);
                 }
             } else if (!isPrimarySelection) {
                 // 如果是二級選單的選項，顯示結果
