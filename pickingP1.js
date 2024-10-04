@@ -155,8 +155,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 populateSelect(itemSelect, items, '請選擇分類'); // 填充一級選單
                 itemSelect.size = items.length + 1; // 設置適當的欄高
                 isPrimarySelection = true; // 切換回一級選單狀態
+            } else {
+                // 如果已經選定了選項，重置選單
+                itemSelect.innerHTML = '';
+                populateSelect(itemSelect, items, '請選擇分類');
+                itemSelect.size = items.length + 1;
             }
-            itemSelect.size = items.length + 1; // 展開選單
         });
 
         // 使用 blur 事件縮回選單
