@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
         P2: `
             <template id="pickingP2-template">
                 <div class="pickingP2-component">
-                    <button type="button" class="remove-button">7</button>
+                    <button type="button" class="remove-button">8</button>
                     <div class="form-group horizontal-form-group">
                         <label for="pickingP2-item">領料品項:</label>
                         <select class="pickingP2-item" name="pickingP2-item"></select>
@@ -135,8 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     setTimeout(() => {
                         itemSelect.focus();
                         itemSelect.size = subItemsForSelectedItem.length + 1; // 確保展開二級選單
-                        itemSelect.blur(); // 模擬失焦事件
-                        itemSelect.focus(); // 再次聚焦以展開選單
+                        itemSelect.dispatchEvent(new MouseEvent('mousedown', { bubbles: true })); // 模擬點擊事件
                     }, 100);
                 }
             } else if (!isPrimarySelection) {
