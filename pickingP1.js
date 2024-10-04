@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
         P2: `
             <template id="pickingP2-template">
                 <div class="pickingP2-component">
-                    <button type="button" class="remove-button">移除</button>
+                    <button type="button" class="remove-button">2</button>
                     <div class="form-group horizontal-form-group">
                         <label for="pickingP2-item">領料品項:</label>
                         <select class="pickingP2-item" name="pickingP2-item"></select>
@@ -129,6 +129,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 // 顯示多行，展示二級選單
                 itemSelect.size = subItemsForSelectedItem.length + 1;
                 isPrimarySelection = false; // 切換到二級選單狀態
+
+                // 在手機上自動展開二級選單
+                if (/Mobi|Android/i.test(navigator.userAgent)) {
+                    setTimeout(() => {
+                        itemSelect.focus();
+                    }, 0);
+                }
             } else if (!isPrimarySelection) {
                 // 如果是二級選單的選項，顯示結果
                 const resultDiv = document.getElementById('result');
