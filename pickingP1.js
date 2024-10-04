@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
         P1: `
             <template id="pickingP1-template">
                 <div class="pickingP1-component">
-                    <button type="button" class="remove-button">移除</button>
+                    <button type="button" class="remove-button"></button>
                     <div class="form-group horizontal-form-group">
                         <label for="pickingP1-item">領料品項:</label>
                         <select class="pickingP1-item" name="pickingP1-item"></select>
@@ -75,168 +75,172 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     function populateSelect(selectElement, items, defaultText) {
-    const defaultOption = document.createElement('option');
-    defaultOption.value = '';
-    defaultOption.textContent = defaultText;
-    defaultOption.disabled = true;
-    defaultOption.selected = true;
-    selectElement.appendChild(defaultOption);
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = defaultText;
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+        selectElement.appendChild(defaultOption);
 
-    items.forEach(item => {
-        const option = document.createElement('option');
-        option.value = item;
-        option.textContent = item.split(':')[0]; // 只顯示品項名稱
-        selectElement.appendChild(option);
-    });
-}
-
-function addComponent(containerId, templateId, weights) {
-    const template = document.getElementById(templateId);
-    if (!template) {
-        console.error(`${templateId} 模板未找到`);
-        return;
+        items.forEach(item => {
+            const option = document.createElement('option');
+            option.value = item;
+            option.textContent = item.split(':')[0]; // 只顯示品項名稱
+            selectElement.appendChild(option);
+        });
     }
-    const container = document.getElementById(containerId);
-    if (!container) {
-        console.error(`${containerId} 容器未找到`);
-        return;
-    }
-    const clone = document.importNode(template.content, true);
-    const component = clone.querySelector(`.${templateId.split('-')[0]}-component`);
 
-    const itemSelect = component.querySelector(`.${templateId.split('-')[0]}-item`);
-    const quantityInput = component.querySelector(`.${templateId.split('-')[0]}-quantity`);
-    const weightInput = component.querySelector(`.${templateId.split('-')[0]}-weight`);
+    function addComponent(containerId, templateId, weights) {
+        const template = document.getElementById(templateId);
+        if (!template) {
+            console.error(`${templateId} 模板未找到`);
+            return;
+        }
+        const container = document.getElementById(containerId);
+        if (!container) {
+            console.error(`${containerId} 容器未找到`);
+            return;
+        }
+        const clone = document.importNode(template.content, true);
+        const component = clone.querySelector(`.${templateId.split('-')[0]}-component`);
 
-    const items = Object.keys(weights);
+        const itemSelect = component.querySelector(`.${templateId.split('-')[0]}-item`);
+        const quantityInput = component.querySelector(`.${templateId.split('-')[0]}-quantity`);
+        const weightInput = component.querySelector(`.${templateId.split('-')[0]}-weight`);
 
-    populateSelect(itemSelect, items, '請選擇分類');
+        const items = Object.keys(weights);
 
-    let isPrimarySelection = true; // 判斷是否是一級選單狀態
-    let hasSelectedSecondary = false; // 用於追踪是否選定了二級選單的項目
+        populateSelect(itemSelect, items, '請選擇分類');
 
-    // 監聽下拉選單的變更事件
-    itemSelect.addEventListener('change', function() {
-        const selectedItem = itemSelect.value;
+        let isPrimarySelection = true; // 判斷是否是一級選單狀態
 
-        // 如果是選擇了一級選單且有二級選項
-        if (isPrimarySelection && subItems[selectedItem]) {
-            const subItemsForSelectedItem = subItems[selectedItem];
+        // 監聽下拉選單的變更事件
+        itemSelect.addEventListener('change', function() {
+            const selectedItem = itemSelect.value;
 
-            // 清空選單並填充二級選單
-            itemSelect.innerHTML = '';
-            populateSelect(itemSelect, subItemsForSelectedItem, '請選擇品項');
+            // 如果是選擇了一級選單且有二級選項
+            if (isPrimarySelection && subItems[selectedItem]) {
+                const subItemsForSelectedItem = subItems[selectedItem];
 
-            // 顯示多行，展示二級選單
-            itemSelect.size = subItemsForSelectedItem.length + 1;
-            isPrimarySelection = false; // 切換到二級選單狀態
-            hasSelectedSecondary = false; // 尚未選擇二級選單的項目
-        } else if (!isPrimarySelection) {
-            // 如果是二級選單的選項，顯示結果
-            const resultDiv = document.getElementById('result');
-            if (resultDiv) {
-                resultDiv.textContent = `Selected item: ${selectedItem}`;
+                // 清空選單並填充二級選單
+                itemSelect.innerHTML = '';
+                populateSelect(itemSelect, subItemsForSelectedItem, '請選擇品項');
+
+                // 顯示多行，展示二級選單
+                itemSelect.size = subItemsForSelectedItem.length + 1;
+                isPrimarySelection = false; // 切換到二級選單狀態
+            } else if (!isPrimarySelection) {
+                // 如果是二級選單的選項，顯示結果
+                const resultDiv = document.getElementById('result');
+                if (resultDiv) {
+                    resultDiv.textContent = `Selected item: ${selectedItem}`;
+                }
+
+                // 將選定的二級選項帶入選單框內
+                itemSelect.innerHTML = `<option selected value="${selectedItem}">${selectedItem.split(':')[0]}</option>`;
+                itemSelect.size = 1; // 重置選單大小
+                isPrimarySelection = true; // 重置為一級選單狀態
+
+                // 自動帶入數量與重量比
+                quantityInput.value = 1;
+                weightInput.value = parseFloat(selectedItem.split(':')[1]);
             }
-            hasSelectedSecondary = true; // 已選擇二級選單的項目
+        });
 
-            // 將選定的二級選項帶入選單框內
-            itemSelect.innerHTML = `<option selected value="${selectedItem}">${selectedItem.split(':')[0]}</option>`;
-            itemSelect.size = 1; // 重置選單大小
-            isPrimarySelection = true; // 重置為一級選單狀態
+        // 使用 focus 事件展開選單
+        itemSelect.addEventListener('focus', function() {
+            if (!isPrimarySelection) {
+                // 無論當前狀態如何，點擊時重置回一級選單
+                itemSelect.innerHTML = '';
+                populateSelect(itemSelect, items, '請選擇分類'); // 填充一級選單
+                itemSelect.size = items.length + 1; // 設置適當的欄高
+                isPrimarySelection = true; // 切換回一級選單狀態
+            }
+            itemSelect.size = items.length + 1; // 展開選單
+        });
 
-            // 自動帶入數量與重量比
-            quantityInput.value = 1;
-            weightInput.value = parseFloat(selectedItem.split(':')[1]);
-        }
-    });
+        // 使用 blur 事件縮回選單
+        itemSelect.addEventListener('blur', function() {
+            itemSelect.size = 1; // 恢復為單行顯示
+        });
 
-    // 使用 click 事件重置回一級選單狀態
-    itemSelect.addEventListener('click', function() {
-        // 無論當前狀態如何，點擊時重置回一級選單
-        itemSelect.innerHTML = '';
-        populateSelect(itemSelect, items, '請選擇分類'); // 填充一級選單
-        itemSelect.size = items.length + 1; // 設置適當的欄高
-        isPrimarySelection = true; // 切換回一級選單狀態
-        hasSelectedSecondary = false; // 重置二級選單選擇狀態
-    });
+        // 監聽 quantity 和 weight 輸入的變更事件
+        quantityInput.addEventListener('input', function() {
+            updateWeight(component, weights);
+        });
 
-    // 監聽 quantity 和 weight 輸入的變更事件
-    quantityInput.addEventListener('input', function() {
+        weightInput.addEventListener('input', function() {
+            updateQuantity(component, weights);
+        });
+
+        container.appendChild(clone);
         updateWeight(component, weights);
-    });
-
-    weightInput.addEventListener('input', function() {
-        updateQuantity(component, weights);
-    });
-
-    container.appendChild(clone);
-    updateWeight(component, weights);
-}
-
-function updateWeight(component, weights) {
-    const itemSelect = component.querySelector(`.${component.className.split('-')[0]}-item`);
-    const quantityInput = component.querySelector(`.${component.className.split('-')[0]}-quantity`);
-    const weightInput = component.querySelector(`.${component.className.split('-')[0]}-weight`);
-
-    const selectedItem = itemSelect.value;
-    const quantity = parseFloat(quantityInput.value);
-
-    if (weights[selectedItem] !== undefined) {
-        weightInput.value = (weights[selectedItem] * quantity).toFixed(3);
     }
-}
 
-function updateQuantity(component, weights) {
-    const itemSelect = component.querySelector(`.${component.className.split('-')[0]}-item`);
-    const quantityInput = component.querySelector(`.${component.className.split('-')[0]}-quantity`);
-    const weightInput = component.querySelector(`.${component.className.split('-')[0]}-weight`);
+    function updateWeight(component, weights) {
+        const itemSelect = component.querySelector(`.${component.className.split('-')[0]}-item`);
+        const quantityInput = component.querySelector(`.${component.className.split('-')[0]}-quantity`);
+        const weightInput = component.querySelector(`.${component.className.split('-')[0]}-weight`);
 
-    const selectedItem = itemSelect.value;
-    const weight = parseFloat(weightInput.value);
+        const selectedItem = itemSelect.value;
+        const quantity = parseFloat(quantityInput.value);
 
-    if (weights[selectedItem] !== undefined) {
-        quantityInput.value = (weight / weights[selectedItem]).toFixed(3);
-    }
-}
-
-const defaultCounts = {
-    P1: defaultP1Count,
-    P2: defaultP2Count,
-    P3: defaultP3Count
-};
-
-Object.keys(defaultCounts).forEach(key => {
-    for (let i = 0; i < defaultCounts[key]; i++) {
-        const containerId = `picking${key}-container-${i + 1}`;
-        const container = document.createElement('div');
-        container.id = containerId;
-        document.getElementById(`picking${key}-container-wrapper`).appendChild(container);
-        addComponent(containerId, `picking${key}-template`, itemWeights[key]);
-    }
-});
-
-Object.keys(defaultCounts).forEach(key => {
-    document.getElementById(`add-picking${key}-button`).addEventListener('click', function() {
-        const newContainerId = `picking${key}-container-${document.querySelectorAll(`[id^="picking${key}-container"]`).length + 1}`;
-        const newContainer = document.createElement('div');
-        newContainer.id = newContainerId;
-        document.getElementById(`picking${key}-container-wrapper`).appendChild(newContainer);
-        addComponent(newContainerId, `picking${key}-template`, itemWeights[key]);
-    });
-});
-
-document.addEventListener('click', function(event) {
-    if (event.target.classList.contains('remove-button')) {
-        const component = event.target.closest('[class*="-component"]');
-        if (component) {
-            component.parentElement.removeChild(component);
+        if (weights[selectedItem] !== undefined) {
+            weightInput.value = (weights[selectedItem] * quantity).toFixed(3);
         }
     }
-});
 
-document.addEventListener('focus', function(event) {
-    if (/pickingP\d+-(quantity|weight)/.test(event.target.className)) {
-        event.target.select();
+    function updateQuantity(component, weights) {
+        const itemSelect = component.querySelector(`.${component.className.split('-')[0]}-item`);
+        const quantityInput = component.querySelector(`.${component.className.split('-')[0]}-quantity`);
+        const weightInput = component.querySelector(`.${component.className.split('-')[0]}-weight`);
+
+        const selectedItem = itemSelect.value;
+        const weight = parseFloat(weightInput.value);
+
+        if (weights[selectedItem] !== undefined) {
+            quantityInput.value = (weight / weights[selectedItem]).toFixed(3);
+        }
     }
-}, true);
+
+    const defaultCounts = {
+        P1: 1,
+        P2: 1,
+        P3: 1
+    };
+
+    Object.keys(defaultCounts).forEach(key => {
+        for (let i = 0; i < defaultCounts[key]; i++) {
+            const containerId = `picking${key}-container-${i + 1}`;
+            const container = document.createElement('div');
+            container.id = containerId;
+            document.getElementById(`picking${key}-container-wrapper`).appendChild(container);
+            addComponent(containerId, `picking${key}-template`, itemWeights[key]);
+        }
+    });
+
+    Object.keys(defaultCounts).forEach(key => {
+        document.getElementById(`add-picking${key}-button`).addEventListener('click', function() {
+            const newContainerId = `picking${key}-container-${document.querySelectorAll(`[id^="picking${key}-container"]`).length + 1}`;
+            const newContainer = document.createElement('div');
+            newContainer.id = newContainerId;
+            document.getElementById(`picking${key}-container-wrapper`).appendChild(newContainer);
+            addComponent(newContainerId, `picking${key}-template`, itemWeights[key]);
+        });
+    });
+
+    document.addEventListener('click', function(event) {
+        if (event.target.classList.contains('remove-button')) {
+            const component = event.target.closest('[class*="-component"]');
+            if (component) {
+                component.parentElement.removeChild(component);
+            }
+        }
+    });
+
+    document.addEventListener('focus', function(event) {
+        if (/pickingP\d+-(quantity|weight)/.test(event.target.className)) {
+            event.target.select();
+        }
+    }, true);
 });
