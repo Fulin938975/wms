@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
         P1: `
             <template id="pickingP1-template">
                 <div class="pickingP1-component">
-                    <button type="button" class="remove-button"></button>
+                    <button type="button" class="remove-button">14</button>
                     <div class="form-group horizontal-form-group">
                         <label for="pickingP1-item">領料品項:</label>
                         <select class="pickingP1-item" name="pickingP1-item"></select>
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
         P2: `
             <template id="pickingP2-template">
                 <div class="pickingP2-component">
-                    <button type="button" class="remove-button">13</button>
+                    <button type="button" class="remove-button">移除</button>
                     <div class="form-group horizontal-form-group">
                         <label for="pickingP2-item">領料品項:</label>
                         <select class="pickingP2-item" name="pickingP2-item"></select>
@@ -71,10 +71,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const subItems = {
         招牌細P: ['招牌細P2: 6', '原鬆P2: 7', '特鬆P2: 2.8', '營業P: 1.2', '粗鬆P: 1.3', '全純P: 2.5'],
-        原鬆P: ['招牌細P2: 6', '原鬆P2: 7', '特鬆P2: 2.8', '營業P: 1.2', '粗鬆P: 1.3', '全純P: 2.5'],
+        原鬆P: ['招牌細P2: 6', '原鬆P2: 7', '特鬆P2: 2.8', '營業P: 1.2', '粗鬆P: 1.3', '全純P: 2.5']
     };
 
     function populateSelect(selectElement, items, defaultText) {
+        selectElement.innerHTML = ''; // 清除原有選項
         const defaultOption = document.createElement('option');
         defaultOption.value = '';
         defaultOption.textContent = defaultText;
@@ -123,7 +124,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 const subItemsForSelectedItem = subItems[selectedItem];
 
                 // 清空選單並填充二級選單
-                itemSelect.innerHTML = '';
                 populateSelect(itemSelect, subItemsForSelectedItem, '請選擇品項');
 
                 // 顯示多行，展示二級選單
@@ -136,8 +136,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         itemSelect.focus();
                         itemSelect.size = subItemsForSelectedItem.length + 1; // 確保展開二級選單
                         itemSelect.dispatchEvent(new MouseEvent('mousedown', { bubbles: true })); // 模擬點擊事件
-                    },  100);
-             }   
+                    }, 100);
+                }
             } else if (!isPrimarySelection) {
                 // 如果是二級選單的選項，顯示結果
                 const resultDiv = document.getElementById('result');
@@ -160,15 +160,9 @@ document.addEventListener('DOMContentLoaded', function() {
         itemSelect.addEventListener('focus', function() {
             if (!isPrimarySelection) {
                 // 無論當前狀態如何，點擊時重置回一級選單
-                itemSelect.innerHTML = '';
                 populateSelect(itemSelect, items, '請選擇分類'); // 填充一級選單
                 itemSelect.size = items.length + 1; // 設置適當的欄高
                 isPrimarySelection = true; // 切換回一級選單狀態
-            } else {
-                // 如果已經選定了選項，重置選單
-                itemSelect.innerHTML = '';
-                populateSelect(itemSelect, items, '請選擇分類');
-                itemSelect.size = items.length + 1;
             }
         });
 
