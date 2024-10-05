@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
         P1: `
             <template id="pickingP1-template">
                 <div class="pickingP1-component">
-                    <button type="button" class="remove-button">14</button>
+                    <button type="button" class="remove-button"></button>
                     <div class="form-group horizontal-form-group">
                         <label for="pickingP1-item">領料品項:</label>
                         <select class="pickingP1-item" name="pickingP1-item"></select>
@@ -18,44 +18,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </div>
             </template>
-        `,
-        P2: `
-            <template id="pickingP2-template">
-                <div class="pickingP2-component">
-                    <button type="button" class="remove-button">移除</button>
-                    <div class="form-group horizontal-form-group">
-                        <label for="pickingP2-item">領料品項:</label>
-                        <select class="pickingP2-item" name="pickingP2-item"></select>
-                    </div>
-                    <div class="form-group horizontal-form-group">
-                        <label for="pickingP2-quantity">領料數量:</label>
-                        <input type="number" class="pickingP2-quantity" name="pickingP2-quantity" value="0" min="0.001" step="0.001">
-                    </div>
-                    <div class="form-group horizontal-form-group">
-                        <label for="pickingP2-weight">領料重量(kg):</label>
-                        <input type="number" class="pickingP2-weight" name="pickingP2-weight" value="0" min="0.001" step="0.001">
-                    </div>
-                </div>
-            </template>
-        `,
-        P3: `
-            <template id="pickingP3-template">
-                <div class="pickingP3-component">
-                    <button type="button" class="remove-button">移除</button>
-                    <div class="form-group horizontal-form-group">
-                        <label for="pickingP3-item">領料品項:</label>
-                        <select class="pickingP3-item" name="pickingP3-item"></select>
-                    </div>
-                    <div class="form-group horizontal-form-group">
-                        <label for="pickingP3-quantity">領料數量:</label>
-                        <input type="number" class="pickingP3-quantity" name="pickingP3-quantity" value="0" min="0.001" step="0.001">
-                    </div>
-                    <div class="form-group horizontal-form-group">
-                        <label for="pickingP3-weight">領料重量(kg):</label>
-                        <input type="number" class="pickingP3-weight" name="pickingP3-weight" value="0" min="0.001" step="0.001">
-                    </div>
-                </div>
-            </template>
         `
     };
 
@@ -64,9 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     const itemWeights = {
-        P1: { 招牌細P: 4.2, 原鬆P: 4.2, 特鬆P: 4.2, 營業P: 4.2, 粗鬆P: 4.2, 全純P: 4.2 },
-        P2: { 招牌細k: 1, 原鬆k: 1, 特鬆k: 1, 營業k: 1, 粗鬆k: 1, 全純k: 1 },
-        P3: { 原QP: 6, 黑QP: 6, 泰式P: 6, 脆片P: 3, 厚脆: 6 }
+        P1: { 招牌細P: 4.2, 原鬆P: 4.2, 特鬆P: 4.2, 營業P: 4.2, 粗鬆P: 4.2, 全純P: 4.2 }
     };
 
     const subItems = {
@@ -75,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     function populateSelect(selectElement, items, defaultText) {
-        selectElement.innerHTML = ''; // 清除原有選項
+        selectElement.innerHTML = ''; // 清空選單
         const defaultOption = document.createElement('option');
         defaultOption.value = '';
         defaultOption.textContent = defaultText;
@@ -110,66 +70,60 @@ document.addEventListener('DOMContentLoaded', function() {
         const weightInput = component.querySelector(`.${templateId.split('-')[0]}-weight`);
 
         const items = Object.keys(weights);
-
         populateSelect(itemSelect, items, '請選擇分類');
 
-        let isPrimarySelection = true; // 判斷是否是一級選單狀態
+        let isPrimarySelection = true; // 標記是否為一級選單狀態
 
-        // 監聽下拉選單的變更事件
         itemSelect.addEventListener('change', function() {
             const selectedItem = itemSelect.value;
 
-            // 如果是選擇了一級選單且有二級選項
-            if (isPrimarySelection && subItems[selectedItem]) {
-                const subItemsForSelectedItem = subItems[selectedItem];
+            if (isPrimarySelection && subItems[selectedItem]) { // 選擇一級選單且有對應的二級選單
+                populateSelect(itemSelect, subItems[selectedItem], '請選擇品項');
+                itemSelect.size = subItems[selectedItem].length + 1; // 展開二級選單
+                isPrimarySelection = false;
 
-                // 清空選單並填充二級選單
-                populateSelect(itemSelect, subItemsForSelectedItem, '請選擇品項');
-
-                // 顯示多行，展示二級選單
-                itemSelect.size = subItemsForSelectedItem.length + 1;
-                isPrimarySelection = false; // 切換到二級選單狀態
-
-                // 在手機上自動展開二級選單
+                // 行動裝置處理，在 change 事件內
                 if (/Mobi|Android/i.test(navigator.userAgent)) {
-                    setTimeout(() => {
-                        itemSelect.focus();
-                        itemSelect.size = subItemsForSelectedItem.length + 1; // 確保展開二級選單
-                        itemSelect.dispatchEvent(new MouseEvent('mousedown', { bubbles: true })); // 模擬點擊事件
-                    }, 100);
-                }
-            } else if (!isPrimarySelection) {
-                // 如果是二級選單的選項，顯示結果
-                const resultDiv = document.getElementById('result');
-                if (resultDiv) {
-                    resultDiv.textContent = `Selected item: ${selectedItem}`;
+                    itemSelect.focus(); // 確保在行動裝置上獲得焦點以自動展開
                 }
 
-                // 將選定的二級選項帶入選單框內
-                itemSelect.innerHTML = `<option selected value="${selectedItem}">${selectedItem.split(':')[0]}</option>`;
-                itemSelect.size = 1; // 重置選單大小
-                isPrimarySelection = true; // 重置為一級選單狀態
+            } else { // 選擇二級選單或直接選擇一級選單
+                const selectedValue = itemSelect.value; // 取得選定的值（可能是二級選單的選項）
+                const [itemName, weightValue] = selectedValue.split(':'); // 分離品項名稱和重量值
+                const numWeightValue = parseFloat(weightValue); // 將重量值轉換為數字
 
-                // 自動帶入數量與重量比
-                quantityInput.value = 1;
-                weightInput.value = parseFloat(selectedItem.split(':')[1]);
+                if (!isNaN(numWeightValue)) { // 如果選取的是二級選單的選項
+                    document.getElementById('result').textContent = `Selected item: ${selectedValue}`; // 顯示結果
+
+                    quantityInput.value = 1;
+                    weightInput.value = numWeightValue; // 直接使用解析後的重量值
+
+                    // 將選定的二級選項帶入選單框內
+                    itemSelect.innerHTML = `<option selected value="${selectedValue}">${itemName}</option>`;
+                }
+
+                itemSelect.size = 1; // 恢復選單大小
+                isPrimarySelection = false; // 保持為二級選單狀態，直到再次點擊選單
             }
         });
 
-        // 使用 focus 事件展開選單
-        itemSelect.addEventListener('focus', function() {
-            if (!isPrimarySelection) {
-                // 無論當前狀態如何，點擊時重置回一級選單
-                populateSelect(itemSelect, items, '請選擇分類'); // 填充一級選單
-                itemSelect.size = items.length + 1; // 設置適當的欄高
-                isPrimarySelection = true; // 切換回一級選單狀態
+        itemSelect.addEventListener('focus', function() { // 點擊下拉選單時觸發
+            if (!isPrimarySelection || !itemSelect.value) { // 如果是二級選單狀態 或 一級選單沒有選取任何值
+                populateSelect(itemSelect, items, '請選擇分類'); // 重新填充一級選單
+                itemSelect.size = items.length + 1; // 設置選單高度
+                isPrimarySelection = true; // 設定為一級選單狀態
             }
         });
 
-        // 使用 blur 事件縮回選單
-        itemSelect.addEventListener('blur', function() {
-            itemSelect.size = 1; // 恢復為單行顯示
-        });
+        if (/Mobi|Android/i.test(navigator.userAgent)) { // 行動裝置
+            itemSelect.addEventListener('focus', function() {
+                itemSelect.size = itemSelect.options.length; // 在行動裝置上展開選單
+            });
+        } else { // 桌面裝置
+            itemSelect.addEventListener('blur', function() { // 滑鼠移出選單時觸發
+                itemSelect.size = 1; // 恢復選單大小
+            });
+        }
 
         // 監聽 quantity 和 weight 輸入的變更事件
         quantityInput.addEventListener('input', function() {
@@ -211,9 +165,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     const defaultCounts = {
-        P1: 1,
-        P2: 1,
-        P3: 1
+        P1: 1
     };
 
     Object.keys(defaultCounts).forEach(key => {
