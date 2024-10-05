@@ -48,6 +48,44 @@
             cursor: pointer;
             padding: 0.5rem;
         }
+
+         /* 桌面端樣式 */
+        @media (min-width: 769px) {
+             .dropdown-menu {
+                   right: 0; /* 使彈窗從選單的最右側向左延伸 */
+              }
+         }
+
+         .dropdown-item {
+                padding: 12px 16px;
+                font-size: 2.5rem;
+            }
+
+
+
+        /* 移動端樣式 */
+        @media (max-width: 768px) {
+            .dropdown-menu {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 90%;
+                max-height: 50%;
+                overflow-y: auto;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            .dropdown-item {
+                padding: 12px 16px;
+                font-size: 2.5rem;
+            }
+
+            .dropdown-item:hover {
+                background-color: #e0e0e0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -63,7 +101,7 @@
                 P1: `
                     <template id="pickingP1-template">
                         <div class="pickingP1-component">
-                            <button type="button" class="remove-button">移除</button>
+                            <button type="button" class="remove-button">1</button>
                             <div class="form-group horizontal-form-group">
                                 <label for="pickingP1-item">領料品項:</label>
                                 <div class="dropdown">
@@ -89,12 +127,12 @@
             });
 
             const itemWeights = {
-                P1: { 招牌細P: 4.2, 原鬆P: 4.2, 特鬆P: 4.2, 營業P: 4.2, 粗鬆P: 4.2, 全純P: 4.2 }
+                P1: { 肉鬆P: 4.2, 肉鬆Ｋ: 4.2, 特鬆P: 4.2, 營業P: 4.2, 粗鬆P: 4.2, 全純P: 4.2 }
             };
 
             const subItems = {
-                招牌細P: ['招牌細P2: 6', '原鬆P2: 7', '特鬆P2: 2.8', '營業P: 1.2', '粗鬆P: 1.3', '全純P: 2.5'],
-                原鬆P: ['招牌細P2: 6', '原鬆P2: 7', '特鬆P2: 2.8', '營業P: 1.2', '粗鬆P: 1.3', '全純P: 2.5']
+                肉鬆P: ['招牌細P2: 6', '原鬆P2: 7', '特鬆P2: 2.8', '營業P: 1.2', '粗鬆P: 1.3', '全純P: 2.5'],
+                肉鬆Ｋ: ['招牌細Ｋ2: 6', '原鬆Ｋ2: 7', '特鬆Ｋ2: 2.8', '營業Ｋ: 1.2', '粗鬆Ｋ: 1.3', '全純Ｋ: 2.5','營業Ｋ２: 1.2', '粗鬆Ｋ２: 1.3', '全純Ｋ２: 2.5']
             };
 
             function populateDropdown(dropdownMenu, items) {
