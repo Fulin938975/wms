@@ -17,7 +17,7 @@ html, body {
     z-index: 1; /* 設置 z-index 為 1 */
     background-color: #ffffff; /* 背景顏色 */
     color: #333333; /* 文字顏色 */
-    overflow-x: hidden; //* 隱藏水平滾動條 */
+    overflow-x: hidden; /* 隱藏水平滾動條 */
 }
 
 /* 頁首樣式 */
@@ -64,10 +64,9 @@ header {
     margin-right: 10px;
     font-size: 12px;
     white-space: nowrap;
-  }
+}
 
-
-  #createFormBtn {
+#createFormBtn {
     width: 24px;
     height: 24px;
     font-size: 30px;
@@ -78,8 +77,7 @@ header {
     background-color: transparent;
     border: none;
     margin-left: 10px;
-  }
-
+}
 
 /* 側邊欄樣式 */
 .sidebar {
@@ -117,53 +115,35 @@ header {
     left: 0; /* 打開側邊欄 */
 }
 
-
-
 /* 容器樣式 */
 .container {
     margin-top: 0PX; /* 留出頂部導航欄的空間 */
     max-width: 100%;   /* 確保外層容器最大寬度不超出100% */
-      padding: 10px;
-      padding-top: 3px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      box-sizing: border-box;     
+    padding: 10px;
+    padding-top: 3px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    box-sizing: border-box;     
 }
+
 /* 父級容器樣式 */
 #pickingP1-container-wrapper .pickingP1-component,
 #pickingP2-container-wrapper .pickingP2-component,
-#pickingP3-container-wrapper .pickingP3-component,
-#pickingP4-container-wrapper .pickingP4-component,
-#pickingP5-container-wrapper .pickingP5-component,
-#pickingP6-container-wrapper .pickingP6-component,
-#pickingP7-container-wrapper .pickingP7-component,
-#pickingP8-container-wrapper .pickingP8-component,
-#pickingP9-container-wrapper .pickingP9-component,
-#pickingP10-container-wrapper .pickingP10-component {
+#pickingP3-container-wrapper .pickingP3-component {
     margin-top: 0PX; /* 留出頂部導航欄的空間 */
     max-width: 100%;   /* 確保外層容器最大寬度不超出100% */
-      padding-top: 30px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      box-sizing: border-box; 
-          
+    padding-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    box-sizing: border-box; 
 }
 
 /* 子級容器樣式 */
-
-
 .pickingP1-component,
 .pickingP2-component,
-.pickingP3-component,
-.pickingP4-component,
-.pickingP5-component,
-.pickingP6-component,
-.pickingP7-component,
-.pickingP8-component,
-.pickingP9-component,
-.pickingP10-component {
+.pickingP3-component {
     position: relative;
     padding: 5px;
     border-bottom: 1px solid #ffffff;
@@ -182,8 +162,8 @@ header {
     text-align: center;
     line-height: 5px;
     border: none;
-    background-color: #f51303c1;
-    color: rgb(43, 15, 201);
+    background-color: hsl(0, 100%, 50%);
+    color: rgb(255, 255, 255);
     border-radius: 5px; /* 調整圓角以適應長方形 */
     cursor: pointer;
     padding: 0; /* 確保沒有內邊距 */
@@ -224,66 +204,6 @@ header {
     font-size: 18px;
 }
 
-.form-group
-    {
-    display: flex;
-    align-items: center;
-    margin: 6px 0;
-    flex-direction: column;
-    width: 100%;
-}
-
-.form-group label
- {
-    width: 100%;
-    text-align: left;
-    margin-bottom: 5px;
-    font-size: 18px;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea
- {
-    width: 100%;
-    padding: 8px;
-    font-size: 18px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    resize: vertical;
-}
-
-/* 水平排列的表單組，適用於指定的表單項 */
-.horizontal-form-group
- {
-    display: flex;
-    flex-direction: row;  /* 左右排列 */
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-}
-
-/* 控制水平排列時，標籤和輸入框的寬度分配 */
-.horizontal-form-group label
-{
-    width: 40%;  /* 標籤佔40% */
-    text-align: left;
-}
-
-.horizontal-form-group select,
-.horizontal-form-group input,
-.horizontal-form-group .custom-select-wrapper,
-.horizontal-form-group span,
-.horizontal-form-group textarea {  /* 讓 span（計時器）保持一致 */
-    width: 60%;  /* 保證寬度一致 */
-    padding: 8px;  /* 與其他表單元素保持一致的內邊距 */
-    font-size: 18px;  /* 保持字體大小一致 */
-    border: 1px solid #ccc;  /* 相同的邊框樣式 */
-    border-radius: 4px;  /* 圓角樣式 */
-    box-sizing: border-box;  /* 保證內外邊距計算方式一致 */
-}
-
 button {
     width: 100%;
     padding: 10px;
@@ -297,6 +217,62 @@ button {
     margin: 5px;
 }
 
+.form-group {
+    display: flex;
+    align-items: center;
+    margin: 6px 0;
+    flex-direction: column;
+    width: 100%;
+}
+
+.form-group label {
+    width: 100%;
+    text-align: left;
+    margin-bottom: 5px;
+    font-size: 18px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 8px;
+    font-size: 18px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+/* 水平排列的表單組，適用於指定的表單項 */
+.horizontal-form-group {
+    display: flex;
+    flex-direction: row;  /* 左右排列 */
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* 控制水平排列時，標籤和輸入框的寬度分配 */
+.horizontal-form-group label {
+    width: 40%;  /* 標籤佔40% */
+    text-align: left;
+}
+
+.horizontal-form-group select,
+.horizontal-form-group input,
+.horizontal-form-group .custom-select-wrapper,
+.horizontal-form-group span,
+.horizontal-form-group textarea, 
+.dropdown button {  /* 讓 span（計時器）保持一致 */
+    width: 60%;  /* 保證寬度一致 */
+    padding: 8px;  /* 與其他表單元素保持一致的內邊距 */
+    font-size: 18px;  /* 保持字體大小一致 */
+    border: 1px solid #ccc;  /* 相同的邊框樣式 */
+    border-radius: 4px;  /* 圓角樣式 */
+    box-sizing: border-box;  /* 保證內外邊距計算方式一致 */
+}
+
 /* 禁用狀態的按鈕樣式 */
 button:disabled {
     background-color: #ccc;  /* 禁用狀態的暗色 */
@@ -307,9 +283,8 @@ button:disabled {
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #4CAF50;
 }
-
 
 #timerDisplay {
     display: block;    /* 使其成為塊級元素，以便樣式生效 */
@@ -322,43 +297,125 @@ button:hover {
 }
 
 /* 設置下拉選單樣式 */
-select {
-    padding: 8px;
-    font-size: 18px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    background-color: #ededed;
+select, 
+.dropdown button {
+    padding: 6px;   /* 內邊距 */
+    font-size: 18px;    /* 字體大小 */
+    border: 1px solid #ccc; /* 設置邊框 */
+    box-sizing: border-box; /* 設置盒模型為邊框盒模型 */
+    background-color: #4CAF50;  /* 設置背景顏色 */
     width: 100%; /* 確保下拉選單寬度為父元素的 100% */
+    color: #ffffff; /* 文字顏色 */
+    border-radius: 4px; /* 圓角 */
+    cursor: pointer;    /* 指針樣式 */
+    transition: background-color 0.3s;  /* 過渡效果 */
+    margin: 0px;    /* 移除預設外邊距 */
+    text-align: center; /* 文字置中 */
 }
-  
-    
-    
-    
-    /* 響應式設計 */
-    @media (max-width: 768px) {
-        header, .nav {
-            height: 50px; /* 在較小螢幕上減少高度 */
-        }
-        .container {
-            margin-top: 0; /* 留出頂部導航欄的空間 */
-        }
-        .sidebar {
-            height: calc(100% - 50px); /* 在較小螢幕上調整側邊欄高度 */
-            top: 50px; /* 在較小螢幕上調整側邊欄頂部對齊 */
-        }
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    header, .nav {
+        height: 50px; /* 在較小螢幕上減少高度 */
     }
+    .container {
+        margin-top: 0; /* 留出頂部導航欄的空間 */
+    }
+    .sidebar {
+        height: calc(100% - 50px); /* 在較小螢幕上調整側邊欄高度 */
+        top: 50px; /* 在較小螢幕上調整側邊欄頂部對齊 */
+    }
+}
+
+@media (max-width: 480px) {
+    header, .nav {
+        height: 40px; /* 在更小螢幕上進一步減少高度 */
+    }
+    .container {
+        margin-top: 0; /* 留出頂部導航欄的空間 */
+    }
+    .sidebar {
+        height: calc(100% - 40px); /* 在更小螢幕上調整側邊欄高度 */
+        top: 40px; /* 在更小螢幕上調整側邊欄頂部對齊 */
+    }
+    .dropdown-menu {
+        right: auto; /* 取消右對齊 */
+        left: 0; /* 在小螢幕上從左方向右方延伸 */
+    }
+}
+
+/* 自訂選單的 CSS 樣式 */
+.remove-button {
+    background-color: rgb(255, 0, 0);
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: rgb(232, 230, 230);
+    border: 1px solid #ccc;
+    z-index: 1000;
+    width: 100%; /* 設置寬度為 100% */
+    font-size: 2.5rem;
+    right: 0; /* 使彈窗從右方向左方延伸 */
+    top: 100%; /* 確保彈窗在選單按鈕下方 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     
-    @media (max-width: 480px) {
-        header, .nav {
-            height: 40px; /* 在更小螢幕上進一步減少高度 */
-        }
-        .container {
-            margin-top: 0; /* 留出頂部導航欄的空間 */
-        }
-        .sidebar {
-            height: calc(100% - 40px); /* 在更小螢幕上調整側邊欄高度 */
-            top: 40px; /* 在更小螢幕上調整側邊欄頂部對齊 */
-        }
+
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-item {
+    padding: 8px 16px;
+    cursor: pointer;
+    
+}
+
+.dropdown-menu .dropdown-item.header-item {
+    font-weight: bold;
+    pointer-events: none; /* 使其不可選 */
+    background-color: #f1f1f1;
+}
+
+.dropdown {
+    display: inline-block; /* 使 .dropdown 元素與其他元素在同一行 */
+    vertical-align: middle; /* 垂直對齊 */
+    margin-right: 0px; /* 調整右邊距，確保與數量框對齊 */
+    width: 60%
+}
+
+.dropdown-item:hover {
+    background-color: #f1f1f1;
+}
+
+/* 移動端樣式 */
+@media (max-width: 768px) {
+    .dropdown-menu {
+        display: none; /* 預設隱藏下拉選單 */
+        position: fixed;    /* 固定定位 */
+        top: 50%;   /* 垂直置中 */
+        left: 50%;  /* 水平置中 */
+        transform: translate(-50%, -50%);   /* 使其水平和垂直置中 */
+        width: 90%; /* 寬度為 90% */
+        max-height: 50%;    /* 最大高度為 50% */
+        overflow-y: auto;   /* 垂直滾動 */
+        border-radius: 8px; /* 圓角 */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);   /* 陰影 */
     }
 
+    .dropdown-item:hover {
+        background-color: #f10707;
+    }
+
+    .dropdown-item {
+        padding: 12px 16px;
+        font-size: 2.5rem;
+    }
+}

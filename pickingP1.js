@@ -6,7 +6,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     <button type="button" class="remove-button"></button>
                     <div class="form-group horizontal-form-group">
                         <label for="pickingP1-item">領料品項:</label>
-                        <select class="pickingP1-item" name="pickingP1-item"></select>
+                        <div class="dropdown">
+                            <button class="dropdown-toggle pickingP1-item" type="button">請選擇分類</button>
+                            <div class="dropdown-menu"></div>
+                        </div>
                     </div>
                     <div class="form-group horizontal-form-group">
                         <label for="pickingP1-quantity">領料數量:</label>
@@ -18,6 +21,50 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </div>
             </template>
+        `,
+        P2: `
+            <template id="pickingP2-template">
+                <div class="pickingP2-component">
+                    <button type="button" class="remove-button"></button>
+                    <div class="form-group horizontal-form-group">
+                        <label for="pickingP2-item">領料品項:</label>
+                        <div class="dropdown">
+                            <button class="dropdown-toggle pickingP2-item" type="button">請選擇分類</button>
+                            <div class="dropdown-menu"></div>
+                        </div>
+                    </div>
+                    <div class="form-group horizontal-form-group">
+                        <label for="pickingP2-quantity">領料數量:</label>
+                        <input type="number" class="pickingP2-quantity" name="pickingP2-quantity" value="0" min="0.001" step="0.001">
+                    </div>
+                    <div class="form-group horizontal-form-group">
+                        <label for="pickingP2-weight">領料重量(kg):</label>
+                        <input type="number" class="pickingP2-weight" name="pickingP2-weight" value="0" min="0.001" step="0.001">
+                    </div>
+                </div>
+            </template>
+        `,
+        P3: `
+            <template id="pickingP3-template">
+                <div class="pickingP3-component">
+                    <button type="button" class="remove-button"></button>
+                    <div class="form-group horizontal-form-group">
+                        <label for="pickingP3-item">領料品項:</label>
+                        <div class="dropdown">
+                            <button class="dropdown-toggle pickingP3-item" type="button">請選擇分類</button>
+                            <div class="dropdown-menu"></div>
+                        </div>
+                    </div>
+                    <div class="form-group horizontal-form-group">
+                        <label for="pickingP3-quantity">領料數量:</label>
+                        <input type="number" class="pickingP3-quantity" name="pickingP3-quantity" value="0" min="0.001" step="0.001">
+                    </div>
+                    <div class="form-group horizontal-form-group">
+                        <label for="pickingP3-weight">領料重量(kg):</label>
+                        <input type="number" class="pickingP3-weight" name="pickingP3-weight" value="0" min="0.001" step="0.001">
+                    </div>
+                </div>
+            </template>
         `
     };
 
@@ -26,28 +73,35 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     const itemWeights = {
-        P1: { 招牌細P: 4.2, 原鬆P: 4.2, 特鬆P: 4.2, 營業P: 4.2, 粗鬆P: 4.2, 全純P: 4.2 }
+        P1: { 肉鬆P領料: 1, },
+        P2: { 肉鬆K領料: 1, },
+        P3: { 肉乾P領料: 1, 厚乾P領料: 1, 五香P領料: 1, 海味P領料: 1, }
     };
 
     const subItems = {
-        招牌細P: ['招牌細P2: 6', '原鬆P2: 7', '特鬆P2: 2.8', '營業P: 1.2', '粗鬆P: 1.3', '全純P: 2.5'],
-        原鬆P: ['招牌細P2: 6', '原鬆P2: 7', '特鬆P2: 2.8', '營業P: 1.2', '粗鬆P: 1.3', '全純P: 2.5']
+        肉鬆P領料: ['招牌細P:4.2', '原鬆P: 4.2', '特鬆P: 4.2', '營業P: 4.2', '粗鬆P: 3', '全純P: 3'],
+        肉鬆K領料: ['招牌細K: 1', '原鬆K: 1', '海鬆K: 1','粗海苔K: 1', '特鬆K: 1', '營業原K: 1','營業海K: 1', '粗鬆K: 1', '全純K: 1', '清脯K: 1', '魚鬆K: 1', '魚脯K: 1'],
+        肉乾P領料: ['原QP: 6','黑QP: 6','泰式P','脆片P: 3','厚脆P: 6'], 
     };
 
-    function populateSelect(selectElement, items, defaultText) {
-        selectElement.innerHTML = ''; // 清空選單
-        const defaultOption = document.createElement('option');
-        defaultOption.value = '';
-        defaultOption.textContent = defaultText;
-        defaultOption.disabled = true;
-        defaultOption.selected = true;
-        selectElement.appendChild(defaultOption);
+    function populateDropdown(dropdownMenu, items, isSecondary = false) {
+        dropdownMenu.innerHTML = ''; // 清空選單
+
+        if (isSecondary) {
+            const headerItem = document.createElement('div');
+            headerItem.className = 'dropdown-item header-item';
+            headerItem.textContent = '請選擇品項';
+            headerItem.style.fontWeight = 'bold';
+            headerItem.style.pointerEvents = 'none'; // 使其不可選
+            dropdownMenu.appendChild(headerItem); // 添加抬頭
+        }
 
         items.forEach(item => {
-            const option = document.createElement('option');
-            option.value = item;
+            const option = document.createElement('div');
+            option.className = 'dropdown-item';
             option.textContent = item.split(':')[0]; // 只顯示品項名稱
-            selectElement.appendChild(option);
+            option.dataset.value = item;
+            dropdownMenu.appendChild(option);
         });
     }
 
@@ -65,65 +119,53 @@ document.addEventListener('DOMContentLoaded', function() {
         const clone = document.importNode(template.content, true);
         const component = clone.querySelector(`.${templateId.split('-')[0]}-component`);
 
-        const itemSelect = component.querySelector(`.${templateId.split('-')[0]}-item`);
+        const dropdownToggle = component.querySelector('.dropdown-toggle');
+        const dropdownMenu = component.querySelector('.dropdown-menu');
         const quantityInput = component.querySelector(`.${templateId.split('-')[0]}-quantity`);
         const weightInput = component.querySelector(`.${templateId.split('-')[0]}-weight`);
 
         const items = Object.keys(weights);
-        populateSelect(itemSelect, items, '請選擇分類');
+        populateDropdown(dropdownMenu, items);
 
         let isPrimarySelection = true; // 標記是否為一級選單狀態
 
-        itemSelect.addEventListener('change', function() {
-            const selectedItem = itemSelect.value;
-
-            if (isPrimarySelection && subItems[selectedItem]) { // 選擇一級選單且有對應的二級選單
-                populateSelect(itemSelect, subItems[selectedItem], '請選擇品項');
-                itemSelect.size = subItems[selectedItem].length + 1; // 展開二級選單
-                isPrimarySelection = false;
-
-                // 行動裝置處理，在 change 事件內
-                if (/Mobi|Android/i.test(navigator.userAgent)) {
-                    itemSelect.focus(); // 確保在行動裝置上獲得焦點以自動展開
-                }
-
-            } else { // 選擇二級選單或直接選擇一級選單
-                const selectedValue = itemSelect.value; // 取得選定的值（可能是二級選單的選項）
-                const [itemName, weightValue] = selectedValue.split(':'); // 分離品項名稱和重量值
-                const numWeightValue = parseFloat(weightValue); // 將重量值轉換為數字
-
-                if (!isNaN(numWeightValue)) { // 如果選取的是二級選單的選項
-                    document.getElementById('result').textContent = `Selected item: ${selectedValue}`; // 顯示結果
-
-                    quantityInput.value = 1;
-                    weightInput.value = numWeightValue; // 直接使用解析後的重量值
-
-                    // 將選定的二級選項帶入選單框內
-                    itemSelect.innerHTML = `<option selected value="${selectedValue}">${itemName}</option>`;
-                }
-
-                itemSelect.size = 1; // 恢復選單大小
-                isPrimarySelection = false; // 保持為二級選單狀態，直到再次點擊選單
+        dropdownToggle.addEventListener('click', function() {
+            if (!isPrimarySelection || dropdownToggle.textContent !== '請選擇分類') {
+                // 重置選單
+                populateDropdown(dropdownMenu, items);
+                isPrimarySelection = true;
+                dropdownToggle.textContent = '請選擇分類';
             }
+            dropdownMenu.classList.toggle('show');
         });
 
-        itemSelect.addEventListener('focus', function() { // 點擊下拉選單時觸發
-            if (!isPrimarySelection || !itemSelect.value) { // 如果是二級選單狀態 或 一級選單沒有選取任何值
-                populateSelect(itemSelect, items, '請選擇分類'); // 重新填充一級選單
-                itemSelect.size = items.length + 1; // 設置選單高度
-                isPrimarySelection = true; // 設定為一級選單狀態
+        dropdownMenu.addEventListener('click', function(event) {
+            if (event.target.classList.contains('dropdown-item') && !event.target.classList.contains('header-item')) {
+                const selectedItem = event.target.dataset.value;
+
+                if (isPrimarySelection && subItems[selectedItem]) { // 選擇一級選單且有對應的二級選單
+                    populateDropdown(dropdownMenu, subItems[selectedItem], true); // 填充二級選單並添加不可選的字段
+                    isPrimarySelection = false;
+                    dropdownMenu.classList.add('show'); // 立即顯示二級選單
+                } else { // 選擇二級選單或直接選擇一級選單
+                    const [itemName, weightValue] = selectedItem.split(':'); // 分離品項名稱和重量值
+                    const numWeightValue = parseFloat(weightValue); // 將重量值轉換為數字
+
+                    if (!isNaN(numWeightValue)) { // 如果選取的是二級選單的選項
+                        dropdownToggle.textContent = itemName; // 顯示選定的品項名稱
+                        quantityInput.value = 1;
+                        weightInput.value = numWeightValue; // 直接使用解析後的重量值
+                    }
+
+                    // 設置選定項目的背景色
+                    dropdownToggle.style.backgroundColor = '#ffffff';
+                    dropdownToggle.style.color = '#000000';
+
+                    dropdownMenu.classList.remove('show'); // 關閉下拉選單
+                    isPrimarySelection = true; // 重置為一級選單狀態
+                }
             }
         });
-
-        if (/Mobi|Android/i.test(navigator.userAgent)) { // 行動裝置
-            itemSelect.addEventListener('focus', function() {
-                itemSelect.size = itemSelect.options.length; // 在行動裝置上展開選單
-            });
-        } else { // 桌面裝置
-            itemSelect.addEventListener('blur', function() { // 滑鼠移出選單時觸發
-                itemSelect.size = 1; // 恢復選單大小
-            });
-        }
 
         // 監聽 quantity 和 weight 輸入的變更事件
         quantityInput.addEventListener('input', function() {
@@ -139,11 +181,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function updateWeight(component, weights) {
-        const itemSelect = component.querySelector(`.${component.className.split('-')[0]}-item`);
+        const dropdownToggle = component.querySelector('.dropdown-toggle');
         const quantityInput = component.querySelector(`.${component.className.split('-')[0]}-quantity`);
         const weightInput = component.querySelector(`.${component.className.split('-')[0]}-weight`);
 
-        const selectedItem = itemSelect.value;
+        const selectedItem = dropdownToggle.textContent;
         const quantity = parseFloat(quantityInput.value);
 
         if (weights[selectedItem] !== undefined) {
@@ -152,11 +194,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function updateQuantity(component, weights) {
-        const itemSelect = component.querySelector(`.${component.className.split('-')[0]}-item`);
+        const dropdownToggle = component.querySelector('.dropdown-toggle');
         const quantityInput = component.querySelector(`.${component.className.split('-')[0]}-quantity`);
         const weightInput = component.querySelector(`.${component.className.split('-')[0]}-weight`);
 
-        const selectedItem = itemSelect.value;
+        const selectedItem = dropdownToggle.textContent;
         const weight = parseFloat(weightInput.value);
 
         if (weights[selectedItem] !== undefined) {
@@ -164,8 +206,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    const defaultP1Count = 1; // Define appropriate values
+    const defaultP2Count = 1; // Define appropriate values
+    const defaultP3Count = 1; // Define appropriate values
+
     const defaultCounts = {
-        P1: 1
+        P1: defaultP1Count,
+        P2: defaultP2Count,
+        P3: defaultP3Count
     };
 
     Object.keys(defaultCounts).forEach(key => {
