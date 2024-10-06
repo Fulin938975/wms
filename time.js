@@ -1,8 +1,9 @@
 let timers = {};
 let timerIntervals = {};
 let manualTimeUpdated = {};
-const standardTime = 9600; // 16分鐘   
-const maxTime = 13200; // 22分鐘 
+const standardTime = 10000; // 16分鐘   
+const maxTime = 15000; // 22分鐘 
+const warningTime = 12000; // 設置警告時間為確實的經過時間，例如 12000 毫秒（20 分鐘）
 
 // 切換計時器狀態
 function toggleTimer(timerId) {
@@ -25,6 +26,18 @@ function startTimer(timerId) {
             if (timerId === '2') {
                 updateProgressBarT2();
             }
+            // 檢查是否達到警告時間
+            if (timers[timerId].elapsedTime >= warningTime && !timers[timerId].flashing) {
+                console.log('達到警告時間，開始閃爍');
+                flashScreen();
+                playSound();
+                timers[timerId].flashing = true; // 設置閃爍狀態
+            }
+            // 檢查是否達到最大時間
+            if (timers[timerId].elapsedTime >= maxTime) {
+                console.log('達到最大時間');
+                playSound();
+            }
         }, 1000);
         document.getElementById(`timerBtn${timerId}`).querySelector('.btn-text').innerText = '生產完成';
         manualTimeUpdated[timerId] = false;
@@ -34,24 +47,50 @@ function startTimer(timerId) {
 // 結束計時
 function endTimer(timerId) {
     if (timers[timerId].running) {
-        clearInterval(timerIntervals[timerId]);
         timers[timerId].running = false;
-        timers[timerId].endTime = Date.now();
-        document.getElementById(`endTimeDisplay${timerId}`).value = getCurrentTime(timers[timerId].endTime);
-        updateProductionTime(timerId);
+        clearInterval(timerIntervals[timerId]);
+        document.getElementById(`timerBtn${timerId}`).querySelector('.btn-text').innerText = '已完成';
         document.getElementById(`timerBtn${timerId}`).disabled = true;
-        document.getElementById(`timerBtn${timerId}`).style.backgroundColor = '#ccc';
+        document.getElementById(`timerBtn${timerId}`).style.backgroundColor = 'gray';
+        document.getElementById(`endTimeDisplay${timerId}`).value = getCurrentTime(); // 設置結束時間
+        stopFlashScreen(); // 按下“生產完成”按鈕時停止畫面閃爍
     }
 }
 
-// 更新 T2 進度條
+// 畫面閃爍警告
+let flashInterval;
+function flashScreen() {
+    if (flashInterval) {
+        clearInterval(flashInterval);
+    }
+    let flashCount = 0;
+    flashInterval = setInterval(() => {
+        document.body.style.backgroundColor = (flashCount % 2 === 0) ? 'red' : 'white';
+        flashCount++;
+        console.log(`閃爍次數: ${flashCount}`);
+    }, 500); // 每500毫秒閃爍一次
+}
+
+// 停止畫面閃爍
+function stopFlashScreen() {
+    clearInterval(flashInterval);
+    flashInterval = null;
+    document.body.style.backgroundColor = ''; // 恢復原來的背景顏色
+    console.log('停止閃爍');
+}
+
+// 播放聲音警告
+function playSound() {
+    const audio = new Audio('sounds/xm3020.wav'); // 替換為你的音頻文件路徑
+    audio.play();
+}
+
+// 更新進度條 T2
 function updateProgressBarT2() {
-    const elapsedTime = timers['2'].elapsedTime;
-    const progress = Math.min(elapsedTime / standardTime, 1) * 93; // 進度條最大長度為 93%
     const progressBar = document.getElementById('progressBarT2');
+    const progress = (timers['2'].elapsedTime / maxTime) * 100; // 使用 maxTime 計算進度百分比
     progressBar.style.width = `${progress}%`;
 
-    // 根據進度條的進度改變顏色
     if (progress <= 20) {
         progressBar.style.backgroundColor = '#FFED97';
     } else if (progress <= 40) {
@@ -66,7 +105,6 @@ function updateProgressBarT2() {
         progressBar.style.backgroundColor = 'red';
     }
 }
-
 
 // 獲取當前時間，格式為 HH:MM:SS
 function getCurrentTime(time = Date.now()) {
@@ -150,7 +188,8 @@ function initTimer(timerId) {
         running: false,
         elapsedTime: 0,
         startTime: null,
-        endTime: null
+        endTime: null,
+        flashing: false // 初始化閃爍狀態
     };
     manualTimeUpdated[timerId] = false;
 }
