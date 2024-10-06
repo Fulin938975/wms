@@ -5,6 +5,9 @@ const standardTime = 10000; // 16分鐘
 const maxTime = 15000; // 22分鐘 
 const warningTime = 12000; // 設置警告時間為確實的經過時間，例如 12000 毫秒（20 分鐘）
 const soundWarningTime = 20000; // 聲音警告時間，單位為毫秒 (例如 2 分鐘)
+let soundInterval; // 用於存儲聲音警告的間隔 ID
+let flashInterval;
+let wakeLock = null; // 用於存儲螢幕喚醒鎖
 
 // 切換計時器狀態
 function toggleTimer(timerId) {
@@ -32,11 +35,13 @@ function startTimer(timerId) {
                 console.log('達到警告時間，開始閃爍');
                 flashScreen('timerBtn2'); // 只讓 T2 元件的開始生產按鈕閃爍
                 timers[timerId].flashing = true; // 設置閃爍狀態
+                requestWakeLock(); // 啟動螢幕喚醒鎖
             }
             // 檢查是否達到聲音警告時間
             if (timers[timerId].elapsedTime >= soundWarningTime && !timers[timerId].soundPlaying) {
                 console.log('達到聲音警告時間，播放聲音');
                 playSound();
+                soundInterval = setInterval(playSound, 5000); // 每5秒播放一次聲音
                 timers[timerId].soundPlaying = true; // 設置聲音播放狀態
             }
             // 檢查是否達到最大時間
@@ -55,16 +60,39 @@ function endTimer(timerId) {
     if (timers[timerId].running) {
         timers[timerId].running = false;
         clearInterval(timerIntervals[timerId]);
+        clearInterval(soundInterval); // 停止聲音警告的連續播放
+        document.getElementById(`endTimeDisplay${timerId}`).value = getCurrentTime(); // 設置結束時間
+        stopFlashScreen('timerBtn2'); // 停止 T2 元件的閃爍
+        releaseWakeLock(); // 釋放螢幕喚醒鎖
         document.getElementById(`timerBtn${timerId}`).querySelector('.btn-text').innerText = '已完成';
         document.getElementById(`timerBtn${timerId}`).disabled = true;
         document.getElementById(`timerBtn${timerId}`).style.backgroundColor = 'gray';
-        document.getElementById(`endTimeDisplay${timerId}`).value = getCurrentTime(); // 設置結束時間
-        stopFlashScreen('timerBtn2'); // 停止 T2 元件的閃爍
     }
 }
 
 // 畫面閃爍警告
-let flashInterval;
+async function requestWakeLock() {
+    try {
+        wakeLock = await navigator.wakeLock.request('screen');
+        console.log('螢幕喚醒鎖已啟動');
+        wakeLock.addEventListener('release', () => {
+            console.log('螢幕喚醒鎖已釋放');
+        });
+    } catch (err) {
+        console.error(`${err.name}, ${err.message}`);
+    }
+}
+
+function releaseWakeLock() {
+    if (wakeLock !== null) {
+        wakeLock.release()
+            .then(() => {
+                wakeLock = null;
+                console.log('螢幕喚醒鎖已釋放');
+            });
+    }
+}
+
 function flashScreen(elementId) {
     if (flashInterval) {
         clearInterval(flashInterval);
@@ -97,7 +125,6 @@ function stopFlashScreen(elementId) {
 function playSound() {
     const audio = new Audio('sounds/xm3020.wav'); // 替換為你的音頻文件路徑
     audio.play();
-
 }
 
 // 更新進度條 T2
@@ -204,7 +231,8 @@ function initTimer(timerId) {
         elapsedTime: 0,
         startTime: null,
         endTime: null,
-        flashing: false // 初始化閃爍狀態
+        flashing: false, // 初始化閃爍狀態
+        soundPlaying: false // 初始化聲音播放狀態
     };
     manualTimeUpdated[timerId] = false;
 }
