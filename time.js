@@ -4,6 +4,7 @@ let manualTimeUpdated = {};
 const standardTime = 10000; // 16分鐘   
 const maxTime = 15000; // 22分鐘 
 const warningTime = 12000; // 設置警告時間為確實的經過時間，例如 12000 毫秒（20 分鐘）
+const soundWarningTime = 20000; // 聲音警告時間，單位為毫秒 (例如 2 分鐘)
 
 // 切換計時器狀態
 function toggleTimer(timerId) {
@@ -29,14 +30,19 @@ function startTimer(timerId) {
             // 檢查是否達到警告時間
             if (timers[timerId].elapsedTime >= warningTime && !timers[timerId].flashing) {
                 console.log('達到警告時間，開始閃爍');
-                flashScreen();
-                playSound();
+                flashScreen('timerBtn2'); // 只讓 T2 元件的開始生產按鈕閃爍
                 timers[timerId].flashing = true; // 設置閃爍狀態
+            }
+            // 檢查是否達到聲音警告時間
+            if (timers[timerId].elapsedTime >= soundWarningTime && !timers[timerId].soundPlaying) {
+                console.log('達到聲音警告時間，播放聲音');
+                playSound();
+                timers[timerId].soundPlaying = true; // 設置聲音播放狀態
             }
             // 檢查是否達到最大時間
             if (timers[timerId].elapsedTime >= maxTime) {
                 console.log('達到最大時間');
-                playSound();
+                // 這裡可以添加其他需要在達到最大時間時執行的操作
             }
         }, 1000);
         document.getElementById(`timerBtn${timerId}`).querySelector('.btn-text').innerText = '生產完成';
@@ -53,29 +59,37 @@ function endTimer(timerId) {
         document.getElementById(`timerBtn${timerId}`).disabled = true;
         document.getElementById(`timerBtn${timerId}`).style.backgroundColor = 'gray';
         document.getElementById(`endTimeDisplay${timerId}`).value = getCurrentTime(); // 設置結束時間
-        stopFlashScreen(); // 按下“生產完成”按鈕時停止畫面閃爍
+        stopFlashScreen('timerBtn2'); // 停止 T2 元件的閃爍
     }
 }
 
 // 畫面閃爍警告
 let flashInterval;
-function flashScreen() {
+function flashScreen(elementId) {
     if (flashInterval) {
         clearInterval(flashInterval);
     }
     let flashCount = 0;
+    const flashElement = document.getElementById(elementId); // 獲取特定的閃爍容器
+    if (!flashElement) {
+        console.error(`找不到 ID 為 ${elementId} 的元素`);
+        return;
+    }
     flashInterval = setInterval(() => {
-        document.body.style.backgroundColor = (flashCount % 2 === 0) ? 'red' : 'white';
+        flashElement.style.backgroundColor = (flashCount % 2 === 0) ? 'red' : 'yellow'; // 閃爍背景顏色
         flashCount++;
         console.log(`閃爍次數: ${flashCount}`);
     }, 500); // 每500毫秒閃爍一次
 }
 
 // 停止畫面閃爍
-function stopFlashScreen() {
+function stopFlashScreen(elementId) {
     clearInterval(flashInterval);
     flashInterval = null;
-    document.body.style.backgroundColor = ''; // 恢復原來的背景顏色
+    const flashElement = document.getElementById(elementId); // 獲取特定的閃爍容器
+    if (flashElement) {
+        flashElement.style.backgroundColor = ''; // 恢復原來的背景顏色
+    }
     console.log('停止閃爍');
 }
 
@@ -83,6 +97,7 @@ function stopFlashScreen() {
 function playSound() {
     const audio = new Audio('sounds/xm3020.wav'); // 替換為你的音頻文件路徑
     audio.play();
+
 }
 
 // 更新進度條 T2
