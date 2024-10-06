@@ -23,7 +23,9 @@
                 <label for="endTimeDisplay1">結束時間:</label>
                 <input type="text" id="endTimeDisplay1" placeholder="輸入 HHMM" onclick="this.select()" onblur="handleManualTimeUpdate('endTimeDisplay1');">
             </div>
-            <button id="timerBtn1" onclick="toggleTimer('1')">開始生產</button>
+            <button id="timerBtn1" onclick="toggleTimer('1')">
+                <span class="btn-text">開始生產</span>
+            </button>
         </div>
 
         <!-- T2 元件 -->
@@ -40,7 +42,9 @@
                 <label for="endTimeDisplay2">結束時間:</label>
                 <input type="text" id="endTimeDisplay2" placeholder="輸入 HHMM" onclick="this.select()" onblur="handleManualTimeUpdate('endTimeDisplay2');">
             </div>
-            <button id="timerBtn2" onclick="toggleTimer('2')">開始生產</button>
+            <button id="timerBtn2" onclick="toggleTimer('2')">
+                <span class="btn-text">開始生產</span>
+            </button>
         </div>
     </div>
     <script src="time.js"></script>

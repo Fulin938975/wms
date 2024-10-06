@@ -1,6 +1,8 @@
 let timers = {};
 let timerIntervals = {};
 let manualTimeUpdated = {};
+const standardTime = 60000; // 1分鐘
+const maxTime = 90000; // 1.5分鐘
 
 // 切換計時器狀態
 function toggleTimer(timerId) {
@@ -21,7 +23,7 @@ function startTimer(timerId) {
             timers[timerId].elapsedTime = Date.now() - timers[timerId].startTime;
             document.getElementById(`timerDisplay${timerId}`).innerText = formatTime(timers[timerId].elapsedTime);
         }, 1000);
-        document.getElementById(`timerBtn${timerId}`).innerText = '生產完成';
+        document.getElementById(`timerBtn${timerId}`).querySelector('.btn-text').innerText = '生產完成';
         manualTimeUpdated[timerId] = false;
     }
 }

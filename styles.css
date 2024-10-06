@@ -298,11 +298,11 @@ button:hover {
 
  {
     display: block;    /* 使其成為塊級元素，以便樣式生效 */
-    font-size: 22px;   /* 增加字體大小 */
+    font-size: 18px;   /* 增加字體大小 */
     font-weight: bold;
     color: red;
     line-height: 1.2;  /* 調整行高，確保垂直對齊 */
-    margin-top: 3px;   /* 微調位置 */
+    margin-top: 0px;   /* 微調位置 */
     text-align: center; /* 使文字在其框中居中對齊 */
 }
 
@@ -496,3 +496,4 @@ select,
 .timer-component button:hover {
     background-color: #45a049;
 }
+
