@@ -1,97 +1,97 @@
 document.addEventListener('DOMContentLoaded', function() {
     const templates = {
-        P1: `
-            <template id="pickingP1-template">
-                <div class="pickingP1-component">
-                <button type="button" class="remove-button"></button>
-                <div class="form-group horizontal-form-group">
-                        <label for="pickingP1-item">領料品項:</label>
+        B1: `
+            <template id="produceB1-template">
+                <div class="produceB1-component">
+                    <button type="button" class="remove-button"></button>
+                    <div class="form-group horizontal-form-group">
+                        <label for="produceB1-item">生產品項:</label>
                         <div class="dropdown">
-                            <button class="dropdown-toggle pickingP1-item" type="button">請選擇分類</button>
+                            <button class="dropdown-toggle produceB1-item" type="button">請選擇分類</button>
                             <div class="dropdown-menu"></div>
                         </div>
                     </div>
                     <div class="form-group horizontal-form-group">
-                        <label for="pickingP1-quantity">領料數量:</label>
-                        <input type="number" class="pickingP1-quantity" name="pickingP1-quantity" value="0" min="0.001" step="0.001">
+                        <label for="produceB1-quantity">生產數量:</label>
+                        <input type="number" class="produceB1-quantity" name="produceB1-quantity" value="0" min="0.001" step="0.001">
                     </div>
                     <div class="form-group horizontal-form-group">
-                        <label for="pickingP1-weight">領料重量(kg):</label>
-                        <input type="number" class="pickingP1-weight" name="pickingP1-weight" value="0" min="0.001" step="0.001">
+                        <label for="produceB1-weight">生產重量(kg):</label>
+                        <input type="number" class="produceB1-weight" name="produceB1-weight" value="0" min="0.001" step="0.001">
                     </div>
                 </div>
             </template>
         `,
-        P2: `
-            <template id="pickingP2-template">
-                <div class="pickingP2-component">
+        B2: `
+            <template id="produceB2-template">
+                <div class="produceB2-component">
                     <button type="button" class="remove-button"></button>
                     <div class="form-group horizontal-form-group">
-                        <label for="pickingP2-item">領料品項:</label>
+                        <label for="produceB2-item">生產品項:</label>
                         <div class="dropdown">
-                            <button class="dropdown-toggle pickingP2-item" type="button">請選擇分類</button>
+                            <button class="dropdown-toggle produceB2-item" type="button">請選擇分類</button>
                             <div class="dropdown-menu"></div>
                         </div>
                     </div>
                     <div class="form-group horizontal-form-group">
-                        <label for="pickingP2-quantity">領料數量:</label>
-                        <input type="number" class="pickingP2-quantity" name="pickingP2-quantity" value="0" min="0.001" step="0.001">
+                        <label for="produceB2-quantity">生產數量:</label>
+                        <input type="number" class="produceB2-quantity" name="produceB2-quantity" value="0" min="0.001" step="0.001">
                     </div>
                     <div class="form-group horizontal-form-group">
-                        <label for="pickingP2-weight">領料重量(kg):</label>
-                        <input type="number" class="pickingP2-weight" name="pickingP2-weight" value="0" min="0.001" step="0.001">
+                        <label for="produceB2-weight">生產重量(kg):</label>
+                        <input type="number" class="produceB2-weight" name="produceB2-weight" value="0" min="0.001" step="0.001">
                     </div>
                 </div>
             </template>
         `,
-        P3: `
-            <template id="pickingP3-template">
-                <div class="pickingP3-component">
+        B3: `
+            <template id="produceB3-template">
+                <div class="produceB3-component">
                     <button type="button" class="remove-button"></button>
                     <div class="form-group horizontal-form-group">
-                        <label for="pickingP3-item">領料品項:</label>
+                        <label for="produceB3-item">生產品項:</label>
                         <div class="dropdown">
-                            <button class="dropdown-toggle pickingP3-item" type="button">請選擇分類</button>
+                            <button class="dropdown-toggle produceB3-item" type="button">請選擇分類</button>
                             <div class="dropdown-menu"></div>
                         </div>
                     </div>
                     <div class="form-group horizontal-form-group">
-                        <label for="pickingP3-quantity">領料數量:</label>
-                        <input type="number" class="pickingP3-quantity" name="pickingP3-quantity" value="0" min="0.001" step="0.001">
+                        <label for="produceB3-quantity">生產數量:</label>
+                        <input type="number" class="produceB3-quantity" name="produceB3-quantity" value="0" min="0.001" step="0.001">
                     </div>
                     <div class="form-group horizontal-form-group">
-                        <label for="pickingP3-weight">領料重量(kg):</label>
-                        <input type="number" class="pickingP3-weight" name="pickingP3-weight" value="0" min="0.001" step="0.001">
+                        <label for="produceB3-weight">生產重量(kg):</label>
+                        <input type="number" class="produceB3-weight" name="produceB3-weight" value="0" min="0.001" step="0.001">
                     </div>
                 </div>
             </template>
         `
     };
 
-    Object.values(templates).forEach(template => {  
-        document.body.insertAdjacentHTML('beforeend', template);    
-    });   
+    Object.values(templates).forEach(template => {
+        document.body.insertAdjacentHTML('beforeend', template);
+    });
 
     const itemWeights = {
-        P1: { 肉鬆P領料: 1, },
-        P2: { 肉鬆K領料: 1, },
-        P3: { 肉乾P領料: 1, 厚乾P領料: 1, 五香P領料: 1, 海味P領料: 1, }
+        B1: { 肉鬆B生產: 1, },
+        B2: { 肉鬆K生產: 1, },
+        B3: { 肉乾B生產: 1, 厚乾B生產: 1, 五香B生產: 1, 海味B生產: 1, }
     };
 
     const subItems = {
-        肉鬆P領料: ['招牌細P:4.2', '原鬆P: 4.2', '特鬆P: 4.2', '營業P: 4.2', '粗鬆P: 3', '全純P: 3'],
-        肉鬆K領料: ['招牌細K: 1', '原鬆K: 1', '海鬆K: 1','粗海苔K: 1', '特鬆K: 1', '營業原K: 1','營業海K: 1', '粗鬆K: 1', '全純K: 1', '清脯K: 1', '魚鬆K: 1', '魚脯K: 1'],
-        肉乾P領料: ['原QP: 6','黑QP: 6','泰式P','脆片P: 3','厚脆P: 6'], 
+        肉鬆B生產: ['招牌細B:4.2', '原鬆B: 4.2', '特鬆B: 4.2', '營業B: 4.2', '粗鬆B: 3', '全純B: 3'],
+        肉鬆K生產: ['招牌細K: 1', '原鬆K: 1', '海鬆K: 1','粗海苔K: 1', '特鬆K: 1', '營業原K: 1','營業海K: 1', '粗鬆K: 1', '全純K: 1', '清脯K: 1', '魚鬆K: 1', '魚脯K: 1'],
+        肉乾B生產: ['原QB: 6','黑QB: 6','泰式B','脆片B: 3','厚脆B: 6'], 
     };
 
     function populateDropdown(dropdownMenu, items, isSecondary = false) {
         dropdownMenu.innerHTML = ''; // 清空選單
 
         if (isSecondary) {
-            const headerItem = document.createElement('div');   
-            headerItem.className = 'dropdown-item header-item'; 
-            headerItem.textContent = '請選擇品項';  
-            headerItem.style.fontWeight = 'bold';   
+            const headerItem = document.createElement('div');
+            headerItem.className = 'dropdown-item header-item';
+            headerItem.textContent = '請選擇品項';
+            headerItem.style.fontWeight = 'bold';
             headerItem.style.pointerEvents = 'none'; // 使其不可選
             dropdownMenu.appendChild(headerItem); // 添加抬頭
         } else {
@@ -217,33 +217,33 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    /*const defaultP1Count = 0; // Define appropriate values
-    const defaultP2Count = 0; // Define appropriate values
-    const defaultP3Count = 0; // Define appropriate values*/
+    /*const defaultB1Count = 1; // Define appropriate values
+    const defaultB2Count = 1; // Define appropriate values
+    const defaultB3Count = 1; // Define appropriate values*/
 
     const defaultCounts = {
-        P1: defaultP1Count,
-        P2: defaultP2Count,
-        P3: defaultP3Count
+        B1: defaultB1Count,
+        B2: defaultB2Count,
+        B3: defaultB3Count
     };
 
     Object.keys(defaultCounts).forEach(key => {
         for (let i = 0; i < defaultCounts[key]; i++) {
-            const containerId = `picking${key}-container-${i + 1}`;
+            const containerId = `produce${key}-container-${i + 1}`;
             const container = document.createElement('div');
             container.id = containerId;
-            document.getElementById(`picking${key}-container-wrapper`).appendChild(container);
-            addComponent(containerId, `picking${key}-template`, itemWeights[key]);
+            document.getElementById(`produce${key}-container-wrapper`).appendChild(container);
+            addComponent(containerId, `produce${key}-template`, itemWeights[key]);
         }
     });
 
     Object.keys(defaultCounts).forEach(key => {
-        document.getElementById(`add-picking${key}-button`).addEventListener('click', function() {
-            const newContainerId = `picking${key}-container-${document.querySelectorAll(`[id^="picking${key}-container"]`).length + 1}`;
+        document.getElementById(`add-produce${key}-button`).addEventListener('click', function() {
+            const newContainerId = `produce${key}-container-${document.querySelectorAll(`[id^="produce${key}-container"]`).length + 1}`;
             const newContainer = document.createElement('div');
             newContainer.id = newContainerId;
-            document.getElementById(`picking${key}-container-wrapper`).appendChild(newContainer);
-            addComponent(newContainerId, `picking${key}-template`, itemWeights[key]);
+            document.getElementById(`produce${key}-container-wrapper`).appendChild(newContainer);
+            addComponent(newContainerId, `produce${key}-template`, itemWeights[key]);
         });
     });
 
@@ -257,7 +257,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     document.addEventListener('focus', function(event) {
-        if (/pickingP\d+-(quantity|weight)/.test(event.target.className)) {
+        if (/produceB\d+-(quantity|weight)/.test(event.target.className)) {
             event.target.select();
         }
     }, true);

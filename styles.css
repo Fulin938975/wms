@@ -130,7 +130,10 @@ header {
 /* 父級容器樣式 */
 #pickingP1-container-wrapper .pickingP1-component,
 #pickingP2-container-wrapper .pickingP2-component,
-#pickingP3-container-wrapper .pickingP3-component {
+#pickingP3-container-wrapper .pickingP3-component,
+#produceB1-container-wrapper .produceB1-component,
+#produceB2-container-wrapper .produceB2-component,
+#produceB3-container-wrapper .produceB3-component  {
     margin-top: 0PX; /* 留出頂部導航欄的空間 */
     max-width: 100%;   /* 確保外層容器最大寬度不超出100% */
     padding-top: 30px;
@@ -143,7 +146,10 @@ header {
 /* 子級容器樣式 */
 .pickingP1-component,
 .pickingP2-component,
-.pickingP3-component {
+.pickingP3-component,
+.produceB1-component,
+.produceB2-component,
+.produceB3-component {
     position: relative;
     padding: 5px;
     border-bottom: 1px solid #ffffff;
@@ -407,11 +413,11 @@ select,
         max-height: 50%;    /* 最大高度為 50% */
         overflow-y: auto;   /* 垂直滾動 */
         border-radius: 8px; /* 圓角 */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);   /* 陰影 */
+        box-shadow: 0 4px 8px rgb(0, 0, 0,0.5);   /* 陰影 */
     }
 
     .dropdown-item:hover {
-        background-color: #f10707;
+        background-color: #4caf4f59;
     }
 
     .dropdown-item {
