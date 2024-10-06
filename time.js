@@ -1,8 +1,8 @@
 let timers = {};
 let timerIntervals = {};
 let manualTimeUpdated = {};
-const standardTime = 60000; // 1分鐘
-const maxTime = 90000; // 1.5分鐘
+const standardTime = 9600; // 16分鐘   
+const maxTime = 13200; // 22分鐘 
 
 // 切換計時器狀態
 function toggleTimer(timerId) {
@@ -22,6 +22,9 @@ function startTimer(timerId) {
         timerIntervals[timerId] = setInterval(() => {
             timers[timerId].elapsedTime = Date.now() - timers[timerId].startTime;
             document.getElementById(`timerDisplay${timerId}`).innerText = formatTime(timers[timerId].elapsedTime);
+            if (timerId === '2') {
+                updateProgressBarT2();
+            }
         }, 1000);
         document.getElementById(`timerBtn${timerId}`).querySelector('.btn-text').innerText = '生產完成';
         manualTimeUpdated[timerId] = false;
@@ -40,6 +43,30 @@ function endTimer(timerId) {
         document.getElementById(`timerBtn${timerId}`).style.backgroundColor = '#ccc';
     }
 }
+
+// 更新 T2 進度條
+function updateProgressBarT2() {
+    const elapsedTime = timers['2'].elapsedTime;
+    const progress = Math.min(elapsedTime / standardTime, 1) * 93; // 進度條最大長度為 93%
+    const progressBar = document.getElementById('progressBarT2');
+    progressBar.style.width = `${progress}%`;
+
+    // 根據進度條的進度改變顏色
+    if (progress <= 20) {
+        progressBar.style.backgroundColor = '#FFED97';
+    } else if (progress <= 40) {
+        progressBar.style.backgroundColor = '#FFDC35';
+    } else if (progress <= 60) {
+        progressBar.style.backgroundColor = '#FFAF60';
+    } else if (progress <= 70) {
+        progressBar.style.backgroundColor = '#FF8000';
+    } else if (progress <= 90) {
+        progressBar.style.backgroundColor = '#F75000';
+    } else {
+        progressBar.style.backgroundColor = 'red';
+    }
+}
+
 
 // 獲取當前時間，格式為 HH:MM:SS
 function getCurrentTime(time = Date.now()) {
