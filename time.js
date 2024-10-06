@@ -8,6 +8,7 @@ const soundWarningTime = 20000; // 聲音警告時間，單位為毫秒 (例如 
 let soundInterval; // 用於存儲聲音警告的間隔 ID
 let flashInterval;
 let wakeLock = null; // 用於存儲螢幕喚醒鎖
+let wakeLockInterval; // 用於定期檢查螢幕喚醒鎖的間隔 ID
 
 // 切換計時器狀態
 function toggleTimer(timerId) {
@@ -24,6 +25,8 @@ function startTimer(timerId) {
         timers[timerId].running = true;
         timers[timerId].startTime = manualTimeUpdated[timerId] ? parseTime(document.getElementById(`startTimeDisplay${timerId}`).value) : Date.now() - timers[timerId].elapsedTime;
         document.getElementById(`startTimeDisplay${timerId}`).value = getCurrentTime(timers[timerId].startTime);
+        requestWakeLock(); // 在開始計時時請求螢幕喚醒鎖
+        wakeLockInterval = setInterval(requestWakeLock, 60000); // 每分鐘重新請求一次螢幕喚醒鎖
         timerIntervals[timerId] = setInterval(() => {
             timers[timerId].elapsedTime = Date.now() - timers[timerId].startTime;
             document.getElementById(`timerDisplay${timerId}`).innerText = formatTime(timers[timerId].elapsedTime);
@@ -35,7 +38,6 @@ function startTimer(timerId) {
                 console.log('達到警告時間，開始閃爍');
                 flashScreen('timerBtn2'); // 只讓 T2 元件的開始生產按鈕閃爍
                 timers[timerId].flashing = true; // 設置閃爍狀態
-                requestWakeLock(); // 啟動螢幕喚醒鎖
             }
             // 檢查是否達到聲音警告時間
             if (timers[timerId].elapsedTime >= soundWarningTime && !timers[timerId].soundPlaying) {
@@ -61,6 +63,7 @@ function endTimer(timerId) {
         timers[timerId].running = false;
         clearInterval(timerIntervals[timerId]);
         clearInterval(soundInterval); // 停止聲音警告的連續播放
+        clearInterval(wakeLockInterval); // 停止定期檢查螢幕喚醒鎖
         document.getElementById(`endTimeDisplay${timerId}`).value = getCurrentTime(); // 設置結束時間
         stopFlashScreen('timerBtn2'); // 停止 T2 元件的閃爍
         releaseWakeLock(); // 釋放螢幕喚醒鎖
