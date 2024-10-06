@@ -292,7 +292,11 @@ button:hover {
     background-color: #4CAF50;
 }
 
-#timerDisplay {
+#timerDisplay,
+#timerDisplay1,
+#timerDisplay2
+
+ {
     display: block;    /* 使其成為塊級元素，以便樣式生效 */
     font-size: 22px;   /* 增加字體大小 */
     font-weight: bold;
@@ -362,7 +366,7 @@ select,
 .dropdown-menu {
     display: none;
     position: absolute;
-    background-color: rgb(232, 230, 230);
+    background-color: #eee;
     border: 1px solid #ccc;
     z-index: 1000;
     width: 100%; /* 設置寬度為 100% */
@@ -387,7 +391,7 @@ select,
 .dropdown-menu .dropdown-item.header-item {
     font-weight: bold;
     pointer-events: none; /* 使其不可選 */
-    background-color: #f1f1f1;
+    background-color: #ddd;
 }
 
 .dropdown {
@@ -424,4 +428,71 @@ select,
         padding: 12px 16px;
         font-size: 2.5rem;
     }
+}
+
+
+/* 通用計時元件樣式 */
+.timer-component {
+    position: relative;
+    padding: 5px;
+    border-bottom: 1px solid #ffffff;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+
+.timer-component .form-group {
+    display: flex;
+    align-items: center;
+    margin: 6px 0;
+    flex-direction: column;
+    width: 100%;
+}
+
+.timer-component .horizontal-form-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.timer-component .horizontal-form-group label {
+    width: 40%;
+    text-align: left;
+}
+
+.timer-component .horizontal-form-group input,
+.timer-component .horizontal-form-group span {
+    width: 60%;
+    padding: 8px;
+    font-size: 18px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.timer-component button {
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 5px 0;
+}
+
+.timer-component button:disabled {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+    pointer-events: none;
+    transition: none;
+}
+
+.timer-component button:hover {
+    background-color: #45a049;
 }

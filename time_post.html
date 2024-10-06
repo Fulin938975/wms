@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生產計時元件</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="nav-placeholder"></div>
+    <div class="container">
+        <!-- T1 元件 -->
+        <div id="t1-container" class="timer-component">
+            <div class="form-group horizontal-form-group">
+                <label for="startTimeDisplay1">開始時間:</label>
+                <input type="text" id="startTimeDisplay1" placeholder="輸入 HHMM" onclick="this.select()" onblur="handleManualTimeUpdate('startTimeDisplay1');">
+            </div>
+            <div class="form-group horizontal-form-group">
+                <label>生產時間:</label>
+                <span id="timerDisplay1">00:00</span>
+            </div>
+            <div class="form-group horizontal-form-group">
+                <label for="endTimeDisplay1">結束時間:</label>
+                <input type="text" id="endTimeDisplay1" placeholder="輸入 HHMM" onclick="this.select()" onblur="handleManualTimeUpdate('endTimeDisplay1');">
+            </div>
+            <button id="timerBtn1" onclick="toggleTimer('1')">開始生產</button>
+        </div>
+
+        <!-- T2 元件 -->
+        <div id="t2-container" class="timer-component">
+            <div class="form-group horizontal-form-group">
+                <label for="startTimeDisplay2">開始時間:</label>
+                <input type="text" id="startTimeDisplay2" placeholder="輸入 HHMM" onclick="this.select()" onblur="handleManualTimeUpdate('startTimeDisplay2');">
+            </div>
+            <div class="form-group horizontal-form-group">
+                <label>生產時間:</label>
+                <span id="timerDisplay2">00:00</span>
+            </div>
+            <div class="form-group horizontal-form-group">
+                <label for="endTimeDisplay2">結束時間:</label>
+                <input type="text" id="endTimeDisplay2" placeholder="輸入 HHMM" onclick="this.select()" onblur="handleManualTimeUpdate('endTimeDisplay2');">
+            </div>
+            <button id="timerBtn2" onclick="toggleTimer('2')">開始生產</button>
+        </div>
+    </div>
+    <script src="time.js"></script>
+    <script src="scripts.js"></script>
+    <script>
+        // 加載導航
+        fetch('nav.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('nav-placeholder').innerHTML = data;
+            });
+    </script>
+</body>
+</html>
