@@ -72,14 +72,19 @@ function endTimer(timerId) {
 
 // 畫面閃爍警告
 async function requestWakeLock() {
-    try {
-        wakeLock = await navigator.wakeLock.request('screen');
-        console.log('螢幕喚醒鎖已啟動');
-        wakeLock.addEventListener('release', () => {
-            console.log('螢幕喚醒鎖已釋放');
-        });
-    } catch (err) {
-        console.error(`${err.name}, ${err.message}`);
+    if ('wakeLock' in navigator) {
+        try {
+            wakeLock = await navigator.wakeLock.request('screen');
+            console.log('螢幕喚醒鎖已啟動');
+            wakeLock.addEventListener('release', () => {
+                console.log('螢幕喚醒鎖已釋放');
+            });
+        } catch (err) {
+            console.error(`${err.name}, ${err.message}`);
+        }
+    } else {
+        console.warn('螢幕喚醒鎖 API 不受支援');
+        // 提供替代方案或提示
     }
 }
 
@@ -119,6 +124,7 @@ function stopFlashScreen(elementId) {
         flashElement.style.backgroundColor = ''; // 恢復原來的背景顏色
     }
     console.log('停止閃爍');
+    releaseWakeLock(); // 釋放螢幕喚醒鎖
 }
 
 // 播放聲音警告
