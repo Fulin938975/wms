@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>生產管理</title>
     <link rel="stylesheet" href="styles.css">
-<script>
-    // 設置預設加載的元件數量
-    var defaultB1Count = 0; // B1 元件數量
-    var defaultB2Count = 0; // B2 元件數量
-    var defaultB3Count = 0; // B3 元件數量
-    
-</script>
+    <script>
+        // 設置預設加載的元件數量
+        var defaultB1Count = 0; // B1 元件數量
+        var defaultB2Count = 0; // B2 元件數量
+        var defaultB3Count = 0; // B3 元件數量
+        var defaultT2Count = 1; // T2 元件數量
+    </script>
 </head>
 <body>
 <div id="nav-placeholder"></div>
@@ -28,18 +28,21 @@
     <div id="produceB3-container-wrapper"></div>
     <button id="add-produceB3-button">肉乾P生產</button>
 
-   
+    <!-- 加載 T2 的內容 -->
+    <div id="produceT2-container-wrapper"></div>
+    <button id="add-produceT2-button">T2 生產</button>
 </div>
 
-    <script src="produceB1.js"></script>
-    <script src="scripts.js"></script>
-    <script>
-        // 加載導航
-        fetch('nav.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('nav-placeholder').innerHTML = data;
-            });
-    </script>
+<script src="produceB1.js"></script>
+<script src="time.js"></script>
+<script src="scripts.js"></script>
+<script>
+    // 加載導航
+    fetch('nav.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('nav-placeholder').innerHTML = data;
+        });
+</script>
 </body>
 </html>

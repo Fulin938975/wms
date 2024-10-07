@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', function() {
         B1: `
             <template id="produceB1-template">
                 <div class="produceB1-component">
-                    <button type="button" class="remove-button"></button>
                     <div class="form-group horizontal-form-group">
                         <label for="produceB1-item">生產品項:</label>
                         <div class="dropdown">
@@ -73,13 +72,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     const itemWeights = {
-        B1: { 肉鬆B生產: 1, },
+        B1: { 招牌細K:1, 原鬆K: 1, 海鬆K: 1,粗海苔K: 1, 特鬆K: 1, 營業K: 1,營業海K: 1, 粗鬆K: 1, 全純K: 1, },
         B2: { 肉鬆K生產: 1, },
         B3: { 肉乾B生產: 1, 厚乾B生產: 1, 五香B生產: 1, 海味B生產: 1, }
     };
 
     const subItems = {
-        肉鬆B生產: ['招牌細B:4.2', '原鬆B: 4.2', '特鬆B: 4.2', '營業B: 4.2', '粗鬆B: 3', '全純B: 3'],
+        肉鬆B生產: ['招牌細B:1', '原鬆B: 1', '特鬆B: 1', '營業B: 1', '粗鬆B: 1', '全純B: 1'],
         肉鬆K生產: ['招牌細K: 1', '原鬆K: 1', '海鬆K: 1','粗海苔K: 1', '特鬆K: 1', '營業原K: 1','營業海K: 1', '粗鬆K: 1', '全純K: 1', '清脯K: 1', '魚鬆K: 1', '魚脯K: 1'],
         肉乾B生產: ['原QB: 6','黑QB: 6','泰式B','脆片B: 3','厚脆B: 6'], 
     };
@@ -217,34 +216,35 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    /*const defaultB1Count = 1; // Define appropriate values
-    const defaultB2Count = 1; // Define appropriate values
-    const defaultB3Count = 1; // Define appropriate values*/
-
     const defaultCounts = {
-        B1: defaultB1Count,
-        B2: defaultB2Count,
-        B3: defaultB3Count
+        B1: typeof defaultB1Count !== 'undefined' ? defaultB1Count : 0,
+        B2: typeof defaultB2Count !== 'undefined' ? defaultB2Count : 0,
+        B3: typeof defaultB3Count !== 'undefined' ? defaultB3Count : 0
     };
 
     Object.keys(defaultCounts).forEach(key => {
-        for (let i = 0; i < defaultCounts[key]; i++) {
-            const containerId = `produce${key}-container-${i + 1}`;
-            const container = document.createElement('div');
-            container.id = containerId;
-            document.getElementById(`produce${key}-container-wrapper`).appendChild(container);
-            addComponent(containerId, `produce${key}-template`, itemWeights[key]);
+        if (defaultCounts[key] > 0 && document.getElementById(`produce${key}-container-wrapper`)) {
+            for (let i = 0; i < defaultCounts[key]; i++) {
+                const containerId = `produce${key}-container-${i + 1}`;
+                const container = document.createElement('div');
+                container.id = containerId;
+                document.getElementById(`produce${key}-container-wrapper`).appendChild(container);
+                addComponent(containerId, `produce${key}-template`, itemWeights[key]);
+            }
         }
     });
 
     Object.keys(defaultCounts).forEach(key => {
-        document.getElementById(`add-produce${key}-button`).addEventListener('click', function() {
-            const newContainerId = `produce${key}-container-${document.querySelectorAll(`[id^="produce${key}-container"]`).length + 1}`;
-            const newContainer = document.createElement('div');
-            newContainer.id = newContainerId;
-            document.getElementById(`produce${key}-container-wrapper`).appendChild(newContainer);
-            addComponent(newContainerId, `produce${key}-template`, itemWeights[key]);
-        });
+        const addButton = document.getElementById(`add-produce${key}-button`);
+        if (addButton) {
+            addButton.addEventListener('click', function() {
+                const newContainerId = `produce${key}-container-${document.querySelectorAll(`[id^="produce${key}-container"]`).length + 1}`;
+                const newContainer = document.createElement('div');
+                newContainer.id = newContainerId;
+                document.getElementById(`produce${key}-container-wrapper`).appendChild(newContainer);
+                addComponent(newContainerId, `produce${key}-template`, itemWeights[key]);
+            });
+        }
     });
 
     document.addEventListener('click', function(event) {

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>肉鬆生產</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="nav-placeholder"></div>
+    <div class="container">
+        <div class="form-group horizontal-form-group">
+            <label for="itemSelect">領料品項:</label>
+            <select id="itemSelect" onchange="setDefaultWeight()">
+              <option value="" disabled selected>請選擇品項</option>
+              <option value="招牌細P">招牌細P</option>
+              <option value="原鬆P">原鬆P</option>
+              <option value="特鬆P">特鬆P</option>
+              <option value="營業P">營業P</option>
+              <option value="粗鬆P">粗鬆P</option>
+              <option value="全純P">全純P</option>
+            </select>
+          </div>
+          
+          
+          
+          
+          <div class="form-group horizontal-form-group">
+            <label for="quantityInput">領料數量(包):</label>
+            <input type="number" id="quantityInput" value="1">
+          </div>
+          
+          
+          <div class="form-group horizontal-form-group">
+            <label for="weightInput">領料重量(KG):</label>
+            <input type="number" id="weightInput" step="0.001" min="0" placeholder="0.000" required>
+          </div>
+          
+          
+          <button id="startBtn" onclick="startTimer()">開始生產</button>
+          
+          
+          <div class="form-group horizontal-form-group">
+            <label for="startTimeDisplay">開始時間:</label>
+            <input type="text" id="startTimeDisplay" placeholder="輸入 HHMM" onclick="this.select()" onblur="updateProductionTime();">
+          </div>
+          
+          
+          <button id="endBtn" onclick="endTimer()" disabled>生產完成</button>
+          
+          
+          <div class="form-group horizontal-form-group">
+            <label for="endTimeDisplay">結束時間:</label>
+            <input type="text" id="endTimeDisplay" placeholder="輸入 HHMM" onclick="this.select()" onblur="updateProductionTime();">
+          </div>
+          
+          
+          <div class="form-group horizontal-form-group">
+            <label>生產時間:</label>
+            <span id="timerDisplay" style="font-size: 18px; font-weight: bold;">0:00</span> <!-- 调整样式 -->
+          </div>
+          
+          
+          <!-- 生產品項 -->
+          <div class="form-group horizontal-form-group">
+            <label for="productionItemSelect">生產品項:</label>
+            <select id="productionItemSelect">
+              <option value="" disabled selected>請選擇品項</option>
+              <option value="營業原K">營業原K</option>
+              <option value="營業海K">營業海K</option>
+              <option value="特鬆K">特鬆K</option>
+              <option value="粗海苔K">粗海苔K</option>
+              <option value="招牌細K">招牌細K</option>
+              <option value="原鬆K">原鬆K</option>
+              <option value="海鬆K">海鬆K</option>
+              <option value="粗鬆K">粗鬆K</option>
+              <option value="全純K">全純K</option>
+            </select>
+          </div>
+          
+          
+          <!-- 生產重量 -->
+          <div class="form-group horizontal-form-group">
+            <label for="productionWeightInput">生產重量(KG):</label>
+            <input type="number" id="productionWeightInput" step="0.001" min="0" placeholder="0.000" required>
+          </div>
+          
+          
+          
+          
+          <div class="form-group horizontal-form-group">
+            <label for="remarksInput">備註:</label>
+            <textarea id="remarksInput" placeholder="在此輸入備註..." rows="1"></textarea>
+          
+          
+          </div>
+            <button id="submitBtn" onclick="submitForm()" disabled>提交表單</button>
+          </div>
+          <div>
+          <span id="currentDateTime"></span>
+          
+    </div>
+    <script src="mscripts.js"></script>
+    <script>
+        // 加載導航
+        fetch('nav.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('nav-placeholder').innerHTML = data;
+            });        
+    </script>
+</body>
+</html>

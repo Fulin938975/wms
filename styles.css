@@ -32,9 +32,10 @@ header {
 /* 頂部導航欄樣式 */
 .nav {
     height: 60px; /* 設置固定高度 */
-    background-color: #ffffff; /* 背景顏色 */
+    background-color: rgb(20, 228, 221); /* 背景顏色 */
+    background-color: #4CAF50; /* 背景顏色 */
     overflow: hidden; /* 隱藏溢出內容 */
-    color: #333333; /* 文字顏色 */
+    color: #f1f1f1; /* 文字顏色 */
     padding: 10px 15px; /* 內邊距 */
     display: flex; /* 使用 Flexbox 布局 */
     align-items: center; /* 垂直置中 */
@@ -43,7 +44,7 @@ header {
     width: 100%; /* 寬度設置為 100% */
     z-index: 1000; /* 確保導航欄在其他元素之上 */
     justify-content: space-between; /* 兩端對齊 */
-    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.1); /* 添加陰影 */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* 添加陰影 */
 }
 
 .nav h1 {
@@ -136,7 +137,7 @@ header {
 #produceB3-container-wrapper .produceB3-component  {
     margin-top: 0PX; /* 留出頂部導航欄的空間 */
     max-width: 100%;   /* 確保外層容器最大寬度不超出100% */
-    padding-top: 30px;
+    padding-top: 20px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -153,7 +154,7 @@ header {
     position: relative;
     padding: 5px;
     border-bottom: 1px solid #ffffff;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
     margin-bottom: 10px;
     border-radius: 4px; /* 設置圓角為4px */
 }
@@ -196,7 +197,7 @@ header {
     margin: 5px;
     padding: 10px;
     text-align: center;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.2);
     flex-basis: 100%;
     box-sizing: border-box;
     transition: all 0.3s ease;
@@ -277,6 +278,7 @@ button {
     border: 1px solid #ccc;  /* 相同的邊框樣式 */
     border-radius: 4px;  /* 圓角樣式 */
     box-sizing: border-box;  /* 保證內外邊距計算方式一致 */
+    text-align: center; /* 使文字在其框中居中對齊 */
 }
 
 /* 禁用狀態的按鈕樣式 */
@@ -299,8 +301,8 @@ button:hover {
  {
     display: block;    /* 使其成為塊級元素，以便樣式生效 */
     font-size: 18px;   /* 增加字體大小 */
-    font-weight: bold;
-    color: red;
+    font-weight: bold; /* 加粗字體 */
+    color: red; /* 紅色字體 */
     line-height: 1.2;  /* 調整行高，確保垂直對齊 */
     margin-top: 0px;   /* 微調位置 */
     text-align: center; /* 使文字在其框中居中對齊 */
@@ -309,11 +311,11 @@ button:hover {
 /* 設置下拉選單樣式 */
 select, 
 .dropdown button {
-    padding: 6px;   /* 內邊距 */
+    padding: 8px;   /* 內邊距 */
     font-size: 18px;    /* 字體大小 */
     border: 1px solid #ccc; /* 設置邊框 */
     box-sizing: border-box; /* 設置盒模型為邊框盒模型 */
-    background-color: #4CAF50;  /* 設置背景顏色 */
+    background-color: #adadad;  /* 設置背景顏色 */
     width: 100%; /* 確保下拉選單寬度為父元素的 100% */
     color: #ffffff; /* 文字顏色 */
     border-radius: 4px; /* 圓角 */
@@ -432,7 +434,15 @@ select,
 
 
 /* 通用計時元件樣式 */
-.timer-component {
+#produceT1-container-wrapper,
+#produceT2-container-wrapper {
+    /* 這裡可以添加對容器的樣式 */
+    width: 100%;
+}
+
+
+.timer-component
+{
     position: relative;
     padding: 5px;
     border-bottom: 1px solid #ffffff;
@@ -442,7 +452,7 @@ select,
     width: 100%;   /* 設置寬度為 100% */
 }
 
-.timer-component .form-group {
+.timer-component .form-group  {
     display: flex;
     align-items: center;
     margin: 6px 0;
@@ -475,7 +485,7 @@ select,
 
 .timer-component button {
     width: 100%;
-    padding: 10px;
+    padding: 8px;
     font-size: 18px;
     background-color: #4CAF50;
     color: white;

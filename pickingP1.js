@@ -3,8 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
         P1: `
             <template id="pickingP1-template">
                 <div class="pickingP1-component">
-                <button type="button" class="remove-button"></button>
-                <div class="form-group horizontal-form-group">
+                    <div class="form-group horizontal-form-group">
                         <label for="pickingP1-item">領料品項:</label>
                         <div class="dropdown">
                             <button class="dropdown-toggle pickingP1-item" type="button">請選擇分類</button>
@@ -73,8 +72,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });   
 
     const itemWeights = {
-        P1: { 肉鬆P領料: 1, },
-        P2: { 肉鬆K領料: 1, },
+        P1: { 招牌細P:4.2, 原鬆P: 4.2, 特鬆P: 4.2, 營業P: 4.2, 粗鬆P: 3, 全純P: 3 },
+        P2: { 肉鬆P領料: 1,肉鬆K領料: 1, },
         P3: { 肉乾P領料: 1, 厚乾P領料: 1, 五香P領料: 1, 海味P領料: 1, }
     };
 
@@ -217,34 +216,35 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    /*const defaultP1Count = 0; // Define appropriate values
-    const defaultP2Count = 0; // Define appropriate values
-    const defaultP3Count = 0; // Define appropriate values*/
-
     const defaultCounts = {
-        P1: defaultP1Count,
-        P2: defaultP2Count,
-        P3: defaultP3Count
+        P1: typeof defaultP1Count !== 'undefined' ? defaultP1Count : 0,
+        P2: typeof defaultP2Count !== 'undefined' ? defaultP2Count : 0,
+        P3: typeof defaultP3Count !== 'undefined' ? defaultP3Count : 0
     };
 
     Object.keys(defaultCounts).forEach(key => {
-        for (let i = 0; i < defaultCounts[key]; i++) {
-            const containerId = `picking${key}-container-${i + 1}`;
-            const container = document.createElement('div');
-            container.id = containerId;
-            document.getElementById(`picking${key}-container-wrapper`).appendChild(container);
-            addComponent(containerId, `picking${key}-template`, itemWeights[key]);
+        if (defaultCounts[key] > 0 && document.getElementById(`picking${key}-container-wrapper`)) {
+            for (let i = 0; i < defaultCounts[key]; i++) {
+                const containerId = `picking${key}-container-${i + 1}`;
+                const container = document.createElement('div');
+                container.id = containerId;
+                document.getElementById(`picking${key}-container-wrapper`).appendChild(container);
+                addComponent(containerId, `picking${key}-template`, itemWeights[key]);
+            }
         }
     });
 
     Object.keys(defaultCounts).forEach(key => {
-        document.getElementById(`add-picking${key}-button`).addEventListener('click', function() {
-            const newContainerId = `picking${key}-container-${document.querySelectorAll(`[id^="picking${key}-container"]`).length + 1}`;
-            const newContainer = document.createElement('div');
-            newContainer.id = newContainerId;
-            document.getElementById(`picking${key}-container-wrapper`).appendChild(newContainer);
-            addComponent(newContainerId, `picking${key}-template`, itemWeights[key]);
-        });
+        const addButton = document.getElementById(`add-picking${key}-button`);
+        if (addButton) {
+            addButton.addEventListener('click', function() {
+                const newContainerId = `picking${key}-container-${document.querySelectorAll(`[id^="picking${key}-container"]`).length + 1}`;
+                const newContainer = document.createElement('div');
+                newContainer.id = newContainerId;
+                document.getElementById(`picking${key}-container-wrapper`).appendChild(newContainer);
+                addComponent(newContainerId, `picking${key}-template`, itemWeights[key]);
+            });
+        }
     });
 
     document.addEventListener('click', function(event) {

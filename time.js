@@ -1,14 +1,129 @@
+document.addEventListener('DOMContentLoaded', function() {
+    const templates = {
+        T1: `
+            <template id="produceT1-template">
+                <div id="t1-container" class="timer-component">
+                    <div class="form-group horizontal-form-group">
+                        <label for="startTimeDisplay1">開始時間:</label>
+                        <input type="text" id="startTimeDisplay1" placeholder="輸入 HHMM" onclick="this.select()" onblur="handleManualTimeUpdate('startTimeDisplay1');">
+                    </div>
+                    <div class="form-group horizontal-form-group">
+                        <label>生產時間:</label>
+                        <span id="timerDisplay1">00:00</span>
+                    </div>
+                    <div class="form-group horizontal-form-group">
+                        <label for="endTimeDisplay1">結束時間:</label>
+                        <input type="text" id="endTimeDisplay1" placeholder="輸入 HHMM" onclick="this.select()" onblur="handleManualTimeUpdate('endTimeDisplay1');">
+                    </div>
+                    <button id="timerBtn1" onclick="toggleTimer('1')">
+                        <span class="btn-text">開始生產</span>
+                    </button>
+                </div>
+            </template>
+        `,
+        T2: `
+            <template id="produceT2-template">
+                <div id="t2-container" class="timer-component">
+                    <div class="form-group horizontal-form-group">
+                        <label for="startTimeDisplay2">開始時間:</label>
+                        <input type="text" id="startTimeDisplay2" placeholder="輸入 HHMM" onclick="this.select()" onblur="handleManualTimeUpdate('startTimeDisplay2');">
+                    </div>
+                    <div class="form-group horizontal-form-group">
+                        <label>生產時間:</label>
+                        <span id="timerDisplay2">00:00</span>
+                    </div>
+                    <div class="form-group horizontal-form-group">
+                        <label for="endTimeDisplay2">結束時間:</label>
+                        <input type="text" id="endTimeDisplay2" placeholder="輸入 HHMM" onclick="this.select()" onblur="handleManualTimeUpdate('endTimeDisplay2');">
+                    </div>
+                    <div class="progress-container">
+                        <div id="progressBarT2" class="progress-bar-t2"></div>
+                    </div>
+                    <button id="timerBtn2" onclick="toggleTimer('2')">
+                        <span class="btn-text">開始生產</span>
+                    </button>
+                </div>
+            </template>
+        `
+    };
+
+    Object.values(templates).forEach(template => {
+        document.body.insertAdjacentHTML('beforeend', template);
+    });
+
+    const defaultCounts = {
+        T1: typeof defaultT1Count !== 'undefined' ? defaultT1Count : 0,
+        T2: typeof defaultT2Count !== 'undefined' ? defaultT2Count : 0
+    };
+
+    Object.keys(defaultCounts).forEach(key => {
+        if (defaultCounts[key] > 0 && document.getElementById(`produce${key}-container-wrapper`)) {
+            for (let i = 0; i < defaultCounts[key]; i++) {
+                const containerId = `produce${key}-container-${i + 1}`;
+                const container = document.createElement('div');
+                container.id = containerId;
+                document.getElementById(`produce${key}-container-wrapper`).appendChild(container);
+                addComponent(containerId, `produce${key}-template`);
+            }
+        }
+    });
+
+    Object.keys(defaultCounts).forEach(key => {
+        const addButton = document.getElementById(`add-produce${key}-button`);
+        if (addButton) {
+            addButton.addEventListener('click', function() {
+                const newContainerId = `produce${key}-container-${document.querySelectorAll(`[id^="produce${key}-container"]`).length + 1}`;
+                const newContainer = document.createElement('div');
+                newContainer.id = newContainerId;
+                document.getElementById(`produce${key}-container-wrapper`).appendChild(newContainer);
+                addComponent(newContainerId, `produce${key}-template`);
+            });
+        }
+    });
+
+    function addComponent(containerId, templateId) {
+        const template = document.getElementById(templateId);
+        if (!template) {
+            console.error(`${templateId} 模板未找到`);
+            return;
+        }
+        const container = document.getElementById(containerId);
+        if (!container) {
+            console.error(`${containerId} 容器未找到`);
+            return;
+        }
+        const clone = document.importNode(template.content, true);
+        container.appendChild(clone);
+    }
+
+    // 初始化計時器
+    function initTimer(timerId) {
+        timers[timerId] = {
+            running: false,
+            elapsedTime: 0,
+            startTime: null,
+            endTime: null,
+            flashing: false, // 初始化閃爍狀態
+            soundPlayed: false, // 初始化聲音播放狀態
+            wakeLock: null, // 初始化螢幕喚醒鎖
+            wakeLockInterval: null // 初始化螢幕喚醒間隔
+        };
+        manualTimeUpdated[timerId] = false;
+    }
+
+    // 初始化 T1 和 T2 計時器
+    initTimer('1');
+    initTimer('2');
+});
+
+// 其他功能保持不變
 let timers = {};
 let timerIntervals = {};
 let manualTimeUpdated = {};
 const standardTime = 10000; // 16分鐘   
 const maxTime = 15000; // 22分鐘 
 const warningTime = 12000; // 設置警告時間為確實的經過時間，例如 12000 毫秒（20 分鐘）
-const soundWarningTime = 20000; // 聲音警告時間，單位為毫秒 (例如 2 分鐘)
-let soundInterval; // 用於存儲聲音警告的間隔 ID
-let flashInterval;
-let wakeLock = null; // 用於存儲螢幕喚醒鎖
-let wakeLockInterval; // 用於定期檢查螢幕喚醒鎖的間隔 ID
+const soundWarningTime = 8000; // 設置聲音警告時間，例如 8000 毫秒（13 分鐘）
 
 // 切換計時器狀態
 function toggleTimer(timerId) {
@@ -25,8 +140,6 @@ function startTimer(timerId) {
         timers[timerId].running = true;
         timers[timerId].startTime = manualTimeUpdated[timerId] ? parseTime(document.getElementById(`startTimeDisplay${timerId}`).value) : Date.now() - timers[timerId].elapsedTime;
         document.getElementById(`startTimeDisplay${timerId}`).value = getCurrentTime(timers[timerId].startTime);
-        requestWakeLock(); // 在開始計時時請求螢幕喚醒鎖
-        wakeLockInterval = setInterval(requestWakeLock, 60000); // 每分鐘重新請求一次螢幕喚醒鎖
         timerIntervals[timerId] = setInterval(() => {
             timers[timerId].elapsedTime = Date.now() - timers[timerId].startTime;
             document.getElementById(`timerDisplay${timerId}`).innerText = formatTime(timers[timerId].elapsedTime);
@@ -36,24 +149,26 @@ function startTimer(timerId) {
             // 檢查是否達到警告時間
             if (timers[timerId].elapsedTime >= warningTime && !timers[timerId].flashing) {
                 console.log('達到警告時間，開始閃爍');
-                flashScreen('timerBtn2'); // 只讓 T2 元件的開始生產按鈕閃爍
+                flashScreen(timerId);
                 timers[timerId].flashing = true; // 設置閃爍狀態
             }
             // 檢查是否達到聲音警告時間
-            if (timers[timerId].elapsedTime >= soundWarningTime && !timers[timerId].soundPlaying) {
+            if (timers[timerId].elapsedTime >= soundWarningTime && !timers[timerId].soundPlayed) {
                 console.log('達到聲音警告時間，播放聲音');
                 playSound();
-                soundInterval = setInterval(playSound, 5000); // 每5秒播放一次聲音
-                timers[timerId].soundPlaying = true; // 設置聲音播放狀態
+                timers[timerId].soundPlayed = true; // 設置聲音已播放狀態
             }
             // 檢查是否達到最大時間
             if (timers[timerId].elapsedTime >= maxTime) {
                 console.log('達到最大時間');
-                // 這裡可以添加其他需要在達到最大時間時執行的操作
+                playSound();
             }
         }, 1000);
         document.getElementById(`timerBtn${timerId}`).querySelector('.btn-text').innerText = '生產完成';
         manualTimeUpdated[timerId] = false;
+
+        // 啟動螢幕喚醒功能
+        startWakeLock(timerId);
     }
 }
 
@@ -62,77 +177,43 @@ function endTimer(timerId) {
     if (timers[timerId].running) {
         timers[timerId].running = false;
         clearInterval(timerIntervals[timerId]);
-        clearInterval(soundInterval); // 停止聲音警告的連續播放
-        clearInterval(wakeLockInterval); // 停止定期檢查螢幕喚醒鎖
-        document.getElementById(`endTimeDisplay${timerId}`).value = getCurrentTime(); // 設置結束時間
-        stopFlashScreen('timerBtn2'); // 停止 T2 元件的閃爍
-        releaseWakeLock(); // 釋放螢幕喚醒鎖
         document.getElementById(`timerBtn${timerId}`).querySelector('.btn-text').innerText = '已完成';
         document.getElementById(`timerBtn${timerId}`).disabled = true;
         document.getElementById(`timerBtn${timerId}`).style.backgroundColor = 'gray';
+        document.getElementById(`endTimeDisplay${timerId}`).value = getCurrentTime(); // 設置結束時間
+        stopFlashScreen(timerId); // 按下“生產完成”按鈕時停止畫面閃爍
+
+        // 停止螢幕喚醒功能
+        stopWakeLock(timerId);
     }
 }
 
 // 畫面閃爍警告
-async function requestWakeLock() {
-    if ('wakeLock' in navigator) {
-        try {
-            wakeLock = await navigator.wakeLock.request('screen');
-            console.log('螢幕喚醒鎖已啟動');
-            wakeLock.addEventListener('release', () => {
-                console.log('螢幕喚醒鎖已釋放');
-            });
-        } catch (err) {
-            console.error(`${err.name}, ${err.message}`);
-        }
-    } else {
-        console.warn('螢幕喚醒鎖 API 不受支援');
-        // 提供替代方案或提示
-    }
-}
-
-function releaseWakeLock() {
-    if (wakeLock !== null) {
-        wakeLock.release()
-            .then(() => {
-                wakeLock = null;
-                console.log('螢幕喚醒鎖已釋放');
-            });
-    }
-}
-
-function flashScreen(elementId) {
+let flashInterval;
+function flashScreen(timerId) {
     if (flashInterval) {
         clearInterval(flashInterval);
     }
     let flashCount = 0;
-    const flashElement = document.getElementById(elementId); // 獲取特定的閃爍容器
-    if (!flashElement) {
-        console.error(`找不到 ID 為 ${elementId} 的元素`);
-        return;
-    }
+    const button = document.getElementById(`timerBtn${timerId}`);
     flashInterval = setInterval(() => {
-        flashElement.style.backgroundColor = (flashCount % 2 === 0) ? 'red' : 'yellow'; // 閃爍背景顏色
+        button.style.backgroundColor = (flashCount % 2 === 0) ? 'red' : '';
         flashCount++;
-        console.log(`閃爍次數: ${flashCount}`);
     }, 500); // 每500毫秒閃爍一次
 }
 
 // 停止畫面閃爍
-function stopFlashScreen(elementId) {
+function stopFlashScreen(timerId) {
     clearInterval(flashInterval);
     flashInterval = null;
-    const flashElement = document.getElementById(elementId); // 獲取特定的閃爍容器
-    if (flashElement) {
-        flashElement.style.backgroundColor = ''; // 恢復原來的背景顏色
-    }
+    const button = document.getElementById(`timerBtn${timerId}`);
+    button.style.backgroundColor = ''; // 恢復原來的背景顏色
     console.log('停止閃爍');
-    releaseWakeLock(); // 釋放螢幕喚醒鎖
 }
 
 // 播放聲音警告
 function playSound() {
-    const audio = new Audio('sounds/xm3020.wav'); // 替換為你的音頻文件路徑
+    const audio = new Audio('sounds/alert.mp3'); // 替換為你的音頻文件路徑
     audio.play();
 }
 
@@ -233,19 +314,33 @@ function handleManualTimeUpdate(inputId) {
     updateProductionTime(timerId);
 }
 
-// 初始化計時器
-function initTimer(timerId) {
-    timers[timerId] = {
-        running: false,
-        elapsedTime: 0,
-        startTime: null,
-        endTime: null,
-        flashing: false, // 初始化閃爍狀態
-        soundPlaying: false // 初始化聲音播放狀態
-    };
-    manualTimeUpdated[timerId] = false;
+// 螢幕喚醒功能
+async function startWakeLock(timerId) {
+    try {
+        timers[timerId].wakeLock = await navigator.wakeLock.request('screen');
+        console.log('螢幕喚醒已啟動');
+        timers[timerId].wakeLockInterval = setInterval(async () => {
+            try {
+                timers[timerId].wakeLock = await navigator.wakeLock.request('screen');
+                console.log('螢幕喚醒已重新啟動');
+            } catch (err) {
+                console.error('螢幕喚醒重新啟動失敗:', err);
+            }
+        }, 60000); // 每隔1分鐘重新喚醒一次
+    } catch (err) {
+        console.error('螢幕喚醒啟動失敗:', err);
+    }
 }
 
-// 初始化 T1 和 T2 計時器
-initTimer('1');
-initTimer('2');
+function stopWakeLock(timerId) {
+    if (timers[timerId].wakeLock) {
+        timers[timerId].wakeLock.release().then(() => {
+            console.log('螢幕喚醒已停止');
+        });
+        timers[timerId].wakeLock = null;
+    }
+    if (timers[timerId].wakeLockInterval) {
+        clearInterval(timers[timerId].wakeLockInterval);
+        timers[timerId].wakeLockInterval = null;
+    }
+}
