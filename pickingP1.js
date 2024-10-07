@@ -173,6 +173,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     dropdownMenu.classList.remove('show'); // 關閉下拉選單
                     isPrimarySelection = true; // 重置為一級選單狀態
+
+                    
                 }
             }
         });

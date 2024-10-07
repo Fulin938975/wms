@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     const itemWeights = {
-        B1: { 招牌細K:1, 原鬆K: 1, 海鬆K: 1,粗海苔K: 1, 特鬆K: 1, 營業K: 1,營業海K: 1, 粗鬆K: 1, 全純K: 1, },
+        B1: { 招牌細K:1, 原鬆K: 1, 海鬆K: 1,粗海苔K: 1, 特鬆K: 1, 營業原K: 1,營業海K: 1, 粗鬆K: 1, 全純K: 1, },
         B2: { 肉鬆K生產: 1, },
         B3: { 肉乾B生產: 1, 厚乾B生產: 1, 五香B生產: 1, 海味B生產: 1, }
     };
@@ -173,6 +173,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     dropdownMenu.classList.remove('show'); // 關閉下拉選單
                     isPrimarySelection = true; // 重置為一級選單狀態
+
+                    
                 }
             }
         });
