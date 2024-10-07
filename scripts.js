@@ -1,78 +1,95 @@
 document.addEventListener('DOMContentLoaded', function() {
-  console.log("DOM fully loaded and parsed");
+    console.log("DOM fully loaded and parsed");
 
-  // 領料品項對應的生產品項映射
-  const itemMapping = {
-      '招牌細P': '招牌細K',
-      '原鬆P': '原鬆K',
-      '特鬆P': '粗海苔K',
-      '營業P': '營業原K',
-      '粗鬆P': '粗鬆K',
-      '全純P': '全純K'
-  };
+    // 領料品項對應的生產品項映射（多選項對應）
+    const itemMapping = {
+        '招牌細P': ['招牌細K'],
+        '原鬆P': ['原鬆K'],
+        '特鬆P': ['粗海苔K', '特鬆K'],
+        '營業P': ['營業原K'],
+        '粗鬆P': ['粗鬆K'],
+        '全純P': ['全純K']
+    };
 
-  // 綁定 P1 選單的交互邏輯
-  function bindPickingEvents() {
-      const pickingToggles = document.querySelectorAll('.pickingP1-component .dropdown-toggle');
+    // 綁定領料選單的交互邏輯
+    function bindPickingEvents() {
+        const pickingToggles = document.querySelectorAll('.pickingP1-component .dropdown-toggle');
 
-      pickingToggles.forEach(pickingToggle => {
-          const dropdownMenu = pickingToggle.nextElementSibling;
+        pickingToggles.forEach(pickingToggle => {
+            const dropdownMenu = pickingToggle.nextElementSibling;
 
-          if (!dropdownMenu || !dropdownMenu.classList.contains('dropdown-menu')) {
-              console.warn("No valid dropdown menu found for picking toggle:", pickingToggle);
-              return;
-          }
+            // 點擊選單按鈕，切換選單顯示狀態
+            pickingToggle.addEventListener('click', function() {
+                dropdownMenu.classList.toggle('show');
+            });
 
-          // 點擊選單按鈕，顯示或隱藏選單
-          pickingToggle.addEventListener('click', function() {
-              dropdownMenu.classList.toggle('show');
-          });
+            // 點擊選單項目，選擇項目
+            dropdownMenu.addEventListener('click', function(event) {
+                if (event.target.classList.contains('dropdown-item') && !event.target.classList.contains('header-item')) {
+                    const selectedItem = event.target.textContent;
+                    console.log("Picking item selected:", selectedItem);
+                    pickingToggle.textContent = selectedItem;
 
-          // 點擊選單項目時進行選擇
-          dropdownMenu.addEventListener('click', function(event) {
-              if (event.target.classList.contains('dropdown-item')) {
-                  const selectedItem = event.target.textContent.trim();
-                  console.log("Picking item selected:", selectedItem);
-                  pickingToggle.textContent = selectedItem;
+                    // 自動更新生產品項
+                    if (itemMapping[selectedItem]) {
+                        setProduceItems(itemMapping[selectedItem]);
+                    }
 
-                  // 關閉選單
-                  dropdownMenu.classList.remove('show');
+                    dropdownMenu.classList.remove('show'); // 關閉選單
+                }
+            });
+        });
+    }
 
-                  // 立即將對應的值設置到 B2 顯示框內
-                  updateB2DisplayValue(selectedItem);
-              }
-          });
-      });
-  }
+    // 通用函數：設置生產品項的值
+    function setProduceItems(produceItems) {
+        console.log("Setting produce items:", produceItems);
+        const produceToggles = document.querySelectorAll('.produceB1-component .dropdown-toggle');
 
-  // 直接將選定的 P1 對應的值顯示到 B2 框內
-  function updateB2DisplayValue(selectedP1Item) {
-      console.log("Setting B2 value for selected P1 item:", selectedP1Item);
+        produceToggles.forEach(produceToggle => {
+            const dropdownMenu = produceToggle.nextElementSibling;
 
-      // 找到所有 B2 元件的顯示框，這裡假設 .produceB2-component 內有一個需要顯示選擇值的 .dropdown-toggle
-      const b2Components = document.querySelectorAll('.produceB2-component .dropdown-toggle');
+            if (dropdownMenu) {
+                // 清空舊的選單項目
+                dropdownMenu.innerHTML = '';
 
-      if (b2Components.length === 0) {
-          console.warn("No B2 component found to update. Ensure B2 component is available.");
-          return; // 如果沒有找到 B2 元件，直接返回
-      }
+                // 填充新的生產品項選單
+                produceItems.forEach(item => {
+                    const option = document.createElement('div');
+                    option.className = 'dropdown-item';
+                    option.textContent = item;
+                    dropdownMenu.appendChild(option);
+                });
 
-      // 獲取 P1 選定的對應值
-      const correspondingValue = itemMapping[selectedP1Item] || '未選擇';
+                // 自動選擇第一個選項作為默認值
+                if (produceItems.length > 0) {
+                    produceToggle.textContent = produceItems[0];
+                    produceToggle.style.backgroundColor = '#ffffff';
+                    produceToggle.style.color = '#000000';
+                }
+            } else {
+                console.error("No dropdown menu found for produceB1-item:", produceToggle);
+            }
+        });
+    }
 
-      // 更新每個 B2 元件的顯示框
-      b2Components.forEach(b2Component => {
-          b2Component.textContent = correspondingValue;
-          console.log("Updated B2 component display to:", correspondingValue);
-      });
-  }
+    // 使用 MutationObserver 監控 DOM 變化，確保動態新增的元件可以正確綁定事件
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'childList') {
+                mutation.addedNodes.forEach(function(node) {
+                    if (node.classList && (node.classList.contains('pickingP1-component') || node.classList.contains('produceB1-component'))) {
+                        console.log("New component added:", node);
+                        bindPickingEvents();
+                    }
+                });
+            }
+        });
+    });
 
-  // 初始化函數
-  function initialize() {
-      // 綁定 P1 的交互事件
-      bindPickingEvents();
-  }
+    // 監控整個文檔的變化
+    observer.observe(document.body, { childList: true, subtree: true });
 
-  // 啟動初始化
-  initialize();
+    // 初始化：綁定現有的領料和生產選單的交互
+    bindPickingEvents();
 });
