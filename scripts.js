@@ -93,3 +93,164 @@ document.addEventListener('DOMContentLoaded', function() {
     // 初始化：綁定現有的領料和生產選單的交互
     bindPickingEvents();
 });
+
+/*--------------------------------------*/
+
+document.addEventListener('DOMContentLoaded', function () {
+    // 收集 P1 元件數據
+    function getP1Data() {
+        const itemElement = document.querySelector('.pickingP1-item');
+        const quantityElement = document.querySelector('.pickingP1-quantity');
+        const weightElement = document.querySelector('.pickingP1-weight');
+
+        if (!itemElement || !quantityElement || !weightElement) {
+            throw new Error('One or more P1 elements are missing');
+        }
+
+        return {
+            item: itemElement.textContent.trim(),  // 領料品項
+            quantity: quantityElement.value.trim(),  // 領料數量
+            weight: weightElement.value.trim()  // 領料重量
+        };
+    }
+
+    // 收集 T2 元件數據
+    function getT2Data() {
+        const startTimeElement = document.getElementById('startTimeDisplay2');
+        const endTimeElement = document.getElementById('endTimeDisplay2');
+        const elapsedTimeElement = document.getElementById('timerDisplay2');
+
+        if (!startTimeElement || !endTimeElement || !elapsedTimeElement) {
+            throw new Error('One or more T2 elements are missing');
+        }
+
+        return {
+            startTime: startTimeElement.value.trim(),  // 開始時間
+            endTime: endTimeElement.value.trim(),  // 結束時間
+            elapsedTime: elapsedTimeElement.textContent.trim()  // 計時時間
+        };
+    }
+
+    // 收集 B1 元件數據
+    function getB1Data() {
+        const itemElement = document.querySelector('.produceB1-item');
+        const quantityElement = document.querySelector('.produceB1-quantity');
+        const weightElement = document.querySelector('.produceB1-weight');
+
+        if (!itemElement || !quantityElement || !weightElement) {
+            throw new Error('One or more B1 elements are missing');
+        }
+
+        return {
+            item: itemElement.textContent.trim(),  // 生產品項
+            quantity: quantityElement.value.trim(),  // 生產數量
+            weight: weightElement.value.trim()  // 生產重量
+        };
+    }
+
+    // 收集備註數據
+    function getRemarksData() {
+        const remarkElement = document.getElementById('remarksInput');
+
+        if (!remarkElement) {
+            throw new Error('Remarks element is missing');
+        }
+
+        return remarkElement.value.trim();  // 備註
+    }
+
+    // 當按下提交按鈕時執行
+    document.getElementById('submitButton').addEventListener('click', async function (event) {
+        event.preventDefault(); // 防止表單默認提交行為
+
+        try {
+            // 獲取 P1, T2, B1 元件的數據
+            const p1Data = getP1Data();
+            const b1Data = getB1Data();
+            const data = {
+                'P1動作': '領料', // 領料品項
+                P1: p1Data,
+                T2: getT2Data(),
+                'B1動作': '生產', // 生產品項
+                B1: b1Data,
+                remarks: getRemarksData()  // 新增備註字段
+            };
+
+            // 調試輸出
+            console.log('Collected P1 data:', data.P1);
+            console.log('Collected T2 data:', data.T2);
+            console.log('Collected B1 data:', data.B1);
+            console.log('Collected remarks:', data.remarks);
+
+
+/*--------------------------------------*/
+
+
+            /*--------------------------------------*/
+
+            // 將數據發送到 Google Apps Script
+            await submitData(data);
+        } catch (error) {
+            console.error('Error collecting form data:', error);
+            alert('表單提交失敗，請檢查所有字段是否正確填寫');
+        }
+    });
+
+    // 定義 submitData 函數
+    async function submitData(data) {
+        try {
+            const response = await fetch('https://script.google.com/macros/s/AKfycbx6jjTZ-VIu_cO5y92-35OMhMgdL78vn3fkPvKKbgkM9eYvHcC6T__hmp-Fg75mYLngTw/exec', {
+                method: 'POST',
+                body: JSON.stringify(data)
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            // 獲取並顯示響應結果
+            const result = await response.text();
+            alert(result);
+
+            // 提交表單成功後，重置表單
+            createForm(); // 調用創建新表單的功能來清空表單並重置計時器狀態
+        } catch (error) {
+            console.error('表單提交失敗:', error);
+            alert('表單提交失敗，請稍後再試');
+        }
+    }
+
+    // 定義 createForm 函數
+    function createForm() {
+        // 重置 P1 元件
+        const p1ItemElement = document.querySelector('.pickingP1-item');
+        const p1QuantityElement = document.querySelector('.pickingP1-quantity');
+        const p1WeightElement = document.querySelector('.pickingP1-weight');
+
+        if (p1ItemElement) p1ItemElement.textContent = '';
+        if (p1QuantityElement) p1QuantityElement.value = '';
+        if (p1WeightElement) p1WeightElement.value = '';
+
+        // 重置 T2 元件
+        const startTimeElement = document.getElementById('startTimeDisplay2');
+        const endTimeElement = document.getElementById('endTimeDisplay2');
+        const elapsedTimeElement = document.getElementById('timerDisplay2');
+
+        if (startTimeElement) startTimeElement.value = '';
+        if (endTimeElement) endTimeElement.value = '';
+        if (elapsedTimeElement) elapsedTimeElement.textContent = '00:00';
+
+        // 重置 B1 元件
+        const b1ItemElement = document.querySelector('.produceB1-item');
+        const b1QuantityElement = document.querySelector('.produceB1-quantity');
+        const b1WeightElement = document.querySelector('.produceB1-weight');
+
+        if (b1ItemElement) b1ItemElement.textContent = '';
+        if (b1QuantityElement) b1QuantityElement.value = '';
+        if (b1WeightElement) b1WeightElement.value = '';
+
+        // 重置備註字段
+        const remarkElement = document.getElementById('remarksInput');
+        if (remarkElement) remarkElement.value = '';
+    }
+});
