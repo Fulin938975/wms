@@ -18,11 +18,21 @@ git pull origin main
 # 檢查拉取狀態
 git status
 
+# 只要遠端更新
+選項 3：放棄本地更改（如果您確定不需要這些更改）
+放棄本地更改：
+it reset --hard
+拉取最新的更改：
+git pull origin main
+請根據您的需求選擇合適的選項。如果您希望保留本地更改，建議使用選項 1 或選項 2。如果您確定不需要本地更改，可以使用選項 3。
+
 # 如果有衝突，解決衝突後添加並提交
 git add <conflicted-file>
 git commit -m "Resolve merge conflict"
 
 不要表頭!!!'Content-Type': 'text/plain'  // 設置內容類型為 text/plain
+
+
 
 # 獨立元件選單邏輯宣告
 建立一個 PickingP1.HTML 的文件 裡面放置 一組 領料模板跟領料選單和邏輯 都要定義名PickingP1 所有項目 功能都一樣 這個資源 只會有一組元件 等待頁面加載 記住 我會在同一個頁面 分別加載 p1 p2 p3 所以你的定義要確實 並免混用

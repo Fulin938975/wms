@@ -41,6 +41,11 @@ document.addEventListener("DOMContentLoaded", function() {
           const pageTitleElement = document.getElementById('page-title');
           if (pageTitleElement) {
               pageTitleElement.innerText = pageTitle;
+
+              // 添加點擊事件處理器，點擊時刷新頁面
+              pageTitleElement.addEventListener('click', function() {
+                location.reload();
+            });
           }
       });
 });

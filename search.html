@@ -5,22 +5,165 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>數據搜尋</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 100%;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%; /* 顯示在上方 */
+            left: 50%;
+            margin-left: -60px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* 設置 searchQuery 寬度為 100% */
+        #searchQuery {
+            width: 100%;
+            height: 30px;
+        }
+
+        /* 設置 resultTable 寬度為 100% */
+        #resultTable {
+            width: 100%;
+            border: 1px solid #CCC; /* 設置表格框線顏色為 #CCC */
+            border-collapse: collapse; /* 合併表格邊框 */
+            font-size: 16px;
+            
+        }
+
+        /* 設置表格標頭顏色為綠色 */
+    #resultTable th {
+        background-color: green;
+        color: white;
+    }
+    </style>
 </head>
 <body>
     <div id="nav-placeholder"></div>
     <div class="container">
-        <h1>數據搜尋</h1>
-        <p>這是數據搜尋的內容。</p>
-        <form onsubmit="submitForm(event)">
-            <label for="name">姓名：</label>
-            <input type="text" id="name" name="name" required><br>
-            <label for="email">電子郵件：</label>
-            <input type="email" id="email" name="email" required><br>
-            <label for="message">訊息：</label>
-            <textarea id="message" name="message" required></textarea><br>
-            <button type="submit">提交</button>
-        </form>
-    </div>
+        <label for="searchQuery"></label>
+        <input type="text" id="searchQuery" placeholder="輸入搜索條件...">
+
+        <label for="startTime">開始時間：</label>
+        <input type="datetime-local" id="startTime">
+        
+        <label for="endTime">結束時間：</label>
+        <input type="datetime-local" id="endTime">
+        <button onclick="searchData()">搜尋</button>
+        
+        <table id="resultTable" border="1">
+          <thead>
+            <tr>
+              <th>日期</th>
+              <th>動作</th>
+              <th>品項</th>
+              <th>數量</th>
+              <th>重量</th>
+              <th>執行時間</th>
+              <th>生產計時</th>
+              <th>轉化率</th>
+              <th>備註</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        
+        <script>
+          function formatDate(dateString) {
+            const date = new Date(dateString);
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+            return `${month}/${day}`;
+          }
+
+          function calculateConversionRate(productionWeight, materialWeight) {
+            if (materialWeight == 0) return 'N/A';
+            const rate = (productionWeight / materialWeight) * 100;
+            return `${rate.toFixed(2)}%`;
+          }
+
+          function searchData() {
+            var query = document.getElementById('searchQuery').value;
+            
+            fetch(`https://script.google.com/macros/s/AKfycbx6jjTZ-VIu_cO5y92-35OMhMgdL78vn3fkPvKKbgkM9eYvHcC6T__hmp-Fg75mYLngTw/exec?query=${query}`)
+              .then(response => response.json())
+              .then(data => {
+                var resultTable = document.getElementById('resultTable').getElementsByTagName('tbody')[0];
+                resultTable.innerHTML = ''; // 清空表格內容
+                
+                // 將數據按日期和時間分組
+                const groupedData = {};
+                data.forEach(row => {
+                  const dateTime = row[0]; // 假設日期在第0列
+                  if (!groupedData[dateTime]) {
+                    groupedData[dateTime] = [];
+                  }
+                  groupedData[dateTime].push(row);
+                });
+
+                // 處理每組數據
+                Object.keys(groupedData).forEach(dateTime => {
+                  const rows = groupedData[dateTime];
+                  let productionWeight = 0;
+                  let materialWeight = 0;
+                  let conversionRate = 'N/A';
+
+                  // 找到領料和生產的重量
+                  rows.forEach(row => {
+                    if (row[1] === '生產') {
+                      productionWeight = parseFloat(row[4]);
+                    } else if (row[1] === '領料') {
+                      materialWeight = parseFloat(row[4]);
+                    }
+                  });
+
+                  // 計算轉化率
+                  if (productionWeight > 0 && materialWeight > 0) {
+                    conversionRate = calculateConversionRate(productionWeight, materialWeight);
+                  }
+
+                  // 插入每行數據
+                  rows.forEach(row => {
+                    var newRow = resultTable.insertRow();
+                    row.forEach((cell, index) => {
+                      var newCell = newRow.insertCell();
+                      if (index === 0) { // 日期
+                        newCell.textContent = formatDate(cell);
+                      } else if (index === 7) { // 備註
+                        newCell.innerHTML = `<div class="tooltip">...<span class="tooltiptext">${cell}</span></div>`;
+                      } else {
+                        newCell.textContent = cell;
+                      }
+                    });
+
+                    // 插入轉化率
+                    var conversionRateCell = newRow.insertCell(7);
+                    conversionRateCell.textContent = conversionRate;
+                  });
+                });
+              })
+              .catch(error => {
+                console.error('Error:', error);
+              });
+          }
+        </script>
     <script src="scripts.js"></script>
     <script src="nav.js"></script>
     <script>
