@@ -13,19 +13,23 @@
 
         .tooltip .tooltiptext {
             visibility: hidden;
-            width: 100%;
+            width: 300px; /* 設置固定寬度 */
+            max-width: none; /* 取消最大寬度限制 */
             background-color: #555;
             color: #fff;
             text-align: center;
             border-radius: 6px;
-            padding: 5px;
+            padding: 10px;
             position: absolute;
-            z-index: 1;
+            z-index: 1005;
             bottom: 125%; /* 顯示在上方 */
-            left: 50%;
-            margin-left: -60px;
+            right: 0; /* 靠右邊 */
+            margin-right: -150px; /* 調整位置，使其靠右並向左延伸 */
             opacity: 0;
             transition: opacity 0.3s;
+            font-size: 1.2em; /* 放大字體 */
+            white-space: normal; /* 允許換行 */
+            overflow: visible; /* 確保內容不被裁剪 */
         }
 
         .tooltip:hover .tooltiptext {
@@ -37,22 +41,59 @@
         #searchQuery {
             width: 100%;
             height: 30px;
+            font-size: 16px;
+            margin: 10px 0;
         }
 
         /* 設置 resultTable 寬度為 100% */
-        #resultTable {
+        #resultTable, #summaryTable {
             width: 100%;
             border: 1px solid #CCC; /* 設置表格框線顏色為 #CCC */
             border-collapse: collapse; /* 合併表格邊框 */
             font-size: 16px;
-            
+            text-align: center; /* 表格內容置中 */
         }
 
-        /* 設置表格標頭顏色為綠色 */
-    #resultTable th {
-        background-color: green;
-        color: white;
-    }
+        /* 設置表格標頭顏色為灰色 */
+        #resultTable th, #summaryTable th {
+            background-color: rgb(151, 151, 151);
+            color: rgb(255, 255, 255);
+            text-align: center; /* 表格標頭置中 */
+        }
+
+        /* 設置表格內容置中 */
+        #resultTable td, #summaryTable td {
+            text-align: center; /* 表格內容置中 */
+        }
+
+        /* 日期選擇器樣式 */
+        #datePicker {
+            display: inline-block; /* 使其始終可見 */
+            width: 200px; /* 增加寬度 */
+            height: 40px; /* 增加高度 */
+            font-size: 16px; /* 增大字體 */
+            margin-left: 10px; /* 添加左邊距 */
+        }
+
+        /* 下拉選單樣式 */
+        #actionFilter, #itemFilter {
+            width: 150px;
+            height: 40px;
+            font-size: 16px;
+            margin-left: 10px;
+        }
+
+        /* 按鈕樣式 */
+        button {
+            height: 40px;
+            font-size: 16px;
+            margin-left: 10px;
+        }
+
+        /* 容器樣式 */
+        .container {
+            margin: 5px;
+        }
     </style>
 </head>
 <body>
@@ -60,14 +101,35 @@
     <div class="container">
         <label for="searchQuery"></label>
         <input type="text" id="searchQuery" placeholder="輸入搜索條件...">
-
-        <label for="startTime">開始時間：</label>
-        <input type="datetime-local" id="startTime">
-        
-        <label for="endTime">結束時間：</label>
-        <input type="datetime-local" id="endTime">
+        <!-- 日期選擇器 -->
+        <input type="date" id="datePicker" onchange="searchData()">
+        <!-- 動作篩選器 -->
+        <select id="actionFilter" onchange="updateItemFilter()">
+            <option value="ALL">全部動作</option>
+            <option value="領料">領料</option>
+            <option value="生產">生產</option>
+        </select>
+        <!-- 品項篩選器 -->
+        <select id="itemFilter" onchange="searchData()">
+            <option value="ALL">全部品項</option>
+        </select>
         <button onclick="searchData()">搜尋</button>
         
+        <h2>合計表格</h2>
+        <table id="summaryTable" border="1">
+          <thead>
+            <tr>
+              <th>日期</th>
+              <th>動作</th>
+              <th>品項</th>
+              <th>數量合計</th>
+              <th>重量合計</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+
+        <h2>詳細數據</h2>
         <table id="resultTable" border="1">
           <thead>
             <tr>
@@ -86,6 +148,23 @@
         </table>
         
         <script>
+          document.addEventListener('DOMContentLoaded', (event) => {
+            // 設置日期選擇器的預設值為今天
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('datePicker').value = today;
+
+            // 檢查本地存儲的數據
+            const storedData = localStorage.getItem('data');
+            const storedDate = localStorage.getItem('date');
+            if (storedData && storedDate === today) {
+              renderTable(JSON.parse(storedData));
+              renderSummaryTable(JSON.parse(storedData));
+            } else {
+              localStorage.removeItem('data');
+              localStorage.removeItem('date');
+            }
+          });
+
           function formatDate(dateString) {
             const date = new Date(dateString);
             const month = date.getMonth() + 1;
@@ -93,81 +172,178 @@
             return `${month}/${day}`;
           }
 
+          function formatTime(timeString) {
+            const time = new Date(`1970-01-01T${timeString}Z`);
+            const hours = time.getUTCHours();
+            const minutes = time.getUTCMinutes();
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+          }
+
           function calculateConversionRate(productionWeight, materialWeight) {
             if (materialWeight == 0) return 'N/A';
             const rate = (productionWeight / materialWeight) * 100;
-            return `${rate.toFixed(2)}%`;
+            return rate.toFixed(1); // 保留小數點後一位，顯示百分比
+          }
+
+          function updateItemFilter() {
+              var action = document.getElementById('actionFilter').value;
+              var itemFilter = document.getElementById('itemFilter');
+              itemFilter.innerHTML = '<option value="ALL">全部品項</option>';
+              
+              // 假設您有一個 API，可以根據動作獲取品項列表
+              fetch(`https://script.google.com/macros/s/AKfycbx6jjTZ-VIu_cO5y92-35OMhMgdL78vn3fkPvKKbgkM9eYvHcC6T__hmp-Fg75mYLngTw/exec?action=${encodeURIComponent(action)}&getItems=true`)
+                .then(response => response.json())
+                .then(data => {
+                  const items = new Set();
+                  data.forEach(row => {
+                    if (action === 'ALL' || row[1] === action) {
+                      items.add(row[2]); // 假設品項在第2列
+                    }
+                  });
+                  items.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item;
+                    option.textContent = item;
+                    itemFilter.appendChild(option);
+                  });
+                  // 更新品項篩選器後自動觸發篩選功能
+                  searchData();
+                })
+                .catch(error => {
+                  console.error('Error:', error);
+                });
           }
 
           function searchData() {
-            var query = document.getElementById('searchQuery').value;
-            
-            fetch(`https://script.google.com/macros/s/AKfycbx6jjTZ-VIu_cO5y92-35OMhMgdL78vn3fkPvKKbgkM9eYvHcC6T__hmp-Fg75mYLngTw/exec?query=${query}`)
-              .then(response => response.json())
-              .then(data => {
-                var resultTable = document.getElementById('resultTable').getElementsByTagName('tbody')[0];
-                resultTable.innerHTML = ''; // 清空表格內容
-                
-                // 將數據按日期和時間分組
-                const groupedData = {};
-                data.forEach(row => {
-                  const dateTime = row[0]; // 假設日期在第0列
-                  if (!groupedData[dateTime]) {
+              var query = document.getElementById('searchQuery').value;
+              var date = document.getElementById('datePicker').value;
+              var action = document.getElementById('actionFilter').value;
+              var item = document.getElementById('itemFilter').value;
+              
+              fetch(`https://script.google.com/macros/s/AKfycbx6jjTZ-VIu_cO5y92-35OMhMgdL78vn3fkPvKKbgkM9eYvHcC6T__hmp-Fg75mYLngTw/exec?query=${encodeURIComponent(query)}&date=${date}&action=${encodeURIComponent(action)}&item=${encodeURIComponent(item)}`)
+                .then(response => response.json())
+                .then(data => {
+                  // 將數據存儲到本地
+                  localStorage.setItem('data', JSON.stringify(data));
+                  localStorage.setItem('date', date);
+
+                  renderTable(data);
+                  renderSummaryTable(data);
+                })
+                .catch(error => {
+                  console.error('Error:', error);
+                });
+          }
+
+          function renderTable(data) {
+            var resultTable = document.getElementById('resultTable').getElementsByTagName('tbody')[0];
+            resultTable.innerHTML = ''; // 清空表格內容
+
+            // 初始化合計變量
+            let totalQuantity = 0;
+            let totalWeight = 0;
+
+            // 將數據按日期和時間分組
+            const groupedData = {};
+            data.forEach(row => {
+                const dateTime = row[0]; // 假設日期在第0列
+                if (!groupedData[dateTime]) {
                     groupedData[dateTime] = [];
-                  }
-                  groupedData[dateTime].push(row);
+                }
+                groupedData[dateTime].push(row);
+            });
+
+            // 處理每組數據
+            Object.keys(groupedData).forEach(dateTime => {
+                const rows = groupedData[dateTime];
+                let productionWeight = 0;
+                let materialWeight = 0;
+                let conversionRate = 'N/A';
+
+                // 找到領料和生產的重量
+                rows.forEach(row => {
+                    if (row[1] === '生產') {
+                        productionWeight = parseFloat(row[4]);
+                    } else if (row[1] === '領料') {
+                        materialWeight = parseFloat(row[4]);
+                    }
                 });
 
-                // 處理每組數據
-                Object.keys(groupedData).forEach(dateTime => {
-                  const rows = groupedData[dateTime];
-                  let productionWeight = 0;
-                  let materialWeight = 0;
-                  let conversionRate = 'N/A';
-
-                  // 找到領料和生產的重量
-                  rows.forEach(row => {
-                    if (row[1] === '生產') {
-                      productionWeight = parseFloat(row[4]);
-                    } else if (row[1] === '領料') {
-                      materialWeight = parseFloat(row[4]);
-                    }
-                  });
-
-                  // 計算轉化率
-                  if (productionWeight > 0 && materialWeight > 0) {
+                // 計算轉化率
+                if (productionWeight > 0 && materialWeight > 0) {
                     conversionRate = calculateConversionRate(productionWeight, materialWeight);
-                  }
+                }
 
-                  // 插入每行數據
-                  rows.forEach(row => {
+                // 插入每行數據
+                rows.forEach(row => {
                     var newRow = resultTable.insertRow();
                     row.forEach((cell, index) => {
-                      var newCell = newRow.insertCell();
-                      if (index === 0) { // 日期
-                        newCell.textContent = formatDate(cell);
-                      } else if (index === 7) { // 備註
-                        newCell.innerHTML = `<div class="tooltip">...<span class="tooltiptext">${cell}</span></div>`;
-                      } else {
-                        newCell.textContent = cell;
-                      }
+                        var newCell = newRow.insertCell();
+                        if (index === 0) { // 日期
+                            newCell.textContent = formatDate(new Date(cell).toISOString().split('T')[0]);
+                        } else if (index === 5) { // 執行時間
+                            newCell.textContent = formatTime(cell);
+                        } else if (index === 8) { // 備註
+                            newCell.innerHTML = `<div class="tooltip">...<span class="tooltiptext">${cell}</span></div>`;
+                        } else {
+                            newCell.textContent = cell;
+                        }
                     });
 
                     // 插入轉化率
                     var conversionRateCell = newRow.insertCell(7);
                     conversionRateCell.textContent = conversionRate;
-                  });
+
+                    // 累加合計
+                    totalQuantity += parseFloat(row[3]);
+                    totalWeight += parseFloat(row[4]);
                 });
-              })
-              .catch(error => {
-                console.error('Error:', error);
+            });
+
+          }
+
+          function renderSummaryTable(data) {
+              var summaryTable = document.getElementById('summaryTable').getElementsByTagName('tbody')[0];
+              summaryTable.innerHTML = ''; // 清空表格内容
+
+              // 初始化合计变量
+              const summaryData = {};
+
+              // 将数据按日期、动作和品项分组
+              data.forEach(row => {
+                  const dateTime = row[0]; // 假设日期和时间在第0列
+                  const dateObj = new Date(dateTime);
+                  const date = dateObj.toISOString().split('T')[0]; // 提取日期部分 'YYYY-MM-DD'
+                  const action = row[1]; // 动作
+                  const item = row[2]; // 品项
+                  const quantity = parseFloat(row[3]);
+                  const weight = parseFloat(row[4]);
+
+                  const key = `${date}-${action}-${item}`; // 使用日期、动作和品项作为键
+                  if (!summaryData[key]) {
+                      summaryData[key] = { date, action, item, totalQuantity: 0, totalWeight: 0 };
+                  }
+
+                  summaryData[key].totalQuantity += quantity;
+                  summaryData[key].totalWeight += weight;
+              });
+
+              // 插入合计数据到表格
+              Object.keys(summaryData).forEach(key => {
+                  const { date, action, item, totalQuantity, totalWeight } = summaryData[key];
+                  const newRow = summaryTable.insertRow();
+                  newRow.insertCell().textContent = formatDate(date);
+                  newRow.insertCell().textContent = action;
+                  newRow.insertCell().textContent = item;
+                  newRow.insertCell().textContent = totalQuantity.toFixed(3); // 数量合计，保留小数点后三位
+                  newRow.insertCell().textContent = totalWeight.toFixed(3); // 重量合计，保留小数点后三位
               });
           }
         </script>
-    <script src="scripts.js"></script>
+    
     <script src="nav.js"></script>
     <script>
-        // 加載導航
+        // 加載導覽
         fetch('nav.html')
             .then(response => response.text())
             .then(data => {
