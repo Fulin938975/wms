@@ -22,7 +22,7 @@
             width: 100%;
             height: 30px;
             font-size: 16px;
-            margin: 10px;
+            margin: 0px;
             text-align: center;
             display: flex;
             align-items: center;
@@ -52,7 +52,7 @@
 
         #datePicker {
             display: inline-block;
-            width: 30%;
+            width: 28%;
             height: 40px;
             font-size: 16px;
             margin-left: 5px;
@@ -60,7 +60,7 @@
         }
 
         #actionFilter, #itemFilter {
-            width: 30%;
+            width: 28%;
             height: 40px;
             font-size: 16px;
             margin-left: 5px;
@@ -148,7 +148,7 @@
             <select id="itemFilter">
                 <option value="ALL">全部品項</option>
             </select>
-            <button onclick="searchData()">搜尋</button> <!-- 恢復搜尋按鈕 -->
+            <button onclick="searchData()">搜尋</button>
         </div>
         
         <!-- 合計表格 -->
@@ -193,16 +193,30 @@
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
             const today = new Date().toISOString().split('T')[0];
-            document.getElementById('datePicker').value = today;
-            updateItemFilter(); // 初始化時先加載品項
+            const storedDate = localStorage.getItem('storedDate');
+            const storedData = localStorage.getItem('storedData');
+
+            if (storedDate === today && storedData) {
+                console.log("使用本地儲存的數據");
+                renderTable(JSON.parse(storedData), today);
+                renderSummaryTable(JSON.parse(storedData), today);
+            } else {
+                console.log("無本地數據或數據已過期，重新請求");
+                localStorage.removeItem('storedData');
+                localStorage.removeItem('storedDate');
+                document.getElementById('datePicker').value = today;
+                updateItemFilter(); // 初始化時先加載品項
+            }
         });
+
+        
 
         function formatDate(dateString) {
             const date = new Date(dateString);
-            const year = date.getFullYear();
+    
             const month = (date.getMonth() + 1).toString().padStart(2, '0');
             const day = date.getDate().toString().padStart(2, '0');
-            return `${year}-${month}-${day}`;
+            return `${month}/${day}`;
         }
 
         function formatTime(timeString) {
@@ -268,6 +282,10 @@
                 })
                 .then(data => {
                     console.log("接收到查詢結果:", data);
+
+                    // 將數據存儲到本地
+                    localStorage.setItem('storedData', JSON.stringify(data));
+                    localStorage.setItem('storedDate', date);
 
                     renderTable(data, date);
                     renderSummaryTable(data, date);
