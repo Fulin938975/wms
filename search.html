@@ -178,7 +178,7 @@
                     <th>重量</th>
                     <th>執行時間</th>
                     <th>生產計時</th>
-                    <th>轉化率</th>
+                    <th>轉換率</th>
                     <th>備註</th>
                 </tr>
             </thead>
@@ -209,27 +209,11 @@
             }
         });
 
-        
-
         function formatDate(dateString) {
             const date = new Date(dateString);
-    
             const month = (date.getMonth() + 1).toString().padStart(2, '0');
             const day = date.getDate().toString().padStart(2, '0');
             return `${month}/${day}`;
-        }
-
-        function formatTime(timeString) {
-            const time = new Date(`1970-01-01T${timeString}Z`);
-            const hours = time.getUTCHours();
-            const minutes = time.getUTCMinutes();
-            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-        }
-
-        function calculateConversionRate(productionWeight, materialWeight) {
-            if (materialWeight == 0) return 'N/A';
-            const rate = (productionWeight / materialWeight) * 100;
-            return rate.toFixed(1);
         }
 
         function updateItemFilter() {
@@ -302,9 +286,6 @@
             const selectedAction = document.getElementById('actionFilter').value;
             const selectedItem = document.getElementById('itemFilter').value;
 
-            let totalQuantity = 0;
-            let totalWeight = 0;
-
             const groupedData = {};
             data.forEach(row => {
                 const rowDate = row[0].split(' ')[0];
@@ -327,40 +308,21 @@
 
             Object.keys(groupedData).forEach(key => {
                 const group = groupedData[key];
-                let materialWeight = 0;
-                let productionWeight = 0;
-
-                group.forEach(row => {
-                    if (row[1] === '領料') {
-                        materialWeight += parseFloat(row[4]);
-                    } else if (row[1] === '生產') {
-                        productionWeight += parseFloat(row[4]);
-                    }
-                });
-
-                const conversionRate = calculateConversionRate(productionWeight, materialWeight);
 
                 group.forEach(row => {
                     var newRow = resultTable.insertRow();
 
                     row.forEach((cell, index) => {
-                        var newCell = newRow.insertCell();
-                        if (index === 0) {
-                            newCell.textContent = formatDate(cell);
-                        } else if (index === 5) {
-                            newCell.textContent = formatTime(cell);
-                        } else if (index === 8) {
-                            newCell.innerHTML = `<div class="tooltip">...<span class="tooltiptext">${cell}</span></div>`;
-                        } else {
-                            newCell.textContent = cell;
+                        // 假設欄位2和欄位3在數據的第2和第3列，不顯示這些列
+                        if (index !== 1 && index !== 2) {
+                            var newCell = newRow.insertCell();
+                            if (index === 0) {
+                                newCell.textContent = formatDate(cell);
+                            } else {
+                                newCell.textContent = cell;
+                            }
                         }
                     });
-
-                    totalQuantity += parseFloat(row[3]);
-                    totalWeight += parseFloat(row[4]);
-
-                    var conversionRateCell = newRow.insertCell(7);
-                    conversionRateCell.textContent = conversionRate;
                 });
             });
         }
@@ -376,10 +338,10 @@
 
             data.forEach(row => {
                 const rowDate = row[0].split(' ')[0];
-                const rowAction = row[1];
-                const rowItem = row[2];
-                const quantity = parseFloat(row[3]);
-                const weight = parseFloat(row[4]);
+                const rowAction = row[3];
+                const rowItem = row[4];
+                const quantity = parseFloat(row[5]);
+                const weight = parseFloat(row[6]);
 
                 if (rowDate === selectedDate && 
                     (selectedAction === 'ALL' || rowAction === selectedAction || (selectedAction === 'ALL' && (rowAction === '領料' || rowAction === '生產'))) &&
