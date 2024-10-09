@@ -7,26 +7,28 @@
     <style>
         /* 設置容器的邊距和盒模型 */
         .container {
-            margin: 0px;
+            margin: 5px;
             box-sizing: border-box;
-            padding: 10px;
+            padding: 5px;
         }
 
         .container * {
             box-sizing: inherit;
-            padding: 0px;
+            padding: 5px;
             margin: 5px;
+            
         }
 
         #searchQuery {
             width: 100%;
             height: 30px;
             font-size: 16px;
-            margin: 10px;
+            margin: 10px PX;
             text-align: center;
             display: flex;
             align-items: center;
             justify-content: center;
+            
         }
 
         #resultTable, #summaryTable {
@@ -57,6 +59,7 @@
             font-size: 16px;
             margin-left: 5px;
             text-align: center;
+            
         }
 
         #actionFilter, #itemFilter {
@@ -76,8 +79,8 @@
             white-space: nowrap;
         }
 
-        .search-container {
-            background-color: #f1f1f1;
+        .search-container {   
+            background-color: #f1f1f1;  
             padding: 5px;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
             position: sticky;
@@ -139,8 +142,8 @@
         <div class="search-container">
             <label for="searchQuery"></label>
             <input type="text" id="searchQuery" placeholder="輸入搜索條件...">
-            <input type="date" id="datePicker">
-            <select id="actionFilter">
+            <input type="date" id="datePicker" onchange="searchData()">
+            <select id="actionFilter" onchange="updateItemFilter()">
                 <option value="ALL">全部動作</option>
                 <option value="領料">領料</option>
                 <option value="生產">生產</option>
@@ -148,7 +151,7 @@
             <select id="itemFilter">
                 <option value="ALL">全部品項</option>
             </select>
-            <button onclick="searchData()">搜尋</button> <!-- 恢復搜尋按鈕 -->
+            <button onclick="searchData()">搜尋</button>
         </div>
         
         <!-- 合計表格 -->
@@ -188,7 +191,6 @@
         <!-- 回到最上方按鈕 -->
         <button class="back-to-top-btn" onclick="scrollToTop()">回到最上方</button>
     </div>
-  </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
@@ -269,8 +271,8 @@
                 .then(data => {
                     console.log("接收到查詢結果:", data);
 
-                    renderTable(data, date);
-                    renderSummaryTable(data, date);
+                    renderTable(data, date); // 修正: 傳遞所選日期
+                    renderSummaryTable(data, date); // 修正: 傳遞所選日期
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -287,6 +289,7 @@
             let totalQuantity = 0;
             let totalWeight = 0;
 
+            // 分組數據
             const groupedData = {};
             data.forEach(row => {
                 const rowDate = row[0].split(' ')[0];
@@ -295,7 +298,7 @@
 
                 if (rowDate === selectedDate && 
                     (selectedAction === 'ALL' || rowAction === selectedAction || (selectedAction === 'ALL' && (rowAction === '領料' || rowAction === '生產'))) &&
-                    (selectedItem === 'ALL' || rowItem === selectedItem)) {
+                    (selectedItem === 'ALL' || rowItem === selectedItem)) {  // 篩選符合所選日期、動作、品項的資料
 
                     const rowTime = row[0].split(' ')[1];
                     const key = `${rowDate}-${rowTime}`;
@@ -307,11 +310,13 @@
                 }
             });
 
+            // 遍歷分組數據，計算轉化率並插入表格
             Object.keys(groupedData).forEach(key => {
                 const group = groupedData[key];
                 let materialWeight = 0;
                 let productionWeight = 0;
 
+                // 計算領料和生產的總重量
                 group.forEach(row => {
                     if (row[1] === '領料') {
                         materialWeight += parseFloat(row[4]);
@@ -320,8 +325,10 @@
                     }
                 });
 
+                // 計算轉化率
                 const conversionRate = calculateConversionRate(productionWeight, materialWeight);
 
+                // 插入表格
                 group.forEach(row => {
                     var newRow = resultTable.insertRow();
 
@@ -341,6 +348,7 @@
                     totalQuantity += parseFloat(row[3]);
                     totalWeight += parseFloat(row[4]);
 
+                    // 插入轉化率
                     var conversionRateCell = newRow.insertCell(7);
                     conversionRateCell.textContent = conversionRate;
                 });
@@ -365,7 +373,7 @@
 
                 if (rowDate === selectedDate && 
                     (selectedAction === 'ALL' || rowAction === selectedAction || (selectedAction === 'ALL' && (rowAction === '領料' || rowAction === '生產'))) &&
-                    (selectedItem === 'ALL' || rowItem === selectedItem)) {
+                    (selectedItem === 'ALL' || rowItem === selectedItem)) {  // 篩選符合所選日期、動作、品項的資料
 
                     const key = `${rowDate}-${rowAction}-${rowItem}`;
                     if (!summaryData[key]) {
