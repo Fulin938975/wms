@@ -97,6 +97,43 @@ document.addEventListener('DOMContentLoaded', function() {
 /*--------------------------------------*/
 
 document.addEventListener('DOMContentLoaded', function () {
+    // 創建等待中的動畫元素
+    const loadingSpinner = document.createElement('div');
+    loadingSpinner.id = 'loadingSpinner';
+    loadingSpinner.style.display = 'none';
+    loadingSpinner.style.position = 'fixed';
+    loadingSpinner.style.top = '50%';
+    loadingSpinner.style.left = '50%';
+    loadingSpinner.style.transform = 'translate(-50%, -50%)';
+    loadingSpinner.style.border = '16px solid #f3f3f3';
+    loadingSpinner.style.borderRadius = '50%';
+    loadingSpinner.style.borderTop = '16px solid #3498db';
+    loadingSpinner.style.width = '120px';
+    loadingSpinner.style.height = '120px';
+    loadingSpinner.style.animation = 'spin 2s linear infinite';
+    loadingSpinner.style.zIndex = '1000';
+    document.body.appendChild(loadingSpinner);
+
+    // 添加動畫樣式
+    const style = document.createElement('style');
+    style.innerHTML = `
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    `;
+    document.head.appendChild(style);
+
+    // 顯示等待中的動畫
+    function showLoadingSpinner() {
+        document.getElementById('loadingSpinner').style.display = 'block';
+    }
+
+    // 隱藏等待中的動畫
+    function hideLoadingSpinner() {
+        document.getElementById('loadingSpinner').style.display = 'none';
+    }
+
     // 收集 P1 元件數據
     function getP1Data() {
         const itemElement = document.querySelector('.pickingP1-item');
@@ -163,6 +200,12 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('submitButton').addEventListener('click', async function (event) {
         event.preventDefault(); // 防止表單默認提交行為
 
+        const submitButton = event.target;
+        submitButton.disabled = true; // 禁用提交按鈕，避免重複提交
+
+        // 顯示等待中的動畫
+        showLoadingSpinner();
+
         try {
             // 獲取 P1, T2, B1 元件的數據
             const p1Data = getP1Data();
@@ -187,6 +230,8 @@ document.addEventListener('DOMContentLoaded', function () {
         } catch (error) {
             console.error('Error collecting form data:', error);
             alert('表單提交失敗，請檢查所有字段是否正確填寫');
+            submitButton.disabled = false; // 提交失敗時重新啟用提交按鈕
+            hideLoadingSpinner(); // 隱藏等待中的動畫
         }
     });
 
@@ -195,7 +240,6 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
             const response = await fetch('https://script.google.com/macros/s/AKfycbx6jjTZ-VIu_cO5y92-35OMhMgdL78vn3fkPvKKbgkM9eYvHcC6T__hmp-Fg75mYLngTw/exec', {
                 method: 'POST',
-                
                 body: JSON.stringify(data)
             });
 
@@ -207,120 +251,13 @@ document.addEventListener('DOMContentLoaded', function () {
             const result = await response.text();
             alert(result);
 
-            // 提交表單成功後，重置表單
-            createForm(); // 調用創建新表單的功能來清空表單並重置計時器狀態
+            // 提交表單成功後，刷新頁面
+            location.reload();
         } catch (error) {
             console.error('表單提交失敗:', error);
             alert('表單提交失敗，請稍後再試');
+            document.getElementById('submitButton').disabled = false; // 提交失敗時重新啟用提交按鈕
+            hideLoadingSpinner(); // 隱藏等待中的動畫
         }
-    }
-
-    // 定義 createForm 函數
-    function createForm() {
-        // 重置 P1 元件
-        const p1ItemElement = document.querySelector('.pickingP1-item');
-        const p1QuantityElement = document.querySelector('.pickingP1-quantity');
-        const p1WeightElement = document.querySelector('.pickingP1-weight');
-
-        if (p1ItemElement) p1ItemElement.textContent = '請選擇品項';
-        if (p1QuantityElement) p1QuantityElement.value = '';
-        if (p1WeightElement) p1WeightElement.value = '';
-
-        // 重置 T2 元件
-        const startTimeElement = document.getElementById('startTimeDisplay2');
-        const endTimeElement = document.getElementById('endTimeDisplay2');
-        const elapsedTimeElement = document.getElementById('timerDisplay2');
-
-        if (startTimeElement) startTimeElement.value = '輸入HMM';
-        if (endTimeElement) endTimeElement.value = '入HMM';
-        if (elapsedTimeElement) elapsedTimeElement.textContent = '00:00';
-
-        // 重置 B1 元件
-        const b1ItemElement = document.querySelector('.produceB1-item');
-        const b1QuantityElement = document.querySelector('.produceB1-quantity');
-        const b1WeightElement = document.querySelector('.produceB1-weight');
-
-        if (b1ItemElement) b1ItemElement.textContent = '請選擇品項';
-        if (b1QuantityElement) b1QuantityElement.value = '';
-        if (b1WeightElement) b1WeightElement.value = '';
-
-        // 重置備註字段
-        const remarkElement = document.getElementById('remarksInput');
-        if (remarkElement) remarkElement.value = '';
-
-        // 重置生產按鈕
-        const productionButton = document.getElementById('productionButton');
-        if (productionButton) {
-            productionButton.textContent = '開始生產';
-            productionButton.disabled = false;
-            // 移除所有事件處理器
-            const newButton = productionButton.cloneNode(true);
-            productionButton.parentNode.replaceChild(newButton, productionButton);
-            // 綁定新的事件處理器
-            newButton.addEventListener('click', startProduction);
-        }
-
-        // 重置 T2 計時器按鈕
-        const timerButton = document.getElementById('timerBtn2');
-        if (timerButton) {
-            timerButton.disabled = false;
-            timerButton.querySelector('.btn-text').innerText = '開始生產';
-            // 移除所有事件處理器
-            const newButton = timerButton.cloneNode(true);
-            timerButton.parentNode.replaceChild(newButton, timerButton);
-            // 綁定新的事件處理器
-            newButton.addEventListener('click', () => toggleTimer('2'));
-        }
-    }
-
-    // 定義開始生產的事件處理器
-    function startProduction() {
-        const productionButton = document.getElementById('productionButton');
-        if (productionButton) {
-            productionButton.textContent = '生產完成';
-            productionButton.removeEventListener('click', startProduction);
-            productionButton.addEventListener('click', completeProduction);
-        }
-    }
-
-    // 定義生產完成的事件處理器
-    function completeProduction() {
-        const productionButton = document.getElementById('productionButton');
-        if (productionButton) {
-            productionButton.disabled = true;
-            alert('生產已完成');
-            // 這裡可以添加更多的邏輯來處理生產完成的情況
-        }
-    }
-
-    // 定義計時器切換函數
-    function toggleTimer(timerId) {
-        const timerButton = document.getElementById(`timerBtn${timerId}`);
-        if (timerButton) {
-            if (timerButton.disabled) {
-                return;
-            }
-
-            const btnText = timerButton.querySelector('.btn-text');
-            if (btnText.innerText === '開始生產') {
-                btnText.innerText = '生產完成';
-                // 開始計時的邏輯
-                startTimer(timerId);
-            } else {
-                btnText.innerText = '開始生產';
-                // 停止計時的邏輯
-                stopTimer(timerId);
-            }
-        }
-    }
-
-    function startTimer(timerId) {
-        // 開始計時的邏輯
-        console.log(`Timer ${timerId} started`);
-    }
-
-    function stopTimer(timerId) {
-        // 停止計時的邏輯
-        console.log(`Timer ${timerId} stopped`);
     }
 });

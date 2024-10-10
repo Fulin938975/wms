@@ -185,6 +185,9 @@ function endTimer(timerId) {
 
         // 停止螢幕喚醒功能
         stopWakeLock(timerId);
+
+        // 更新生產時間
+        updateProductionTime(timerId);
     }
 }
 
@@ -311,7 +314,13 @@ function handleManualTimeUpdate(inputId) {
     const formattedTime = formatManualTime(parseManualTime(timeStr));
     inputElement.value = formattedTime;
     const timerId = inputId.replace('startTimeDisplay', '').replace('endTimeDisplay', '');
-    updateProductionTime(timerId);
+    if (inputId.includes('startTimeDisplay')) {
+        timers[timerId].startTime = parseTime(formattedTime);
+        timers[timerId].elapsedTime = Date.now() - timers[timerId].startTime;
+        document.getElementById(`timerDisplay${timerId}`).innerText = formatTime(timers[timerId].elapsedTime);
+    } else {
+        updateProductionTime(timerId);
+    }
 }
 
 // 螢幕喚醒功能
