@@ -133,7 +133,7 @@
     </style>
 </head>
 <body>
-  <div id="nav-placeholder"></div>
+    <div id="nav-placeholder"></div>
     <div class="container">
         <!-- 搜尋區域 -->
         <div class="search-container">
@@ -188,7 +188,6 @@
         <!-- 回到最上方按鈕 -->
         <button class="back-to-top-btn" onclick="scrollToTop()">回到最上方</button>
     </div>
-  </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
@@ -218,6 +217,7 @@
 
         function updateItemFilter() {
             var action = document.getElementById('actionFilter').value;
+            var date = document.getElementById('datePicker').value;
             var itemFilter = document.getElementById('itemFilter');
             itemFilter.innerHTML = '<option value="ALL">全部品項</option>';
 
@@ -227,9 +227,10 @@
                     const items = new Set();
 
                     data.forEach(row => {
-                        const actionType = row[1];
-                        if (action === 'ALL' || action === actionType) {
-                            items.add(row[2]);
+                        const rowDate = row[0].split(' ')[0];
+                        const actionType = row[3];
+                        if ((action === 'ALL' || action === actionType) && rowDate === date) {
+                            items.add(row[4]);
                         }
                     });
 
@@ -289,11 +290,11 @@
             const groupedData = {};
             data.forEach(row => {
                 const rowDate = row[0].split(' ')[0];
-                const rowAction = row[1];
-                const rowItem = row[2];
+                const rowAction = row[3];
+                const rowItem = row[4];
 
                 if (rowDate === selectedDate && 
-                    (selectedAction === 'ALL' || rowAction === selectedAction || (selectedAction === 'ALL' && (rowAction === '領料' || rowAction === '生產'))) &&
+                    (selectedAction === 'ALL' || rowAction === selectedAction) &&
                     (selectedItem === 'ALL' || rowItem === selectedItem)) {
 
                     const rowTime = row[0].split(' ')[1];
@@ -313,7 +314,7 @@
                     var newRow = resultTable.insertRow();
 
                     row.forEach((cell, index) => {
-                        // 假設欄位2和欄位3在數據的第2和第3列，不顯示這些列
+                        // 假設欄位1和欄位2在數據的第1和第2列，不顯示這些列
                         if (index !== 1 && index !== 2) {
                             var newCell = newRow.insertCell();
                             if (index === 0) {
@@ -344,7 +345,7 @@
                 const weight = parseFloat(row[6]);
 
                 if (rowDate === selectedDate && 
-                    (selectedAction === 'ALL' || rowAction === selectedAction || (selectedAction === 'ALL' && (rowAction === '領料' || rowAction === '生產'))) &&
+                    (selectedAction === 'ALL' || rowAction === selectedAction) &&
                     (selectedItem === 'ALL' || rowItem === selectedItem)) {
 
                     const key = `${rowDate}-${rowAction}-${rowItem}`;

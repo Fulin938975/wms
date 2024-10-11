@@ -135,8 +135,8 @@ header {
 #produceB1-container-wrapper .produceB1-component,
 #produceB2-container-wrapper .produceB2-component,
 #produceB3-container-wrapper .produceB3-component,
-#produceT2-container-wrapper .timer-component,
-#card-K .card {
+#produceT2-container-wrapper .timer-component
+{
   
     margin-top: 0PX; /* 留出頂部導航欄的空間 */
     max-width: 100%;   /* 確保外層容器最大寬度不超出100% */
@@ -155,7 +155,8 @@ header {
 .produceB2-component,
 .produceB3-component,
 .timer-component,
-.card {
+.card
+ {
     position: relative;
     padding: 5px;
     border-bottom: 1px solid #ffffff;
@@ -330,6 +331,19 @@ select,
     text-align: center; /* 文字置中 */
 }
 
+.card {
+    background-color: #fff;
+    margin: 0px;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.2);
+    flex-basis: 75%;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 100%;
+}
+
 /* 響應式設計 */
 @media (max-width: 768px) {
     header, .nav {
@@ -341,6 +355,19 @@ select,
     .sidebar {
         height: calc(100% - 50px); /* 在較小螢幕上調整側邊欄高度 */
         top: 50px; /* 在較小螢幕上調整側邊欄頂部對齊 */
+    }
+
+    .card {
+        background-color: #f1f1f1;
+        margin: 0px;
+        padding: 10px;
+        text-align: center;
+        box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.2);
+        flex-basis: 100%;
+        box-sizing: border-box;
+        transition: all 0.3s ease;
+        width: 100%;
+        max-width: 100%;
     }
 }
 
@@ -358,6 +385,19 @@ select,
     .dropdown-menu {
         right: auto; /* 取消右對齊 */
         left: 0; /* 在小螢幕上從左方向右方延伸 */
+    }
+
+    .card {
+        background-color: #fff;
+        margin: 0px;
+        padding: 10px;
+        text-align: center;
+        box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.2);
+        flex-basis: 100%;
+        box-sizing: border-box;
+        transition: all 0.3s ease;
+        width: 100%;
+        max-width: 100%;
     }
 
     
@@ -438,22 +478,13 @@ select,
         font-size: 2.5rem;
     }
 
+    
+
   
 }
 
 
-.card-K {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
-    padding: 0px;
-    margin-bottom: 10px;
-    width: 80%;
-    box-sizing: border-box; /* 確保內邊距不影響元素的最終大小 */
-    
-   
-}
+
 
 .timer-component
 
@@ -544,13 +575,3 @@ select,
     transition: width 1s linear, background-color 1s linear;
 }
 
-.card {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
-    padding: 5px;
-    margin-bottom: 16px;
-    width: 100%;
-    box-sizing: border-box; /* 確保內邊距不影響元素的最終大小 */
-}

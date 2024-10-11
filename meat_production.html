@@ -19,8 +19,8 @@
 </head>
 
 <body>
-    <div id="nav-placeholder"></div>
-    <div class="container">
+  <div id="nav-placeholder"></div>
+  <div class="container">
       <!-- 加載 PickingP1 的內容 -->
       <div id="pickingP1-container-wrapper"></div>   
       <!-- 加載 T2 的內容 -->
@@ -29,18 +29,18 @@
       <div id="produceB1-container-wrapper"></div> 
         <!-- 備註 -->
 
-    <div class="card-K">
+   
       <div class="card">
-        <div class="form-group horizontal-form-group">
-          <label for="remarksInput">備註:</label>
-          <textarea id="remarksInput" placeholder="在此輸入備註..." rows="1"></textarea>
-           </div>
-           <div>
-          <button type="button" id="submitButton">提交表單</button>
-        </div>
+          <div class="form-group horizontal-form-group">
+               <label for="remarksInput">備註:</label>
+               <textarea id="remarksInput" placeholder="在此輸入備註..." rows="1"></textarea>
+               </div>
+               <div>
+               <button type="button" id="submitButton">提交表單</button>
+               </div>
+          </div>
       </div>
-     </div>
-    </div>
+  </div>
     <script src="scripts.js"></script> 
     <script src="pickingP1.js"></script>
     <script src="produceB1.js"></script>
@@ -54,5 +54,67 @@
                 document.getElementById('nav-placeholder').innerHTML = data;
             });        
     </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          console.log("DOM fully loaded and parsed");
+  
+          // 驗證表單
+          function validateForm() {
+              const p1Valid = validateP1();
+              const t2Valid = validateT2();
+              const b1Valid = validateB1();
+  
+              const submitButton = document.getElementById('submitButton');
+              if (p1Valid && t2Valid && b1Valid) {
+                  submitButton.disabled = false;
+                  submitButton.style.backgroundColor = ''; // 恢復原始背景色
+              } else {
+                  submitButton.disabled = true;
+                  submitButton.style.backgroundColor = '#ADADAD'; // 設置灰色背景
+              }
+          }
+  
+          // 驗證 P1 元件
+          function validateP1() {
+              const itemElement = document.querySelector('.pickingP1-item');
+              const quantityElement = document.querySelector('.pickingP1-quantity');
+              const weightElement = document.querySelector('.pickingP1-weight');
+  
+              return itemElement && itemElement.textContent.trim() !== '' &&
+                     quantityElement && quantityElement.value.trim() !== '' &&
+                     weightElement && weightElement.value.trim() !== '';
+          }
+  
+          // 驗證 T2 元件
+          function validateT2() {
+              const startTimeElement = document.getElementById('startTimeDisplay2');
+              const endTimeElement = document.getElementById('endTimeDisplay2');
+              const elapsedTimeElement = document.getElementById('timerDisplay2');
+  
+              return startTimeElement && startTimeElement.value.trim() !== '' &&
+                     endTimeElement && endTimeElement.value.trim() !== '' &&
+                     elapsedTimeElement && elapsedTimeElement.textContent.trim() !== '';
+          }
+  
+          // 驗證 B1 元件
+          function validateB1() {
+              const itemElement = document.querySelector('.produceB1-item');
+              const quantityElement = document.querySelector('.produceB1-quantity');
+              const weightElement = document.querySelector('.produceB1-weight');
+  
+              return itemElement && itemElement.textContent.trim() !== '' &&
+                     quantityElement && quantityElement.value.trim() !== '' &&
+                     weightElement && weightElement.value.trim() !== '';
+          }
+  
+          // 綁定輸入事件以觸發驗證
+          document.querySelectorAll('.pickingP1-item, .pickingP1-quantity, .pickingP1-weight, #startTimeDisplay2, #endTimeDisplay2, #timerDisplay2, .produceB1-item, .produceB1-quantity, .produceB1-weight').forEach(element => {
+              element.addEventListener('input', validateForm);
+          });
+  
+          // 初始化驗證
+          validateForm();
+      });
+  </script>
 </body>
 </html>
