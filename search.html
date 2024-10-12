@@ -319,6 +319,8 @@
                             var newCell = newRow.insertCell();
                             if (index === 0) {
                                 newCell.textContent = formatDate(cell);
+                            } else if (index === 6) { // 生產計時欄位
+                                newCell.textContent = formatProductionTime(cell);
                             } else {
                                 newCell.textContent = cell;
                             }
@@ -326,6 +328,26 @@
                     });
                 });
             });
+        }
+
+        function formatProductionTime(timeString) {
+            if (typeof timeString !== 'string' || !timeString.includes(':')) {
+                return timeString;
+            }
+
+            const timeParts = timeString.split(':');
+            let hours = parseInt(timeParts[0], 10);
+            let minutes = parseInt(timeParts[1], 10);
+            let seconds = parseInt(timeParts[2], 10);
+
+            // 將所有時間轉換為秒數
+            let totalSeconds = hours * 3600 + minutes * 60 + seconds;
+
+            // 計算分鐘和秒數
+            let displayMinutes = Math.floor(totalSeconds / 60);
+            let displaySeconds = totalSeconds % 60;
+
+            return `${displayMinutes.toString().padStart(2, '0')}:${displaySeconds.toString().padStart(2, '0')}`;
         }
 
         function renderSummaryTable(data, selectedDate) {

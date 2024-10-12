@@ -12,11 +12,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                     <div class="form-group horizontal-form-group">
                         <label for="produceB1-quantity">生產數量:</label>
-                        <input type="number" class="produceB1-quantity" name="produceB1-quantity" value="0" min="0.001" step="0.001">
+                        <input type="number" class="produceB1-quantity" name="produceB1-quantity" value="0" min="0" step="0.001">
                     </div>
                     <div class="form-group horizontal-form-group">
                         <label for="produceB1-weight">生產重量(kg):</label>
-                        <input type="number" class="produceB1-weight" name="produceB1-weight" value="0" min="0.001" step="0.001">
+                        <input type="number" class="produceB1-weight" name="produceB1-weight" value="0" min="0" step="0.001">
                     </div>
                 </div>
             </template>
@@ -181,10 +181,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // 監聽 quantity 和 weight 輸入的變更事件
         quantityInput.addEventListener('input', function() {
+            formatInput(quantityInput);
             updateWeight(component, weights);
         });
 
         weightInput.addEventListener('input', function() {
+            formatInput(weightInput);
             updateQuantity(component, weights);
         });
 
@@ -216,6 +218,23 @@ document.addEventListener('DOMContentLoaded', function() {
         if (weights[selectedItem] !== undefined) {
             quantityInput.value = (weight / weights[selectedItem]).toFixed(3);
         }
+    }
+
+    function formatInput(input) {
+        let value = input.value;
+
+        // 移除非數字字符
+        value = value.replace(/\D/g, '');
+
+        // 將數字轉換為小數點後三位
+        if (value.length > 3) {
+            value = value.slice(0, -3) + '.' + value.slice(-3);
+        } else {
+            value = '0.' + value.padStart(3, '0');
+        }
+
+        // 確保數字格式化為小數點後三位
+        input.value = parseFloat(value).toFixed(3);
     }
 
     const defaultCounts = {
