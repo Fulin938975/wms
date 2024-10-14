@@ -108,6 +108,15 @@
             background-color: #0056b3;
         }
 
+        .table-container {
+            overflow-x: auto;
+            width: 100%;
+        }
+
+        #resultTable {
+            min-width: 800px; /* 確保表格在小螢幕上可以左右滾動 */
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 10px;
@@ -153,37 +162,41 @@
         
         <!-- 合計表格 -->
         <h2>合計表格</h2>
-        <table id="summaryTable" border="1">
-            <thead>
-                <tr>
-                    <th>日期</th>
-                    <th>動作</th>
-                    <th>品項</th>
-                    <th>數量合計</th>
-                    <th>重量合計</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+        <div class="table-container">
+            <table id="summaryTable" border="1">
+                <thead>
+                    <tr>
+                        <th>日期</th>
+                        <th>動作</th>
+                        <th>品項</th>
+                        <th>數量合計</th>
+                        <th>重量合計</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
 
         <!-- 詳細數據 -->
         <h2>詳細數據</h2>
-        <table id="resultTable" border="1">
-            <thead>
-                <tr>
-                    <th>日期</th>
-                    <th>動作</th>
-                    <th>品項</th>
-                    <th>數量</th>
-                    <th>重量</th>
-                    <th>執行時間</th>
-                    <th>生產計時</th>
-                    <th>轉換率</th>
-                    <th>備註</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+        <div class="table-container">
+            <table id="resultTable" border="1">
+                <thead>
+                    <tr>
+                        <th>日期</th>
+                        <th>動作</th>
+                        <th>品項</th>
+                        <th>數量</th>
+                        <th>重量</th>
+                        <th>執行時間</th>
+                        <th>生產計時</th>
+                        <th>轉換率</th>
+                        <th>備註</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
 
         <!-- 回到最上方按鈕 -->
         <button class="back-to-top-btn" onclick="scrollToTop()">回到最上方</button>
