@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const itemWeights = {
         P1: { 招牌細P:4.2, 原鬆P: 4.2, 特鬆P: 4.2, 營業P: 4.2, 粗鬆P: 3, 全純P: 3 },
-        P2: { 肉鬆P領料: 1,肉鬆K領料: 1, },
+        P2: { 招牌細K: 1,原鬆K: 1, 配料:1},
         P3: { 肉乾P領料: 1, 厚乾P領料: 1, 五香P領料: 1, 海味P領料: 1, }
     };
 

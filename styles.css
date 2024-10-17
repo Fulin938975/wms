@@ -163,6 +163,8 @@ header {
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
     margin-bottom: 10px;
     border-radius: 4px; /* 設置圓角為4px */
+    width: 100%; /* 確保寬度為 100% */
+    max-width: 100%; /* 確保最大寬度為 100% */
 }
 
 /* 按鈕樣式 */

@@ -5,23 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>調合生產</title>
     <link rel="stylesheet" href="styles.css">
+<script> // 設置預設加載的元件數量
+    var defaultB2Count = 1; // B2 元件數量
+    var defaultP2Count = 3; // P2 元件數量
+    </script>
+
+   
 </head>
 <body>
     <div id="nav-placeholder"></div>
     <div class="container">
-        <h1>調合生產</h1>
-        <p>這是調合生產的內容。</p>
-        <form onsubmit="submitForm(event)">
-            <label for="name">姓名：</label>
-            <input type="text" id="name" name="name" required><br>
-            <label for="email">電子郵件：</label>
-            <input type="email" id="email" name="email" required><br>
-            <label for="message">訊息：</label>
-            <textarea id="message" name="message" required></textarea><br>
-            <button type="submit">提交</button>
-        </form>
-    </div>
+    <!-- 加載 ProduceB2 的內容 -->
+    <div id="produceB2-container-wrapper"></div>
+    
+    <!-- 加載 PickingP2 的內容 -->
+    <div id="pickingP2-container-wrapper"></div>
+    
+    <!-- 備註 -->
+   
+         <div class="form-group horizontal-form-group">
+            <label for="remarksInput">備註:</label>
+            <textarea id="remarksInput" placeholder="在此輸入備註..." rows="1"></textarea>
+        </div>
+        <!-- 表單提交按鈕 -->
+        <button type="submit">提交</button>
+   
+
     <script src="scripts.js"></script>
+    <script src="pickingP2.js"></script> <!-- 加載 P2 元件 -->
+    <script src="produceB2.js"></script> <!-- 加載 B2 元件 -->
     <script src="nav.js"></script>
     <script>
         // 加載導航
@@ -30,6 +42,58 @@
             .then(data => {
                 document.getElementById('nav-placeholder').innerHTML = data;
             });
+            document.addEventListener('DOMContentLoaded', function() {
+    const ratio = 3 / 2;
+
+    function updateQuantities(p2Weight1, p2Weight2, p2Weight3, p2Quantity1, p2Quantity2, p2Quantity3, changedInput) {
+        if (changedInput === p2Weight1) {
+            const newP2Weight1 = parseFloat(p2Weight1.value);
+            const newP2Weight2 = (newP2Weight1 / ratio).toFixed(3);
+            p2Weight2.value = newP2Weight2;
+            p2Quantity1.value = newP2Weight1; // 同步更新數量
+            p2Quantity2.value = newP2Weight2; // 同步更新數量
+        } else if (changedInput === p2Weight2) {
+            const newP2Weight2 = parseFloat(p2Weight2.value);
+            const newP2Weight1 = (newP2Weight2 * ratio).toFixed(3);
+            p2Weight1.value = newP2Weight1;
+            p2Quantity1.value = newP2Weight1; // 同步更新數量
+            p2Quantity2.value = newP2Weight2; // 同步更新數量
+        }
+        // 計算第三個領料元件P2配料的重量
+        const totalWeight = parseFloat(document.querySelector('.produceB2-weight').value);
+        const weight1 = parseFloat(p2Weight1.value);
+        const weight2 = parseFloat(p2Weight2.value);
+        const weight3 = (totalWeight - weight1 - weight2).toFixed(3);
+        p2Weight3.value = weight3;
+        p2Quantity3.value = weight3; // 同步更新數量
+    }
+
+    function attachEventListeners(p2Weight1, p2Weight2, p2Weight3, p2Quantity1, p2Quantity2, p2Quantity3) {
+        p2Weight1.addEventListener('input', function() {
+            updateQuantities(p2Weight1, p2Weight2, p2Weight3, p2Quantity1, p2Quantity2, p2Quantity3, p2Weight1);
+        });
+
+        p2Weight2.addEventListener('input', function() {
+            updateQuantities(p2Weight1, p2Weight2, p2Weight3, p2Quantity1, p2Quantity2, p2Quantity3, p2Weight2);
+        });
+
+        document.querySelector('.produceB2-weight').addEventListener('input', function() {
+            updateQuantities(p2Weight1, p2Weight2, p2Weight3, p2Quantity1, p2Quantity2, p2Quantity3, null);
+        });
+    }
+
+    const p2Components = document.querySelectorAll('.pickingP2-component');
+    if (p2Components.length >= 3) {
+        const p2Weight1 = p2Components[0].querySelector('.pickingP2-weight');
+        const p2Weight2 = p2Components[1].querySelector('.pickingP2-weight');
+        const p2Weight3 = p2Components[2].querySelector('.pickingP2-weight');
+        const p2Quantity1 = p2Components[0].querySelector('.pickingP2-quantity');
+        const p2Quantity2 = p2Components[1].querySelector('.pickingP2-quantity');
+        const p2Quantity3 = p2Components[2].querySelector('.pickingP2-quantity');
+        attachEventListeners(p2Weight1, p2Weight2, p2Weight3, p2Quantity1, p2Quantity2, p2Quantity3);
+    }
+});
+       
     </script>
 </body>
 </html>

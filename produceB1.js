@@ -21,28 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </template>
         `,
-        B2: `
-            <template id="produceB2-template">
-                <div class="produceB2-component">
-                    <button type="button" class="remove-button"></button>
-                    <div class="form-group horizontal-form-group">
-                        <label for="produceB2-item">生產品項:</label>
-                        <div class="dropdown">
-                            <button class="dropdown-toggle produceB2-item" type="button">請選擇分類</button>
-                            <div class="dropdown-menu"></div>
-                        </div>
-                    </div>
-                    <div class="form-group horizontal-form-group">
-                        <label for="produceB2-quantity">生產數量:</label>
-                        <input type="number" class="produceB2-quantity" name="produceB2-quantity" value="0" min="0.001" step="0.001">
-                    </div>
-                    <div class="form-group horizontal-form-group">
-                        <label for="produceB2-weight">生產重量(kg):</label>
-                        <input type="number" class="produceB2-weight" name="produceB2-weight" value="0" min="0.001" step="0.001">
-                    </div>
-                </div>
-            </template>
-        `,
+        
         B3: `
             <template id="produceB3-template">
                 <div class="produceB3-component">
@@ -73,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const itemWeights = {
         B1: { 招牌細K:1, 原鬆K: 1, 海鬆K: 1,粗海苔K: 1, 特鬆K: 1, 營業原K: 1,營業海K: 1, 粗鬆K: 1, 全純K: 1, },
-        B2: { 肉鬆K生產: 1, },
+       
         B3: { 肉乾B生產: 1, 厚乾B生產: 1, 五香B生產: 1, 海味B生產: 1, }
     };
 
@@ -282,4 +261,108 @@ document.addEventListener('DOMContentLoaded', function() {
             event.target.select();
         }
     }, true);
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const templates = {
+        B2: `
+            <template id="produceB2-template">
+                <div class="produceB2-component">
+                    <button type="button" class="remove-button"></button>
+                    <div class="form-group horizontal-form-group">
+                        <label for="produceB2-item">生產品項:</label>
+                        <div class="dropdown">
+                            <button class="dropdown-toggle produceB2-item" type="button">請選擇分類</button>
+                            <div class="dropdown-menu"></div>
+                        </div>
+                    </div>
+                    <div class="form-group horizontal-form-group">
+                        <label for="produceB2-quantity">生產數量:</label>
+                        <input type="number" class="produceB2-quantity" name="produceB2-quantity" value="0" min="0.001" step="0.001">
+                    </div>
+                    <div class="form-group horizontal-form-group">
+                        <label for="produceB2-weight">生產重量(kg):</label>
+                        <input type="number" class="produceB2-weight" name="produceB2-weight" value="0" min="0.001" step="0.001">
+                    </div>
+                </div>
+            </template>
+        `
+    };
+
+    Object.values(templates).forEach(template => {
+        document.body.insertAdjacentHTML('beforeend', template);
+    });
+
+    const itemWeights = {
+        B2: { 海鬆K: 3 }
+    };
+
+    function populateDropdown(dropdownMenu, items) {
+        dropdownMenu.innerHTML = ''; // 清空選單
+        items.forEach(item => {
+            const option = document.createElement('div');
+            option.className = 'dropdown-item';
+            option.textContent = item;
+            dropdownMenu.appendChild(option);
+        });
+    }
+
+    function addComponent(containerId, templateId, weights) {
+        const template = document.getElementById(templateId);
+        if (!template) {
+            console.error(`${templateId} 模板未找到`);
+            return;
+        }
+        const container = document.getElementById(containerId);
+        if (!container) {
+            console.error(`${containerId} 容器未找到`);
+            return;
+        }
+        const clone = document.importNode(template.content, true);
+        const component = clone.querySelector(`.${templateId.split('-')[0]}-component`);
+
+        const dropdownToggle = component.querySelector('.dropdown-toggle');
+        const dropdownMenu = component.querySelector('.dropdown-menu');
+        const quantityInput = component.querySelector(`.${templateId.split('-')[0]}-quantity`);
+        const weightInput = component.querySelector(`.${templateId.split('-')[0]}-weight`);
+
+        const items = Object.keys(weights);
+        populateDropdown(dropdownMenu, items);
+
+        // 設置初始值
+        dropdownToggle.textContent = items[0]; // 設置為第一個選項
+        quantityInput.value = 3;
+        weightInput.value = weights[items[0]];
+
+        dropdownToggle.addEventListener('click', function() {
+            dropdownMenu.classList.toggle('show');
+        });
+
+        dropdownMenu.addEventListener('click', function(event) {
+            if (event.target.classList.contains('dropdown-item')) {
+                dropdownToggle.textContent = event.target.textContent;
+                weightInput.value = weights[event.target.textContent];
+                dropdownMenu.classList.remove('show');
+            }
+        });
+
+        container.appendChild(clone);
+    }
+
+    const defaultCounts = {
+        B2: typeof defaultB2Count !== 'undefined' ? defaultB2Count : 0
+    };
+
+    Object.keys(defaultCounts).forEach(key => {
+        if (defaultCounts[key] > 0 && document.getElementById(`produce${key}-container-wrapper`)) {
+            for (let i = 0; i < defaultCounts[key]; i++) {
+                const containerId = `produce${key}-container-${i + 1}`;
+                const container = document.createElement('div');
+                container.id = containerId;
+                document.getElementById(`produce${key}-container-wrapper`).appendChild(container);
+                addComponent(containerId, `produce${key}-template`, itemWeights[key]);
+            }
+        }
+    });
 });
