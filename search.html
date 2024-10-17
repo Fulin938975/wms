@@ -219,6 +219,10 @@
                 document.getElementById('datePicker').value = today;
                 updateItemFilter(); // 初始化時先加載品項
             }
+
+            // 監聽篩選條件變更事件
+            document.getElementById('datePicker').addEventListener('change', updateItemFilter);
+            document.getElementById('actionFilter').addEventListener('change', updateItemFilter);
         });
 
         function formatDate(dateString) {
@@ -383,13 +387,18 @@
                     (selectedAction === 'ALL' || rowAction === selectedAction) &&
                     (selectedItem === 'ALL' || rowItem === selectedItem)) {
 
-                    const key = `${rowDate}-${rowAction}-${rowItem}`;
+                    const key = `${rowDate}-${rowItem}`;
                     if (!summaryData[key]) {
-                        summaryData[key] = { date: rowDate, action: rowAction, item: rowItem, totalQuantity: 0, totalWeight: 0 };
+                        summaryData[key] = { date: rowDate, item: rowItem, produceQuantity: 0, produceWeight: 0, pickQuantity: 0, pickWeight: 0 };
                     }
 
-                    summaryData[key].totalQuantity += quantity;
-                    summaryData[key].totalWeight += weight;
+                    if (rowAction === '生產') {
+                        summaryData[key].produceQuantity += quantity;
+                        summaryData[key].produceWeight += weight;
+                    } else if (rowAction === '領料') {
+                        summaryData[key].pickQuantity += quantity;
+                        summaryData[key].pickWeight += weight;
+                    }
                 }
             });
 
@@ -402,13 +411,32 @@
             }
 
             Object.keys(summaryData).forEach(key => {
-                const { date, action, item, totalQuantity, totalWeight } = summaryData[key];
-                const newRow = summaryTable.insertRow();
-                newRow.insertCell().textContent = formatDate(date);
-                newRow.insertCell().textContent = action;
-                newRow.insertCell().textContent = item;
-                newRow.insertCell().textContent = totalQuantity.toFixed(3);
-                newRow.insertCell().textContent = totalWeight.toFixed(3);
+                const { date, item, produceQuantity, produceWeight, pickQuantity, pickWeight } = summaryData[key];
+                const totalQuantity = produceQuantity - pickQuantity;
+                const totalWeight = produceWeight - pickWeight;
+
+                if (pickQuantity !== 0 || pickWeight !== 0) {
+                    const newRow = summaryTable.insertRow();
+                    newRow.insertCell().textContent = formatDate(date);
+                    newRow.insertCell().textContent = '領料';
+                    newRow.insertCell().textContent = item;
+                    if (produceQuantity !== 0 || produceWeight !== 0) {
+                        newRow.insertCell().innerHTML = `<s>${pickQuantity.toFixed(3)}</s>`;
+                        newRow.insertCell().innerHTML = `<s>${pickWeight.toFixed(3)}</s>`;
+                    } else {
+                        newRow.insertCell().textContent = pickQuantity.toFixed(3);
+                        newRow.insertCell().textContent = pickWeight.toFixed(3);
+                    }
+                }
+
+                if (produceQuantity !== 0 || produceWeight !== 0) {
+                    const newRow = summaryTable.insertRow();
+                    newRow.insertCell().textContent = formatDate(date);
+                    newRow.insertCell().textContent = '生產';
+                    newRow.insertCell().textContent = item;
+                    newRow.insertCell().textContent = totalQuantity.toFixed(3);
+                    newRow.insertCell().textContent = totalWeight.toFixed(3);
+                }
             });
         }
 
