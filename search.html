@@ -161,7 +161,7 @@
         </div>
         
         <!-- 合計表格 -->
-        <h2>合計表格</h2>
+        <h2 id="summaryTitle">合計表格</h2>
         <div class="table-container">
             <table id="summaryTable" border="1">
                 <thead>
@@ -203,6 +203,8 @@
     </div>
 
     <script>
+        let useAlternativeFormula = false;
+
         document.addEventListener('DOMContentLoaded', (event) => {
             const today = new Date().toISOString().split('T')[0];
             const storedDate = localStorage.getItem('storedDate');
@@ -223,6 +225,16 @@
             // 監聽篩選條件變更事件
             document.getElementById('datePicker').addEventListener('change', updateItemFilter);
             document.getElementById('actionFilter').addEventListener('change', updateItemFilter);
+
+            // 監聽合計表格標題點擊事件
+            document.getElementById('summaryTitle').addEventListener('click', () => {
+                useAlternativeFormula = !useAlternativeFormula;
+                const storedData = localStorage.getItem('storedData');
+                const selectedDate = document.getElementById('datePicker').value;
+                if (storedData) {
+                    renderSummaryTable(JSON.parse(storedData), selectedDate);
+                }
+            });
         });
 
         function formatDate(dateString) {
@@ -420,22 +432,22 @@
                     newRow.insertCell().textContent = formatDate(date);
                     newRow.insertCell().textContent = '領料';
                     newRow.insertCell().textContent = item;
-                    if (produceQuantity !== 0 || produceWeight !== 0) {
-                        newRow.insertCell().innerHTML = `<s>${pickQuantity.toFixed(3)}</s>`;
-                        newRow.insertCell().innerHTML = `<s>${pickWeight.toFixed(3)}</s>`;
-                    } else {
-                        newRow.insertCell().textContent = pickQuantity.toFixed(3);
-                        newRow.insertCell().textContent = pickWeight.toFixed(3);
-                    }
-                }
+                    if (useAlternativeFormula && (produceQuantity !== 0 || produceWeight !== 0)) {
+                newRow.insertCell().innerHTML = `<s>${pickQuantity.toFixed(3)}</s>`;
+                newRow.insertCell().innerHTML = `<s>${pickWeight.toFixed(3)}</s>`;
+            } else {
+                newRow.insertCell().textContent = pickQuantity.toFixed(3);
+                newRow.insertCell().textContent = pickWeight.toFixed(3);
+            }
+        }
 
                 if (produceQuantity !== 0 || produceWeight !== 0) {
                     const newRow = summaryTable.insertRow();
                     newRow.insertCell().textContent = formatDate(date);
                     newRow.insertCell().textContent = '生產';
                     newRow.insertCell().textContent = item;
-                    newRow.insertCell().textContent = totalQuantity.toFixed(3);
-                    newRow.insertCell().textContent = totalWeight.toFixed(3);
+                    newRow.insertCell().textContent = useAlternativeFormula ? totalQuantity.toFixed(3) : produceQuantity.toFixed(3);
+                    newRow.insertCell().textContent = useAlternativeFormula ? totalWeight.toFixed(3) : produceWeight.toFixed(3);
                 }
             });
         }
