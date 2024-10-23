@@ -1,24 +1,23 @@
 document.addEventListener('DOMContentLoaded', function() {
     const templates = {
-        
-        P4: `
-            <template id="pickingP4-template">
-                <div class="pickingP4-component">
+        B4: `
+            <template id="produceB4-template">
+                <div class="produceB4-component">
                     <button type="button" class="remove-button"></button>
                     <div class="form-group horizontal-form-group">
-                        <label for="pickingP4-item">領料品項:</label>
+                        <label for="produceB4-item">領料品項:</label>
                         <div class="dropdown">
-                            <button class="dropdown-toggle pickingP4-item" type="button">請選擇分類</button>
+                            <button class="dropdown-toggle produceB4-item" type="button">請選擇分類</button>
                             <div class="dropdown-menu"></div>
                         </div>
                     </div>
                     <div class="form-group horizontal-form-group">
-                        <label for="pickingP4-quantity">領料數量:</label>
-                        <input type="number" class="pickingP4-quantity" name="pickingP4-quantity" value="0" min="0.001" step="0.001">
+                        <label for="produceB4-quantity">領料數量:</label>
+                        <input type="number" class="produceB4-quantity" name="produceB4-quantity" value="0" min="0.001" step="0.001">
                     </div>
                     <div class="form-group horizontal-form-group">
-                        <label for="pickingP4-weight">領料重量(kg):</label>
-                        <input type="number" class="pickingP4-weight" name="pickingP4-weight" value="0" min="0.001" step="0.001">
+                        <label for="produceB4-weight">領料重量(kg):</label>
+                        <input type="number" class="produceB4-weight" name="produceB4-weight" value="0" min="0.001" step="0.001">
                     </div>
                 </div>
             </template>
@@ -31,29 +30,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const itemWeights = {
         P1: { 招牌細P:4.2, 原鬆P: 4.2, 特鬆P: 4.2, 營業P: 4.2, 粗鬆P: 3, 全純P: 3 },
-        P2: { 招牌細K: 1,原鬆K: 1, 配料:1},
-        P4: { 肉鬆P領料: 1, 肉鬆K領料: 1, 肉乾P領料: 1,肉乾K領料: 1, 厚乾P領料: 1,厚乾K領料: 1,五香K領料: 1,海味K領料: 1}
+        P2: { 招牌細K: 1, 原鬆K: 1, 配料: 1 },
+        B4: { 招牌細生產: 4.2, 原鬆生產: 4.2, 海鬆生產: 4.2, 特鬆生產: 4.2, 粗海苔生產: 4.2, 營業原生產: 4.2, 營業海生產: 4.2, 粗鬆生產: 3, 全純生產: 3 }
     };
 
     const subItems = {
-        肉鬆P領料: ['招牌細P:4.2', '原鬆P: 4.2', '特鬆P: 4.2', '營業P: 4.2', '粗鬆P: 3', '全純P: 3'],
-        肉鬆K領料: ['招牌細K: 1', '原鬆K: 1', '海鬆K: 1','粗海苔K: 1', '特鬆K: 1', '營業原K: 1','營業海K: 1', '粗鬆K: 1', '全純K: 1', '清脯K: 1', '魚鬆K: 1', '魚脯K: 1'],
-        肉乾P領料: ['原QP: 6','黑QP: 6','泰式P','脆片P: 3','厚脆P: 6'], 
-        肉乾K領料: ['原QK: 1','黑QK: 1','泰式K: 1','脆片K: 1','厚脆K: 1'],
-        厚乾P領料: ['圓燒P: 1.2','原條P: 6','黑條P: 6','原厚P: 6','黑厚P: 6','辣厚P: 6','泰厚P: 6'],
-        厚乾K領料: ['圓燒K: 1','原條K: 1','黑條K: 1','原厚K: 1','黑厚K: 1','辣厚K: 1','泰厚K: 1'],
-        五香K領料: ['原QP: 6','黑QP: 6','泰式P','脆片P: 3','厚脆P: 6'],
-        海味K領料: ['原QP: 6','黑QP: 6','泰式P','脆片P: 3','厚脆P: 6'],
+        招牌細生產: ['招牌細K: 1', '招牌細L: 0.4', '招牌細M: 0.3', '招牌細S: 0.2', '招牌細R: 0.1'],
+        原鬆生產: ['K: 1', 'L: 0.4', 'M: 0.3', 'S: 0.2', 'R: 0.1'],
+        海鬆生產: ['K: 1', 'L: 0.4', 'M: 0.3', 'S: 0.2', 'R: 0.1'],
+        特鬆生產: ['K: 1', 'L: 0.4', 'M: 0.3', 'S: 0.2', 'R: 0.1'],
+        粗海苔生產: ['K: 1', 'L: 0.4', 'M: 0.3', 'S: 0.2', 'R: 0.1'],
+        營業原生產: ['K: 1', 'L: 0.4', 'M: 0.3', 'S: 0.2', 'R: 0.1'],
+        營業海生產: ['K: 1', 'L: 0.4', 'M: 0.3', 'S: 0.2', 'R: 0.1'],
+        粗鬆生產: ['K: 1', 'L: 0.4', 'M: 0.3', 'S: 0.2', 'R: 0.1'],
+        全純生產: ['K: 1', 'L: 0.4', 'M: 0.3', 'S: 0.2', 'R: 0.1']
     };
 
     function populateDropdown(dropdownMenu, items, isSecondary = false) {
         dropdownMenu.innerHTML = ''; // 清空選單
 
         if (isSecondary) {
-            const headerItem = document.createElement('div');   
-            headerItem.className = 'dropdown-item header-item'; 
-            headerItem.textContent = '請選擇品項';  
-            headerItem.style.fontWeight = 'bold';   
+            const headerItem = document.createElement('div');
+            headerItem.className = 'dropdown-item header-item';
+            headerItem.textContent = '請選擇品項';
+            headerItem.style.fontWeight = 'bold';
             headerItem.style.pointerEvents = 'none'; // 使其不可選
             dropdownMenu.appendChild(headerItem); // 添加抬頭
         } else {
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
             headerItem.style.fontWeight = 'bold';
             headerItem.style.pointerEvents = 'none'; // 使其不可選
             dropdownMenu.appendChild(headerItem); // 添加抬頭
-        }    
+        }
 
         items.forEach(item => {
             const option = document.createElement('div');
@@ -137,17 +137,32 @@ document.addEventListener('DOMContentLoaded', function() {
                     dropdownMenu.classList.remove('show'); // 關閉下拉選單
                     isPrimarySelection = true; // 重置為一級選單狀態
 
-                    
+                    // 手動觸發 input 事件來更新對應的值
+                    quantityInput.dispatchEvent(new Event('input'));
+                    weightInput.dispatchEvent(new Event('input'));
                 }
             }
         });
 
         // 監聽 quantity 和 weight 輸入的變更事件
         quantityInput.addEventListener('input', function() {
-            updateWeight(component, weights);
+            if (document.activeElement === quantityInput) {
+                updateWeight(component, weights);
+            }
         });
 
         weightInput.addEventListener('input', function() {
+            if (document.activeElement === weightInput) {
+                updateQuantity(component, weights);
+            }
+        });
+
+        // 確保手動修改後數值能觸發對應事件
+        quantityInput.addEventListener('blur', function() {
+            updateWeight(component, weights);
+        });
+
+        weightInput.addEventListener('blur', function() {
             updateQuantity(component, weights);
         });
 
@@ -163,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const selectedItem = dropdownToggle.textContent;
         const quantity = parseFloat(quantityInput.value);
 
-        if (weights[selectedItem] !== undefined) {
+        if (!isNaN(quantity) && weights[selectedItem] !== undefined) {
             weightInput.value = (weights[selectedItem] * quantity).toFixed(3);
         }
     }
@@ -176,53 +191,51 @@ document.addEventListener('DOMContentLoaded', function() {
         const selectedItem = dropdownToggle.textContent;
         const weight = parseFloat(weightInput.value);
 
-        if (weights[selectedItem] !== undefined) {
+        if (!isNaN(weight) && weights[selectedItem] !== undefined) {
             quantityInput.value = (weight / weights[selectedItem]).toFixed(3);
         }
     }
 
     const defaultCounts = {
-        P1: typeof defaultP1Count !== 'undefined' ? defaultP1Count : 0,
-        P2: typeof defaultP2Count !== 'undefined' ? defaultP2Count : 0,
-        P4: typeof defaultP4Count !== 'undefined' ? defaultP4Count : 0
+        B4: typeof window.defaultB4Count !== 'undefined' ? window.defaultB4Count : 0
     };
 
     Object.keys(defaultCounts).forEach(key => {
-        if (defaultCounts[key] > 0 && document.getElementById(`picking${key}-container-wrapper`)) {
+        if (defaultCounts[key] > 0 && document.getElementById(`produce${key}-container-wrapper`)) {
             for (let i = 0; i < defaultCounts[key]; i++) {
-                const containerId = `picking${key}-container-${i + 1}`;
+                const containerId = `produce${key}-container-${i + 1}`;
                 const container = document.createElement('div');
                 container.id = containerId;
-                document.getElementById(`picking${key}-container-wrapper`).appendChild(container);
-                addComponent(containerId, `picking${key}-template`, itemWeights[key]);
+                document.getElementById(`produce${key}-container-wrapper`).appendChild(container);
+                addComponent(containerId, `produce${key}-template`, itemWeights[key]);
             }
         }
     });
 
     Object.keys(defaultCounts).forEach(key => {
-        const addButton = document.getElementById(`add-picking${key}-button`);
+        const addButton = document.getElementById(`add-produce${key}-button`);
         if (addButton) {
             addButton.addEventListener('click', function() {
-                const newContainerId = `picking${key}-container-${document.querySelectorAll(`[id^="picking${key}-container"]`).length + 1}`;
+                const newContainerId = `produce${key}-container-${document.querySelectorAll(`[id^="produce${key}-container"]`).length + 1}`;
                 const newContainer = document.createElement('div');
                 newContainer.id = newContainerId;
-                document.getElementById(`picking${key}-container-wrapper`).appendChild(newContainer);
-                addComponent(newContainerId, `picking${key}-template`, itemWeights[key]);
+                document.getElementById(`produce${key}-container-wrapper`).appendChild(newContainer);
+                addComponent(newContainerId, `produce${key}-template`, itemWeights[key]);
             });
         }
     });
 
-    document.addEventListener('click', function(event) {
-        if (event.target.classList.contains('remove-button')) {
-            const component = event.target.closest('[class*="-component"]');
-            if (component) {
-                component.parentElement.removeChild(component);
+    document.addEventListener('click', function(event) {    
+        if (event.target.classList.contains('remove-button')) {     
+            const component = event.target.closest('[class*="-component"]');        
+            if (component) {        
+                component.parentElement.removeChild(component); 
             }
         }
     });
 
-    document.addEventListener('focus', function(event) {
-        if (/pickingP\d+-(quantity|weight)/.test(event.target.className)) {
+    document.addEventListener('focus', function(event) { // 點擊數量或重量欄位時自動全選
+        if (/produceB4-(quantity|weight)/.test(event.target.className)) {     
             event.target.select();
         }
     }, true);

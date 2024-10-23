@@ -132,9 +132,11 @@ header {
 #pickingP1-container-wrapper .pickingP1-component,
 #pickingP2-container-wrapper .pickingP2-component,
 #pickingP3-container-wrapper .pickingP3-component,
+#pickingP4-container-wrapper .pickingP4-component,
 #produceB1-container-wrapper .produceB1-component,
 #produceB2-container-wrapper .produceB2-component,
 #produceB3-container-wrapper .produceB3-component,
+#produceB4-container-wrapper .produceB4-component,
 #produceT2-container-wrapper .timer-component
 {
   
@@ -151,9 +153,11 @@ header {
 .pickingP1-component,
 .pickingP2-component,
 .pickingP3-component,
+.pickingP4-component,
 .produceB1-component,
 .produceB2-component,
 .produceB3-component,
+.produceB4-component,
 .timer-component,
 .card
  {

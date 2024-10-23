@@ -21,28 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </template>
         `,
-        P2: `
-            <template id="pickingP2-template">
-                <div class="pickingP2-component">
-                    <button type="button" class="remove-button"></button>
-                    <div class="form-group horizontal-form-group">
-                        <label for="pickingP2-item">領料品項:</label>
-                        <div class="dropdown">
-                            <button class="dropdown-toggle pickingP2-item" type="button">請選擇分類</button>
-                            <div class="dropdown-menu"></div>
-                        </div>
-                    </div>
-                    <div class="form-group horizontal-form-group">
-                        <label for="pickingP2-quantity">領料數量:</label>
-                        <input type="number" class="pickingP2-quantity" name="pickingP2-quantity" value="0" min="0.001" step="0.001">
-                    </div>
-                    <div class="form-group horizontal-form-group">
-                        <label for="pickingP2-weight">領料重量(kg):</label>
-                        <input type="number" class="pickingP2-weight" name="pickingP2-weight" value="0" min="0.001" step="0.001">
-                    </div>
-                </div>
-            </template>
-        `,
+         
         P3: `
             <template id="pickingP3-template">
                 <div class="pickingP3-component">
@@ -74,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const itemWeights = {
         P1: { 招牌細P:4.2, 原鬆P: 4.2, 特鬆P: 4.2, 營業P: 4.2, 粗鬆P: 3, 全純P: 3 },
         P2: { 招牌細K: 1,原鬆K: 1, 配料:1},
-        P3: { 肉乾P領料: 1, 厚乾P領料: 1, 五香P領料: 1, 海味P領料: 1, }
+        P3: { 肉鬆領料: 1, 肉鬆K領料: 1, 肉乾P領料: 1,}
     };
 
     const subItems = {

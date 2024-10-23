@@ -222,8 +222,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     document.addEventListener('focus', function(event) {
-        if (/pickingP\d+-(quantity|weight)/.test(event.target.className)) {
+        if (/pickingP4+-(quantity|weight)/.test(event.target.className)) {
             event.target.select();
         }
     }, true);
+
+    
 });
