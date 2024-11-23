@@ -120,10 +120,10 @@ document.addEventListener('DOMContentLoaded', function() {
 let timers = {};
 let timerIntervals = {};
 let manualTimeUpdated = {};
-const standardTime = 10000; // 16分鐘   
-const maxTime = 15000; // 22分鐘 
-const warningTime = 12000; // 設置警告時間為確實的經過時間，例如 12000 毫秒（20 分鐘）
-const soundWarningTime = 8000; // 設置聲音警告時間，例如 8000 毫秒（13 分鐘）
+const standardTime = 900000; // 15分鐘   
+const maxTime = 1320000; // 22分鐘 
+const warningTime = 900000; // 15分 設置警告時間為確實的經過時間，例如 12000 毫秒（20 分鐘）
+const soundWarningTime = 1080000; // 18分 設置聲音警告時間，例如 8000 毫秒（13 分鐘）
 
 // 切換計時器狀態
 function toggleTimer(timerId) {
@@ -216,7 +216,7 @@ function stopFlashScreen(timerId) {
 
 // 播放聲音警告
 function playSound() {
-    const audio = new Audio('sounds/alert.mp3'); // 替換為你的音頻文件路徑
+    const audio = new Audio('sounds/sounds/xm3020.wav'); // 替換為你的音頻文件路徑
     audio.play();
 }
 
